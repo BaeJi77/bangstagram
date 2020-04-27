@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.util.StringJoiner;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static java.time.LocalDateTime.now;
 import static java.util.regex.Pattern.matches;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Entity
 @Getter
@@ -40,13 +40,14 @@ public class User {
     }
 
     public User(Long seq, String name, String email, String password, int loginCount, LocalDateTime lastLoginAt, LocalDateTime createAt) {
-        checkArgument(isNotEmpty(email), "address must be provided.");
+        checkNotNull(name, "name must be provided.");
+        checkNotNull(email, "email must be provided.");
+        checkNotNull(password, "password must be provided.");
+        checkArgument(checkAddress(email), "Invalid email address: " + email);
         checkArgument(
                 email.length() >= 4 && email.length() <= 50,
                 "address length must be between 4 and 50 characters."
         );
-        checkArgument(checkAddress(email), "Invalid email address: " + email);
-        checkArgument(isNotEmpty(password), "password must be provided.");
 
         this.seq = seq;
         this.name = name;
