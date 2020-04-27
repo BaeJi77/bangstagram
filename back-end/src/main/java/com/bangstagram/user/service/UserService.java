@@ -14,13 +14,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public User join(String name, String email, String password) {
-        User user = new User(name, email, password);
+        User user = new User(name, email, passwordEncoder.encode(password));
 
         return save(user);
     }
