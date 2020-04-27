@@ -1,8 +1,11 @@
 package com.bangstagram.user.controller;
 
 import com.bangstagram.user.domain.model.api.request.JoinRequest;
+import com.bangstagram.user.domain.model.api.request.AuthenticationRequest;
+import com.bangstagram.user.domain.model.api.response.AuthenticationResult;
 import com.bangstagram.user.domain.model.api.response.JoinResult;
 import com.bangstagram.user.domain.model.user.User;
+import com.bangstagram.user.security.JWT;
 import com.bangstagram.user.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +19,11 @@ import java.util.Map;
 public class UserRestController {
     private final UserService userService;
 
-    public UserRestController(UserService userService) {
+    private final JWT jwt;
+
+    public UserRestController(UserService userService, JWT jwt) {
         this.userService = userService;
+        this.jwt = jwt;
     }
 
     @PostMapping(path = "user/exists")
@@ -31,10 +37,16 @@ public class UserRestController {
     public JoinResult join(@RequestBody JoinRequest joinRequest) {
         User user = userService.join(joinRequest.getName(), joinRequest.getLoginEmail(), joinRequest.getLoginPassword());
 
-        String apiToken = "";
+        String apiToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
 
         return new JoinResult(user, apiToken);
     }
 
+    @PostMapping(path = "user/login")
+    public AuthenticationResult login(@RequestBody AuthenticationRequest authRequest) {
+        String apiToken = "";
+
+        return new AuthenticationResult(new User(), apiToken);
+    }
 
 }

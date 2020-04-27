@@ -6,9 +6,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-      settings:
-        web-allow-others: true
-
 dtatbase:
   platform: h2
   driver-class-name: org.h2.Driver
@@ -19,4 +16,9 @@ dtatbase:
     minimum-idle: 1
     maximum-pool-size: 5
     pool-name: H2_DB
-
+jwt:
+  token:
+    header: api_key
+    issuer: bangstagram_server
+    secret: h9y2o0z2k0i8m
+    expirySeconds: 0

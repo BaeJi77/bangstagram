@@ -1,5 +1,6 @@
 package com.bangstagram.user.domain.model.user;
 
+import com.bangstagram.user.security.JWT;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,11 +20,17 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long seq;
+
     private String name;
+
     private String email;
+
     private String password;
+
     private int loginCount;
+
     private LocalDateTime lastLoginAt;
+
     private LocalDateTime createAt;
 
     public User() {} // findByEmail 시 기본생성자 필수
@@ -48,6 +55,11 @@ public class User {
         this.loginCount = loginCount;
         this.lastLoginAt = lastLoginAt;
         this.createAt = defaultIfNull(createAt,now());
+    }
+
+    public String newJwtToken(JWT jwt, String[] roles) {
+        JWT.Claims claims = JWT.Claims.of(seq, name, email, roles);
+        return jwt.newToken(claims);
     }
 
     private static boolean checkAddress(String address) {
