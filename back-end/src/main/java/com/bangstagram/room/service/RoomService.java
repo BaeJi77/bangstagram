@@ -7,6 +7,7 @@ import com.bangstagram.room.domain.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +24,12 @@ public class RoomService {
 
     public List<RoomResponseDto> getAll() {
 
-        List<Room> rooms = Optional.ofNullable(roomRepository.findAll()).orElseGet(() -> {
-            List<Room> roomList = Optional.ofNullable(roomCrawler.getList()).orElseThrow(() ->
+        List<Room> rooms = roomRepository.findAll();
+        if(rooms.isEmpty()) {
+            rooms = Optional.ofNullable(roomCrawler.getList()).orElseThrow(() ->
                     new IllegalArgumentException());
-            roomRepository.saveAll(roomList);
-            return roomList;
-        });
-
+            roomRepository.saveAll(rooms);
+        }
         List<RoomResponseDto> roomResponseDtos = new ArrayList<>();
         rooms.forEach(room -> {
             roomResponseDtos.add(new RoomResponseDto(room));
