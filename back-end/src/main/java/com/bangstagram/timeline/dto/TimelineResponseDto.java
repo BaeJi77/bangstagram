@@ -1,6 +1,7 @@
 package com.bangstagram.timeline.dto;
 
 import com.bangstagram.timeline.domain.model.Timeline;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
+@EqualsAndHashCode(exclude = {"createdAt", "id"})
 public class TimelineResponseDto {
     private Long id;
     private String title;
