@@ -39,4 +39,11 @@ public class RoomService {
 
     }
 
+    public RoomResponseDto findById(Long id) {
+        Room room = roomRepository.findById(id).orElseThrow(() ->
+            new IllegalArgumentException(id+ " 해당 정보가 없습니다.")
+        );
+        return new RoomResponseDto(room);
+    }
+
 }
