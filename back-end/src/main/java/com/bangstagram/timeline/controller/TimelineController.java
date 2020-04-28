@@ -4,6 +4,8 @@ import com.bangstagram.timeline.dto.TimelineRequestDto;
 import com.bangstagram.timeline.dto.TimelineResponseDto;
 import com.bangstagram.timeline.service.TimelineService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +25,9 @@ public class TimelineController {
 
     @PostMapping(TIMELINES)
     @ResponseBody
-    public TimelineResponseDto createTimeline (@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
+    public ResponseEntity createTimeline (@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
         TimelineResponseDto timelineResponseDto = timelineService.createNewTimeline(timelineRequestDto);
         log.info("{}", timelineResponseDto);
-        return timelineResponseDto;
+        return new ResponseEntity<>(timelineResponseDto, HttpStatus.CREATED);
     }
 }
