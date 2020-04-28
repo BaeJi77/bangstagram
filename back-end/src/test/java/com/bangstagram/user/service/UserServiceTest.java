@@ -52,7 +52,7 @@ public class UserServiceTest {
 
     @Test
     @Order(2)
-    void 회원을_이메일로_조회한다() {
+    void 회원가입시_이메일_중복조회한다() {
         boolean isExist = userService.findByEmail(email).isPresent();
         assertThat(isExist, is(false));
 

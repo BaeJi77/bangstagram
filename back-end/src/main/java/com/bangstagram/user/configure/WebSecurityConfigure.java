@@ -41,8 +41,6 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .headers()
                 .disable()
                 .exceptionHandling()
-                //.accessDeniedHandler(accessDeniedHandler)
-                //.authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -52,13 +50,10 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/exists").permitAll()
                 .antMatchers("/api/user/login").permitAll()
                 .antMatchers("/api/**").hasRole("USER")
-                // .accessDecisionManager(accessDecisionManager())
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .disable();
-        //http
-                //.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

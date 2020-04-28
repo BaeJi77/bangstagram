@@ -46,6 +46,11 @@ public class JWT {
         return builder.sign(algorithm);
     }
 
+    public Claims verify(String token) {
+        return new Claims(jwtVerifier.verify(token));
+    }
+
+    @Getter
     static public class Claims {
         private Long userKey;
         private String name;
@@ -56,6 +61,24 @@ public class JWT {
 
         private Claims() {}
 
+        public Claims(DecodedJWT decodedJWT) {
+            Claim userKey = decodedJWT.getClaim("userKey");
+            if( !userKey.isNull() )
+                this.userKey = userKey.asLong();
+            Claim name = decodedJWT.getClaim("name");
+            if( !name.isNull() )
+                this.name = name.asString();
+            Claim email = decodedJWT.getClaim("email");
+            if( !name.isNull() )
+                this.email = email.asString();
+            Claim roles = decodedJWT.getClaim("roles");
+            if( !roles.isNull() )
+                this.roles = roles.asArray(String.class);
+
+            this.issuedAt = decodedJWT.getIssuedAt();
+            this.expiresAt = decodedJWT.getExpiresAt();
+        }
+
         public static Claims of(Long userKey, String name, String email, String[] roles) {
             Claims claims = new Claims();
             claims.userKey = userKey;
@@ -63,22 +86,6 @@ public class JWT {
             claims.email = email;
             claims.roles = roles;
             return claims;
-        }
-
-        long iat() {
-            return issuedAt != null ? issuedAt.getTime() : -1;
-        }
-
-        long exp() {
-            return expiresAt != null ? expiresAt.getTime() : -1;
-        }
-
-        void eraseIat() {
-            issuedAt = null;
-        }
-
-        void eraseExp() {
-            expiresAt = null;
         }
 
         @Override
