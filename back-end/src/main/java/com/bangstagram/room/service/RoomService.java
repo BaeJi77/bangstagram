@@ -1,13 +1,15 @@
 package com.bangstagram.room.service;
 
+import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomResponseDto;
+import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
 import com.bangstagram.room.crowler.RoomCrawler;
 import com.bangstagram.room.domain.model.Room;
 import com.bangstagram.room.domain.repository.RoomRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,22 @@ public class RoomService {
             new IllegalArgumentException(id+ " 해당 정보가 없습니다.")
         );
         return new RoomResponseDto(room);
+    }
+
+    @Transactional
+    public Long createRoom(RoomSaveRequestDto requestDto) {
+        return roomRepository.save(requestDto.toEntity()).getId();
+    }
+
+    @Transactional
+    public Long updateRoom(Long id, RoomUpdateRequestDto roomUpdateRequestDto) {
+        Room room = roomRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException(id + " 해당 정보가 없습니다."));
+
+        room.update(roomUpdateRequestDto.getTitle(), roomUpdateRequestDto.getLink(),
+                roomUpdateRequestDto.getPhone(), roomUpdateRequestDto.getAddress(), roomUpdateRequestDto.getDescription());
+
+        return room.getId();
     }
 
 }

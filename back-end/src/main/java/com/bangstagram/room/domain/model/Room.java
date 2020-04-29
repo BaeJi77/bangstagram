@@ -39,4 +39,11 @@ public class Room {
         this.address = address;
     }
 
+    public void update(String title, String link, String phone, String address, String description) {
+        this.title = title;
+        this.link = link;
+        this.phone = phone;
+        this.address = address;
+        this.description = description;
+    }
 }

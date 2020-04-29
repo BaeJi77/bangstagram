@@ -1,10 +1,10 @@
 package com.bangstagram.room.controller;
 
+import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomResponseDto;
+import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
 import com.bangstagram.room.service.RoomService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,4 +25,15 @@ public class RoomController {
     public RoomResponseDto findById(@PathVariable Long id) {
         return roomService.findById(id);
     }
+
+    @PostMapping("/rooms")
+    public Long createRoom(@RequestBody RoomSaveRequestDto roomSaveRequestDto) {
+        return roomService.createRoom(roomSaveRequestDto);
+    }
+
+    @PutMapping("/rooms/{id}")
+    public Long updateRoom(@PathVariable Long id, @RequestBody RoomUpdateRequestDto roomUpdateRequestDto) {
+        return roomService.updateRoom(id, roomUpdateRequestDto);
+    }
+
 }
