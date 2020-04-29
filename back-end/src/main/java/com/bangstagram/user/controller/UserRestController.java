@@ -1,8 +1,6 @@
 package com.bangstagram.user.controller;
 
 import com.bangstagram.user.domain.model.api.request.JoinRequest;
-import com.bangstagram.user.domain.model.api.request.AuthenticationRequest;
-import com.bangstagram.user.domain.model.api.response.AuthenticationResult;
 import com.bangstagram.user.domain.model.api.response.JoinResult;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.security.JWT;
@@ -40,13 +38,6 @@ public class UserRestController {
         String apiToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
 
         return new JoinResult(user, apiToken);
-    }
-
-    @PostMapping(path = "user/login")
-    public AuthenticationResult login(@RequestBody AuthenticationRequest authRequest) {
-        String apiToken = "";
-
-        return new AuthenticationResult(new User(), apiToken);
     }
 
 }
