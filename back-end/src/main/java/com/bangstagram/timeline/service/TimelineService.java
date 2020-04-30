@@ -8,6 +8,7 @@ import com.bangstagram.timeline.dto.TimelineResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @Slf4j
 public class TimelineService {
@@ -20,6 +21,13 @@ public class TimelineService {
     public TimelineResponseDto createNewTimeline (TimelineRequestDto timelineRequestDto) {
         log.info("{}", timelineRequestDto);
         Timeline newTimeline = timelineRepository.save(timelineRequestDto.convertToTimeline());
-        return new TimelineResponseDto(newTimeline);
+        return TimelineResponseDto.builder()
+                .id(newTimeline.getId())
+                .title(newTimeline.getTitle())
+                .body(newTimeline.getBody())
+                .userId(newTimeline.getUserId())
+                .roomId(newTimeline.getRoomId())
+                .createdAt(newTimeline.getCreatedAt())
+                .build();
     }
 }

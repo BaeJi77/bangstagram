@@ -4,6 +4,7 @@ package com.bangstagram.api.timeline.service;
 import com.bangstagram.timeline.dto.TimelineRequestDto;
 import com.bangstagram.timeline.dto.TimelineResponseDto;
 import com.bangstagram.timeline.service.TimelineService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ public class TimelineServiceTest {
     private TimelineService timelineService;
 
     @Test
+    @DisplayName("(성공) 타임라인 만들기: DB 접속 후 데이터와 비교하기")
     public void isSuccessCreateNewTimeline() {
         // given => 데이터 셋업
         TimelineResponseDto expectedTimelineResponseDto =
@@ -29,6 +31,9 @@ public class TimelineServiceTest {
         TimelineResponseDto newTimelineResponseDto = timelineService.createNewTimeline(timelineRequestDto);
 
         // then => 비교
-        assertThat(expectedTimelineResponseDto).isEqualTo(newTimelineResponseDto);
+        assertThat(expectedTimelineResponseDto.getBody()).isEqualTo(newTimelineResponseDto.getBody());
+        assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(newTimelineResponseDto.getTitle());
+        assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(newTimelineResponseDto.getUserId());
+        assertThat(expectedTimelineResponseDto.getRoomId()).isEqualTo(newTimelineResponseDto.getRoomId());
     }
 }

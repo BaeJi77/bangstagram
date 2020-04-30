@@ -2,12 +2,11 @@ package com.bangstagram.timeline.dto;
 
 import com.bangstagram.timeline.domain.model.Timeline;
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@ToString
+
 @Getter
 public class TimelineRequestDto {
     @NotBlank
@@ -39,5 +38,15 @@ public class TimelineRequestDto {
                 .userId(this.userId)
                 .roomId(this.roomId)
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "TimelineRequestDto{" +
+                "title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", userId=" + userId +
+                ", roomId=" + roomId +
+                '}';
     }
 }
