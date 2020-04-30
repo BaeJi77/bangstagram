@@ -19,7 +19,7 @@ public class TimelineService {
 
     public TimelineResponseDto createNewTimeline (TimelineRequestDto timelineRequestDto) {
         log.info("{}", timelineRequestDto);
-        Timeline newTimeline = timelineRepository.save(timelineRequestDto.convertTimelineRequestDtoToTimelineModel());
+        Timeline newTimeline = timelineRepository.save(timelineRequestDto.convertToTimeline());
         return new TimelineResponseDto(newTimeline);
     }
 }

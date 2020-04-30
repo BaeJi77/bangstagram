@@ -32,7 +32,7 @@ public class TimelineRequestDto {
         this.roomId = roomId;
     }
 
-    public Timeline convertTimelineRequestDtoToTimelineModel() {
+    public Timeline convertToTimeline() {
         return Timeline.builder()
                 .title(this.title)
                 .body(this.body)
