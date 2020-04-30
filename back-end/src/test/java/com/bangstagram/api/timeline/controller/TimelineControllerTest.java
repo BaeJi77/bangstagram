@@ -28,6 +28,7 @@ public class TimelineControllerTest {
         mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
                 .andExpect(status().isCreated())
                 .andDo(print());
+        // TODO: result 데이터와 밑에까지 갔다온 데이터를 비교하는 로직 추가
     }
 
     @Test
