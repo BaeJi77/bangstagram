@@ -1,9 +1,8 @@
-package com.bangstagram.api.timeline.service;
+package com.bangstagram.timeline.service;
 
 
 import com.bangstagram.timeline.dto.TimelineRequestDto;
 import com.bangstagram.timeline.dto.TimelineResponseDto;
-import com.bangstagram.timeline.service.TimelineService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package com.bangstagram.api.timeline.controller;
+package com.bangstagram.timeline.controller;
 
 
 import com.bangstagram.timeline.dto.TimelineResponseDto;

@@ -1,4 +1,4 @@
-package com.bangstagram.api.timeline.controller;
+package com.bangstagram.timeline.controller;
 
 
 import org.junit.jupiter.api.Test;
