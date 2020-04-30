@@ -1,9 +1,11 @@
 package com.bangstagram.api.timeline.service;
 
 
+import com.bangstagram.timeline.domain.repository.TimelineRepository;
 import com.bangstagram.timeline.dto.TimelineRequestDto;
 import com.bangstagram.timeline.dto.TimelineResponseDto;
 import com.bangstagram.timeline.service.TimelineService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TimelineServiceTest {
     @Autowired
     private TimelineService timelineService;
+
+    @Autowired
+    private TimelineRepository timelineRepository;
+
+    @BeforeEach
+    public void setUp() {
+        timelineRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("(성공) 타임라인 만들기: DB 접속 후 데이터와 비교하기")
