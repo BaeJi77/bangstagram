@@ -4,13 +4,13 @@ import com.bangstagram.user.domain.model.user.User;
 import lombok.Getter;
 
 @Getter
-public class JoinResult {
+public class JoinResponseDto {
     private final User user;
 
-    private final String apiToken;
+    private final String jwtToken;
 
-    public JoinResult(User user, String apiToken) {
+    public JoinResponseDto(User user, String apiToken) {
         this.user = user;
-        this.apiToken = apiToken;
+        this.jwtToken = apiToken;
     }
 }

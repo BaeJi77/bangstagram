@@ -15,13 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
-
     @Value("${jwt.token.issuer}")
-    String issuer;
+    private String issuer;
+
     @Value("${jwt.token.secret}")
-    String secret;
+    private String secret;
+
     @Value("${jwt.token.expirySeconds}")
-    int expirySeconds;
+    private int expirySeconds;
 
     @Bean
     public JWT jwt() {
@@ -46,10 +47,10 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/join").permitAll()
-                .antMatchers("/api/user/exists").permitAll()
-                .antMatchers("/api/user/login").permitAll()
-                .antMatchers("/api/**").hasRole("USER")
+                .antMatchers("/users/join").permitAll()
+                .antMatchers("/users/exists").permitAll()
+                .antMatchers("/users/login").permitAll()
+                .antMatchers("/**").hasRole("USER_ROLE")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

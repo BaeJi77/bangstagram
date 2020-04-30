@@ -1,22 +1,22 @@
 package com.bangstagram.user.security;
 
-import org.junit.jupiter.api.BeforeAll;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Slf4j
+@SpringBootTest
 public class JWTTest {
-    private Logger log = LoggerFactory.getLogger(getClass());
-
+    @Autowired
     private JWT jwt;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         String issuer = "bangstagram-server";
         String clientSecret = "h9y2o0z2k0i8m";
@@ -29,10 +29,10 @@ public class JWTTest {
     void JWT_토큰을_생성하고_복호화_하다() {
         JWT.Claims claims = JWT.Claims.of(1L,"tester", "test@gmail.com", new String[]{"ROLE_USER"});
         String encodedJWT = jwt.newToken(claims);
-        log.info("encodedJWT: {}", encodedJWT);
+        log.info("{}", encodedJWT);
 
         JWT.Claims decodedJWT = jwt.verify(encodedJWT);
-        log.info("decodedJWT: {}", decodedJWT);
+        log.info("{}", decodedJWT);
 
         assertThat(claims.getUserKey(), is(decodedJWT.getUserKey()));
         assertArrayEquals(claims.getRoles(), decodedJWT.getRoles());

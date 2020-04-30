@@ -1,28 +1,29 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
+import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
-import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.Is.is;
 
 @SpringBootTest
-@ActiveProfiles("test")
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 public class UserServiceTest {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private String name;
 
@@ -30,7 +31,7 @@ public class UserServiceTest {
 
     private String password;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         name = "tester";
         email = "test@gmail.com";
@@ -38,30 +39,50 @@ public class UserServiceTest {
     }
 
     @Test
-    @Order(1)
-    void 회원가입을_하다() {
-        logger.info("email: {}, name: {}, password: {}" , email, name, password);
+    @DisplayName("회원가입을_하다")
+    void testJoin() {
+        JoinResponseDto response = userService.join(new JoinRequestDto(name,email,password));
+        assertThat(response, is(notNullValue()));
 
-        User user = userService.join(name,email,password);
-        assertThat(user, is(notNullValue()));
+        User user = response.getUser();
         assertThat(user.getSeq(), is(notNullValue()));
         assertThat(user.getEmail(), is(email));
 
-        logger.info("Inserted user: {}", user);
+        String jwtToken = response.getJwtToken();
+        assertThat(jwtToken, is(notNullValue()));
+
+        log.info("Inserted user: {}", user);
+        log.info("Created jwtToken: {}", jwtToken);
     }
 
     @Test
-    @Order(2)
-    void 회원가입시_이메일_중복조회한다() {
-        boolean isExist = userService.findByEmail(email).isPresent();
+    @DisplayName("이메일_중복조회한다")
+    void isExistedEmail() {
+        boolean isExist = userService.existsByEmail(email);
         assertThat(isExist, is(false));
 
-        User user = userService.findByEmail(email).get();
-        assertThat(user, is(null));
-        assertThat(user.getSeq(), is(null));
-        assertThat(user.getEmail(), is(email));
+        // 회원가입 -> 이메일 DB에 저장.
+        userService.join(new JoinRequestDto(name,email,password));
 
-        logger.info("Found by {} : {} ", email, user);
+        isExist = userService.existsByEmail(email);
+        assertThat(isExist, is(true));
     }
 
+    @Test
+    @DisplayName("이메일을_조회한다")
+    void testFindByEmail() {
+        User user = userService.findByEmail(email).orElse(null);
+        assertThat(user, is(nullValue()));
+
+        // 회원가입 -> 이메일 DB에 저장.
+        userService.join(new JoinRequestDto(name,email,password));
+
+        user = userService.findByEmail(email).orElse(null);
+        assertThat(user, (notNullValue()));
+        assertThat(user.getSeq(), is(notNullValue()));
+        assertThat(user.getName(), is(name));
+        assertThat(user.getEmail(), is(email));
+        assertThat(passwordEncoder.matches(password,user.getPassword()), is(true)); // 비밀번호 일치 확인
+
+    }
 }

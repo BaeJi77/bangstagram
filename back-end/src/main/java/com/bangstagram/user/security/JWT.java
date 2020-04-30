@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.Builder;
 import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -59,7 +60,15 @@ public class JWT {
         private Date issuedAt;
         private Date expiresAt;
 
-        private Claims() {}
+        @Builder
+        public Claims(Long userKey, String name, String email, String[] roles, Date issuedAt, Date expiresAt) {
+            this.userKey = userKey;
+            this.name = name;
+            this.email = email;
+            this.roles = roles;
+            this.issuedAt = issuedAt;
+            this.expiresAt = expiresAt;
+        }
 
         public Claims(DecodedJWT decodedJWT) {
             Claim userKey = decodedJWT.getClaim("userKey");
@@ -80,12 +89,11 @@ public class JWT {
         }
 
         public static Claims of(Long userKey, String name, String email, String[] roles) {
-            Claims claims = new Claims();
-            claims.userKey = userKey;
-            claims.name = name;
-            claims.email = email;
-            claims.roles = roles;
-            return claims;
+            return Claims.builder()
+                    .userKey(userKey)
+                    .name(name)
+                    .email(email)
+                    .roles(roles).build();
         }
 
         @Override

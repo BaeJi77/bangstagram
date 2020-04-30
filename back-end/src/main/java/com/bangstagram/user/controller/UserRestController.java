@@ -1,43 +1,36 @@
 package com.bangstagram.user.controller;
 
-import com.bangstagram.user.domain.model.api.request.JoinRequest;
-import com.bangstagram.user.domain.model.api.response.JoinResult;
+import com.bangstagram.user.domain.model.api.request.AuthRequestDto;
+import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
+import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
+import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
-import com.bangstagram.user.security.JWT;
 import com.bangstagram.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api")
+@Slf4j
 public class UserRestController {
     private final UserService userService;
 
-    private final JWT jwt;
-
-    public UserRestController(UserService userService, JWT jwt) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
-        this.jwt = jwt;
     }
 
-    @PostMapping(path = "user/exists")
-    public Boolean checkExistedEmail(@RequestBody Map<String,String> request) {
-        // Email
-        String requestEmail = request.get("email");
-        return userService.findByEmail(requestEmail).isPresent();
+    @PostMapping("users/exists")
+    public boolean checkUserExists(@RequestBody Map<String, String> request) {
+        return userService.existsByEmail(request.get("email"));
     }
 
-    @PostMapping(path = "user/join")
-    public JoinResult join(@RequestBody JoinRequest joinRequest) {
-        User user = userService.join(joinRequest.getName(), joinRequest.getLoginEmail(), joinRequest.getLoginPassword());
-
-        String apiToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
-
-        return new JoinResult(user, apiToken);
+    @PostMapping("users/join")
+    public JoinResponseDto join(@RequestBody @Valid JoinRequestDto joinRequestDto) {
+        return userService.join(joinRequestDto);
     }
-
 }
