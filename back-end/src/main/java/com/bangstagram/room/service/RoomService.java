@@ -3,65 +3,67 @@ package com.bangstagram.room.service;
 import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomResponseDto;
 import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
-import com.bangstagram.room.crowler.RoomCrawler;
 import com.bangstagram.room.domain.model.Room;
 import com.bangstagram.room.domain.repository.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class RoomService {
-
     private final RoomRepository roomRepository;
-    private final RoomCrawler roomCrawler;
 
-    public RoomService(RoomRepository roomRepository, RoomCrawler roomCrawler) {
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
-        this.roomCrawler = roomCrawler;
     }
 
-    public List<RoomResponseDto> getAll() {
-
-        List<Room> rooms = roomRepository.findAll();
-        if(rooms.isEmpty()) {
-            rooms = Optional.ofNullable(roomCrawler.getList()).orElseThrow(() ->
-                    new IllegalArgumentException());
-            roomRepository.saveAll(rooms);
-        }
-        List<RoomResponseDto> roomResponseDtos = new ArrayList<>();
-        rooms.forEach(room -> {
-            roomResponseDtos.add(new RoomResponseDto(room));
-        });
-
-        return roomResponseDtos;
-
+    @Transactional(readOnly = true)
+    public List<RoomResponseDto> findAll() {
+        return roomRepository.findAll().stream()
+                .map(RoomResponseDto::new)
+                .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public RoomResponseDto findById(Long id) {
-        Room room = roomRepository.findById(id).orElseThrow(() ->
-            new IllegalArgumentException(id+ " 해당 정보가 없습니다.")
-        );
+        log.info("{}", id);
+        Room room = findRoomById(id);
         return new RoomResponseDto(room);
     }
 
-    @Transactional
-    public Long createRoom(RoomSaveRequestDto requestDto) {
-        return roomRepository.save(requestDto.toEntity()).getId();
+    public RoomResponseDto createRoom(RoomSaveRequestDto requestDto) {
+        log.info("{}", requestDto);
+        Room room = roomRepository.save(requestDto.toEntity());
+        return RoomResponseDto.builder()
+                .id(room.getId())
+                .title(room.getTitle())
+                .address(room.getAddress())
+                .link(room.getLink())
+                .phone(room.getPhone())
+                .description(room.getDescription())
+                .build();
     }
 
-    @Transactional
-    public Long updateRoom(Long id, RoomUpdateRequestDto roomUpdateRequestDto) {
-        Room room = roomRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException(id + " 해당 정보가 없습니다."));
-
+    public RoomResponseDto updateRoom(Long id, RoomUpdateRequestDto roomUpdateRequestDto) {
+        log.info("{}, {}", id, roomUpdateRequestDto);
+        Room room = findRoomById(id);
         room.update(roomUpdateRequestDto.getTitle(), roomUpdateRequestDto.getLink(),
                 roomUpdateRequestDto.getPhone(), roomUpdateRequestDto.getAddress(), roomUpdateRequestDto.getDescription());
-
-        return room.getId();
+        return RoomResponseDto.builder()
+                .id(room.getId())
+                .title(room.getTitle())
+                .address(room.getAddress())
+                .link(room.getLink())
+                .phone(room.getPhone())
+                .description(room.getDescription())
+                .build();
     }
 
+    private Room findRoomById(Long id) {
+        return roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id + " 해당 정보가 없습니다."));
+    }
 }

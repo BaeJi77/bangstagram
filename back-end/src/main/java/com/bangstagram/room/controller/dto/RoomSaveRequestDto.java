@@ -4,15 +4,21 @@ import com.bangstagram.room.domain.model.Room;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 public class RoomSaveRequestDto {
+    @NotBlank
     private String title;
+
+    @NotBlank
+    private String address;
     private String link;
     private String phone;
-    private String address;
     private String description;
 
-    public RoomSaveRequestDto(){}
+    public RoomSaveRequestDto() {
+    }
 
     @Builder
     public RoomSaveRequestDto(String title, String link, String phone, String address, String description) {

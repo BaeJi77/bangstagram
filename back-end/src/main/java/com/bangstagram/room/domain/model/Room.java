@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 public class Room {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,19 +15,17 @@ public class Room {
     @Column(nullable = false)
     private String title;
 
-    @Column
     private String link;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column
     private String phone;
 
-    @Column
     private String address;
 
-    public Room() {}
+    public Room() {
+    }
 
     @Builder
     public Room(String title, String link, String description, String phone, String address) {
