@@ -1,6 +1,6 @@
 package com.bangstagram.timeline.domain.model;
 
-import com.bangstagram.Auditing.TimeAuditorEntity;
+import com.bangstagram.auditing.TimeAuditorEntity;
 import lombok.Builder;
 import lombok.Getter;
 

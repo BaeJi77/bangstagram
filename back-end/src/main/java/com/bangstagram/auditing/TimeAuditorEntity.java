@@ -1,4 +1,4 @@
-package com.bangstagram.Auditing;
+package com.bangstagram.auditing;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
