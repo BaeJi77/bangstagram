@@ -1,6 +1,8 @@
 package com.bangstagram.user.controller;
 
+import com.bangstagram.user.domain.model.api.request.AuthRequestDto;
 import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
+import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,5 +30,10 @@ public class UserRestController {
     @PostMapping("users/join")
     public JoinResponseDto join(@RequestBody @Valid JoinRequestDto joinRequestDto) {
         return userService.join(joinRequestDto);
+    }
+
+    @PostMapping("users/login")
+    public AuthResponseDto login(@RequestBody @Valid AuthRequestDto authRequestDto) {
+        return userService.login(authRequestDto.getPrincipal(), authRequestDto.getCredentials());
     }
 }

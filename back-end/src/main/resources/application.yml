@@ -48,3 +48,10 @@ jwt:
     issuer: bangstagram_server
     secret: h9y2o0z2k0i8m
     expirySeconds: 0
+
+oauth:
+  naver:
+    clientId: XtF1W2Q5emLFga3N4wv0
+    clientSecret: GDb74_7kCw
+    loginTokenApi: https://nid.naver.com/oauth2.0/token
+    memberProfileApi: https://openapi.naver.com/v1/nid/me

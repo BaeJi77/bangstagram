@@ -28,7 +28,7 @@ public class JoinRequestDto {
         this.loginPassword = loginPassword;
     }
 
-    public User newUser(PasswordEncoder passwordEncoder) {
-        return new User(name,loginEmail,passwordEncoder.encode(loginPassword));
+    public User newUser(PasswordEncoder passwordEncoder, String oAuth) {
+        return new User(name,loginEmail,passwordEncoder.encode(loginPassword), oAuth);
     }
 }

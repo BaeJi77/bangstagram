@@ -1,6 +1,7 @@
 package com.bangstagram.user.service;
 
 import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
+import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
@@ -31,7 +32,7 @@ public class UserService {
 
     @Transactional
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
-        User user = save(joinRequestDto.newUser(passwordEncoder));
+        User user = save(joinRequestDto.newUser(passwordEncoder, ""));
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
@@ -56,5 +57,26 @@ public class UserService {
         return Optional.ofNullable(userRepository.findByEmail(email));
     }
 
+    @Transactional
+    public AuthResponseDto login(String email, String password) {
+        User user = findByEmail(email).orElseThrow(() -> new RuntimeException("email not found"));
+        user.login(passwordEncoder,password);
+        user.afterLoginSuccess();
+        save(user);
 
+        String jwtToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
+
+        return new AuthResponseDto(user, jwtToken);
+    }
+
+    @Transactional
+    public AuthResponseDto authLogin(String email) {
+        User user = findByEmail(email).orElseThrow(() -> new RuntimeException("email not found"));
+        user.afterLoginSuccess();
+        save(user);
+
+        String jwtToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
+
+        return new AuthResponseDto(user, jwtToken);
+    }
 }
