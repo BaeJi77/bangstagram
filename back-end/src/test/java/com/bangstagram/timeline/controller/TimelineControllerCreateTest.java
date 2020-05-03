@@ -41,7 +41,6 @@ public class TimelineControllerCreateTest {
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andReturn();
-        // TODO: result 데이터와 밑에까지 갔다온 데이터를 비교하는 로직 추가
         TimelineResponseDto newTimelineResponse
                 = mapper.readValue(result.getResponse().getContentAsString(), TimelineResponseDto.class);
 
