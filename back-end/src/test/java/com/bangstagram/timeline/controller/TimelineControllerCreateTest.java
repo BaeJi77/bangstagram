@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TimelineControllerTest {
+public class TimelineControllerCreateTest {
     @Autowired
     private MockMvc mockMvc;
 
