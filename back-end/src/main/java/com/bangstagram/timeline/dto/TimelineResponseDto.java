@@ -1,16 +1,12 @@
 package com.bangstagram.timeline.dto;
 
-import com.bangstagram.timeline.domain.model.Timeline;
-import lombok.EqualsAndHashCode;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 
 @Getter
-@ToString
-@EqualsAndHashCode(exclude = {"createdAt", "id"})
 public class TimelineResponseDto {
     private Long id;
     private String title;
@@ -19,9 +15,7 @@ public class TimelineResponseDto {
     private Long userId;
     private Long roomId;
 
-    public TimelineResponseDto() {
-    }
-
+    @Builder
     public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, Long userId, Long roomId) {
         this.id = id;
         this.title = title;
@@ -31,12 +25,15 @@ public class TimelineResponseDto {
         this.roomId = roomId;
     }
 
-    public TimelineResponseDto(Timeline timeline) {
-        this.id = timeline.getId();
-        this.body = timeline.getBody();
-        this.title = timeline.getTitle();
-        this.createdAt = timeline.getCreatedAt();
-        this.userId = timeline.getRoomId();
-        this.roomId = timeline.getRoomId();
+    @Override
+    public String toString() {
+        return "TimelineResponseDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", createdAt=" + createdAt +
+                ", userId=" + userId +
+                ", roomId=" + roomId +
+                '}';
     }
 }

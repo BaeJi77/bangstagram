@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  Date: 2020.04.28
  */
 
+
 @Service
 @Slf4j
 public class TimelineService {
@@ -27,8 +28,15 @@ public class TimelineService {
 
     public TimelineResponseDto createNewTimeline (TimelineRequestDto timelineRequestDto) {
         log.info("{}", timelineRequestDto);
-        Timeline newTimeline = timelineRepository.save(timelineRequestDto.convertTimelineRequestDtoToTimelineModel());
-        return new TimelineResponseDto(newTimeline);
+        Timeline newTimeline = timelineRepository.save(timelineRequestDto.convertToTimeline());
+        return TimelineResponseDto.builder()
+                .id(newTimeline.getId())
+                .title(newTimeline.getTitle())
+                .body(newTimeline.getBody())
+                .userId(newTimeline.getUserId())
+                .roomId(newTimeline.getRoomId())
+                .createdAt(newTimeline.getCreatedAt())
+                .build();
     }
 
     @Transactional
