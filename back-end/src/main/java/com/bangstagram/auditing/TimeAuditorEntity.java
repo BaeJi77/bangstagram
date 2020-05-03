@@ -9,8 +9,8 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.30
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.30
  */
 
 @MappedSuperclass

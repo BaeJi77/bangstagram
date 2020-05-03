@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.28
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.28
  */
 
 @Service
@@ -25,7 +25,7 @@ public class TimelineService {
         this.timelineRepository = timelineRepository;
     }
 
-    public TimelineResponseDto createNewTimeline (TimelineRequestDto timelineRequestDto) {
+    public TimelineResponseDto createNewTimeline(TimelineRequestDto timelineRequestDto) {
         log.info("{}", timelineRequestDto);
         Timeline newTimeline = timelineRepository.save(timelineRequestDto.convertToTimeline());
         return TimelineResponseDto.builder()
@@ -39,7 +39,7 @@ public class TimelineService {
     }
 
     @Transactional
-    public TimelineResponseDto updateTimeline (Long timelineId, TimelineUpdateRequestDto timelineUpdateRequestDto) {
+    public TimelineResponseDto updateTimeline(Long timelineId, TimelineUpdateRequestDto timelineUpdateRequestDto) {
         log.info("{} {}", timelineId, timelineUpdateRequestDto);
         Timeline foundTimeline = timelineRepository.findById(timelineId).orElseThrow(() -> new DoNotExistException("There is not target id in database. timelineId: ", timelineId));
         foundTimeline.update(timelineUpdateRequestDto.getTitle(), timelineUpdateRequestDto.getBody());

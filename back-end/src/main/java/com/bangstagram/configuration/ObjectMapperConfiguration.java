@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.29
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.29
  */
 
 @Configuration

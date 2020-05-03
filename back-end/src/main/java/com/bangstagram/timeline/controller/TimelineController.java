@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.28
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.28
  */
 
 @RestController
@@ -27,14 +27,14 @@ public class TimelineController {
     }
 
     @PostMapping(TIMELINES)
-    public ResponseEntity createTimeline (@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
+    public ResponseEntity createTimeline(@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
         TimelineResponseDto newTimeline = timelineService.createNewTimeline(timelineRequestDto);
         log.info("{}", newTimeline);
         return new ResponseEntity<>(newTimeline, HttpStatus.CREATED);
     }
 
     @PutMapping(TIMELINES + "/{timelineId}")
-    public ResponseEntity updateTimeline (@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
+    public ResponseEntity updateTimeline(@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
         TimelineResponseDto updatedResult = timelineService.updateTimeline(timelineId, timelineUpdateRequestDto);
         log.info("{}", updatedResult);
         return new ResponseEntity<>(updatedResult, HttpStatus.CREATED);

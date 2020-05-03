@@ -5,8 +5,8 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.29
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.29
  */
 
 @Getter

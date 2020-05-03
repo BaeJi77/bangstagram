@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.29
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.29
  */
 
 @Slf4j

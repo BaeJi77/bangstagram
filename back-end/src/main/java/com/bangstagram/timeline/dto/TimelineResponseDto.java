@@ -6,8 +6,8 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 /**
- author: Ji-Hoon Bae
- Date: 2020.04.28
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.28
  */
 
 @Getter
