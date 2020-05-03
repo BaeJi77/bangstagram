@@ -8,6 +8,10 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+/**
+ author: Ji-Hoon Bae
+ Date: 2020.04.30
+ */
 
 @MappedSuperclass
 @EntityListeners(value = {AuditingEntityListener.class})

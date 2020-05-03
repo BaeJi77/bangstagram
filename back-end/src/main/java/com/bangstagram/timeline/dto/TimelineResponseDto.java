@@ -5,6 +5,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+/**
+ author: Ji-Hoon Bae
+ Date: 2020.04.28
+ */
 
 @Getter
 public class TimelineResponseDto {
@@ -14,6 +18,9 @@ public class TimelineResponseDto {
     private LocalDateTime createdAt;
     private Long userId;
     private Long roomId;
+
+    public TimelineResponseDto() {
+    }
 
     @Builder
     public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, Long userId, Long roomId) {

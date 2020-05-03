@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ author: Ji-Hoon Bae
+ Date: 2020.04.28
+ */
+
 @RestController
 @Slf4j
 public class TimelineController {

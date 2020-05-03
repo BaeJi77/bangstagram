@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
-    author: Ji-Hoon Bae
-    Date: 2020.04.28
+ author: Ji-Hoon Bae
+ Date: 2020.04.28
  */
 
 @AutoConfigureMockMvc

@@ -1,12 +1,15 @@
 package com.bangstagram.timeline.dto;
 
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ author: Ji-Hoon Bae
+ Date: 2020.04.29
+ */
+
 @Getter
-@ToString
 public class TimelineUpdateRequestDto {
     @NotBlank
     private String title;
@@ -20,5 +23,13 @@ public class TimelineUpdateRequestDto {
     public TimelineUpdateRequestDto(String title, String body) {
         this.title = title;
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        return "TimelineUpdateRequestDto{" +
+                "title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                '}';
     }
 }

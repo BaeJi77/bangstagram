@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
  Date: 2020.04.28
  */
 
-
 @Service
 @Slf4j
 public class TimelineService {
@@ -44,6 +43,13 @@ public class TimelineService {
         log.info("{} {}", timelineId, timelineUpdateRequestDto);
         Timeline foundTimeline = timelineRepository.findById(timelineId).orElseThrow(() -> new DoNotExistException("There is not target id in database. timelineId: ", timelineId));
         foundTimeline.update(timelineUpdateRequestDto.getTitle(), timelineUpdateRequestDto.getBody());
-        return new TimelineResponseDto(foundTimeline);
+        return TimelineResponseDto.builder()
+                .id(foundTimeline.getId())
+                .title(foundTimeline.getTitle())
+                .body(foundTimeline.getBody())
+                .createdAt(foundTimeline.getCreatedAt())
+                .userId(foundTimeline.getUserId())
+                .roomId(foundTimeline.getRoomId())
+                .build();
     }
 }

@@ -9,6 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ author: Ji-Hoon Bae
+ Date: 2020.04.28
+ */
+
 @Entity
 @Getter
 public class Timeline extends TimeAuditorEntity {

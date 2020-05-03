@@ -6,6 +6,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ author: Ji-Hoon Bae
+ Date: 2020.04.29
+ */
+
 @Configuration
 public class ObjectMapperConfiguration {
     @Bean
