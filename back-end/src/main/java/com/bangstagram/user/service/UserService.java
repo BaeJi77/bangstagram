@@ -1,7 +1,6 @@
 package com.bangstagram.user.service;
 
 import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
-import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;

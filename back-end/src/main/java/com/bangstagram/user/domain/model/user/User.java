@@ -2,7 +2,6 @@ package com.bangstagram.user.domain.model.user;
 
 import com.bangstagram.user.security.JWT;
 import lombok.Getter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
