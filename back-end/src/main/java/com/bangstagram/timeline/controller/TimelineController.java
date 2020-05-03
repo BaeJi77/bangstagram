@@ -7,12 +7,11 @@ import com.bangstagram.timeline.service.TimelineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @Slf4j
 public class TimelineController {
     private static final String TIMELINES = "/timelines";
@@ -23,7 +22,6 @@ public class TimelineController {
     }
 
     @PostMapping(TIMELINES)
-    @ResponseBody
     public ResponseEntity createTimeline (@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
         TimelineResponseDto newTimeline = timelineService.createNewTimeline(timelineRequestDto);
         log.info("{}", newTimeline);
@@ -31,7 +29,6 @@ public class TimelineController {
     }
 
     @PutMapping(TIMELINES + "/{timelineId}")
-    @ResponseBody
     public ResponseEntity updateTimeline (@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
         TimelineResponseDto updatedResult = timelineService.updateTimeline(timelineId, timelineUpdateRequestDto);
         log.info("{}", updatedResult);
