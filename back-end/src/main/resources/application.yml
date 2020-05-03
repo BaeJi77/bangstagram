@@ -15,8 +15,8 @@ spring:
   freemarker:
     cache: false
 
-logging:
-  level: info
+  logging:
+    level: info
 ---
 
 # h2
