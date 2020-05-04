@@ -16,9 +16,13 @@ import java.util.Date;
 @Getter
 public class JWT {
     private final String issuer;
+
     private final String secret;
+
     private final int expirySeconds;
+
     private final Algorithm algorithm;
+
     private final JWTVerifier jwtVerifier;
 
     public JWT(String issuer, String secret, int expirySeconds) {
