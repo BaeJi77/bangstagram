@@ -53,5 +53,9 @@ oauth:
   naver:
     clientId: XtF1W2Q5emLFga3N4wv0
     clientSecret: GDb74_7kCw
-    loginTokenApi: https://nid.naver.com/oauth2.0/token
-    memberProfileApi: https://openapi.naver.com/v1/nid/me
+    tokenRequestUrl: https://nid.naver.com/oauth2.0/token
+    profileRequestUrl: https://openapi.naver.com/v1/nid/me
+  kakao:
+    clientId: 97baa0b614b0cff3ba0c550e515bfffb
+    tokenRequestUrl: https://kauth.kakao.com/oauth/token
+    profileRequestUrl: https://kapi.kakao.com/v2/user/me

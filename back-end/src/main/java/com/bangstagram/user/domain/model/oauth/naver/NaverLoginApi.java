@@ -38,9 +38,9 @@ public class NaverLoginApi {
         private String accessToken;
         private String refreshToken;
         private String tokenType;
-        private int expiresIn;
+        private String expiresIn;
 
-        public Tokens(String accessToken, String refreshToken, String tokenType, int expiresIn) {
+        public Tokens(String accessToken, String refreshToken, String tokenType, String expiresIn) {
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
             this.tokenType = tokenType;
@@ -54,7 +54,7 @@ public class NaverLoginApi {
             this.accessToken = (String) jsonObject.get("access_token");
             this.refreshToken = (String) jsonObject.get("refresh_token");
             this.tokenType = (String) jsonObject.get("token_type");
-            this.expiresIn = Integer.parseInt((String) jsonObject.get("expires_in"));
+            this.expiresIn = (String) jsonObject.get("expires_in");
         }
 
         public String parseToken2Header() {

@@ -1,8 +1,8 @@
 package com.bangstagram.user.controller;
 
 import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
-import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.service.OAuthService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,9 +39,9 @@ public class OAuthRestController {
      *  클라이언트에서 요청 -> redirectURI 주소인 oauth/kakao code 받아옴
      */
     @GetMapping("oauth/kakao")
-    public AuthResponseDto authKakao(@RequestParam("code") String code) {
+    public AuthResponseDto authKakao(@RequestParam("code") String code) throws JsonProcessingException, ParseException {
         log.info("code: {}", code);
 
-        return new AuthResponseDto(new User(), "");
+        return oAuthService.loginWithKakao(code);
     }
 }

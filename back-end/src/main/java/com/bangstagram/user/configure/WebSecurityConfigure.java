@@ -1,5 +1,7 @@
 package com.bangstagram.user.configure;
 
+import com.bangstagram.user.domain.model.oauth.kakao.KakaoLoginApi;
+import com.bangstagram.user.domain.model.oauth.kakao.KakaoProfileApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
 import com.bangstagram.user.security.JWT;
@@ -42,21 +44,42 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Value("${oauth.naver.clientSecret}")
     private String naverClientSecret;
 
-    @Value("${oauth.naver.loginTokenApi}")
-    private String naverLoginTokenUrl;
+    @Value("${oauth.naver.tokenRequestUrl}")
+    private String naverTokenRequestUrl;
 
-    @Value("${oauth.naver.memberProfileApi}")
-    private String naverProfileInfoUrl;
+    @Value("${oauth.naver.profileRequestUrl}")
+    private String naverProfileRequestUrl;
 
     @Bean
     public NaverLoginApi naverLoginApi() {
-        return new NaverLoginApi(naverClientId,naverClientSecret,naverLoginTokenUrl);
+        return new NaverLoginApi(naverClientId,naverClientSecret,naverTokenRequestUrl);
     }
 
     @Bean
     public NaverProfileApi naverProfileApi() {
-        return new NaverProfileApi(naverProfileInfoUrl);
+        return new NaverProfileApi(naverProfileRequestUrl);
     }
+
+
+    @Value("${oauth.kakao.clientId}")
+    private String kakaoClientId;
+
+    @Value("${oauth.kakao.tokenRequestUrl}")
+    private String kakaoLoginTokenUrl;
+
+    @Value("${oauth.kakao.profileRequestUrl}")
+    private String kakaoProfileInfoUrl;
+
+    @Bean
+    public KakaoLoginApi kakaoLoginApi() {
+        return new KakaoLoginApi(kakaoClientId,kakaoLoginTokenUrl);
+    }
+
+    @Bean
+    public KakaoProfileApi kakaoProfileApi() {
+        return new KakaoProfileApi(kakaoProfileInfoUrl);
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
