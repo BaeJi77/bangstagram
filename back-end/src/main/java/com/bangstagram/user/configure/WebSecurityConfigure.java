@@ -1,5 +1,7 @@
 package com.bangstagram.user.configure;
 
+import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
+import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
 import com.bangstagram.user.security.JWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +36,28 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Value("${oauth.naver.clientId}")
+    private String naverClientId;
+
+    @Value("${oauth.naver.clientSecret}")
+    private String naverClientSecret;
+
+    @Value("${oauth.naver.loginTokenApi}")
+    private String naverLoginTokenUrl;
+
+    @Value("${oauth.naver.memberProfileApi}")
+    private String naverProfileInfoUrl;
+
+    @Bean
+    public NaverLoginApi naverLoginApi() {
+        return new NaverLoginApi(naverClientId,naverClientSecret,naverLoginTokenUrl);
+    }
+
+    @Bean
+    public NaverProfileApi naverProfileApi() {
+        return new NaverProfileApi(naverProfileInfoUrl);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -50,7 +74,8 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/join").permitAll()
                 .antMatchers("/users/exists").permitAll()
                 .antMatchers("/users/login").permitAll()
-                .antMatchers("/auth/naver").permitAll()
+                .antMatchers("/oauth/naver").permitAll()
+                .antMatchers("/oauth/kakao").permitAll()
                 .antMatchers("/**").hasRole("USER_ROLE")
                 .anyRequest().permitAll()
                 .and()

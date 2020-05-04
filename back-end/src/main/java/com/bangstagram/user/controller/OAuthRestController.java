@@ -1,6 +1,7 @@
 package com.bangstagram.user.controller;
 
 import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
+import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.service.OAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
@@ -17,18 +18,30 @@ public class OAuthRestController {
         this.oAuthService = oAuthService;
     }
 
-    @GetMapping("auth/naver")
-    public AuthResponseDto auth(@RequestParam("code") String code,
+    /***
+     *  네이버 아이디로 로그인 API
+     *  url  - https://nid.naver.com/oauth2.0/authorize
+     *
+     *  클라이언트에서 요청 -> redirectURI 주소인 oauth/naver로 code, state 받아옴
+     */
+    @GetMapping("oauth/naver")
+    public AuthResponseDto authNaver(@RequestParam("code") String code,
                                 @RequestParam("state") String state) throws ParseException {
         log.info("code:{}, state: {}", code, state);
 
-        /***
-         *  네이버 아이디로 로그인 API
-         *  url  - nid.naver.com/oauth2.0/authorize
-         *
-         *  클라이언트에서 요청 -> redirectURI 주소인 auth/naver로 code, state를 받아옴
-         */
-
         return oAuthService.loginWithNaver(code, state);
+    }
+
+    /***
+     *  카카오 아이디로 로그인 API
+     *  url  - https://kauth.kakao.com/oauth/authorize
+     *
+     *  클라이언트에서 요청 -> redirectURI 주소인 oauth/kakao code 받아옴
+     */
+    @GetMapping("oauth/kakao")
+    public AuthResponseDto authKakao(@RequestParam("code") String code) {
+        log.info("code: {}", code);
+
+        return new AuthResponseDto(new User(), "");
     }
 }
