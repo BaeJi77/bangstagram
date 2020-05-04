@@ -106,4 +106,12 @@ public class RoomServiceTest {
         then(responseDto.getPhone()).isEqualTo(updateRequestDto.getPhone());
         then(responseDto.getDescription()).isEqualTo(updateRequestDto.getDescription());
     }
+
+    @Test
+    @DisplayName("방탈출 지역별 검색 테스트: 데이터베이스 검색")
+    void findRoomByRegion() {
+        Room savedRoom = roomRepository.save(Room.builder().title("room_title").address("서울특별시 강남구 논현1동").build());
+        List<RoomResponseDto> responseDtos = roomService.findRoomByRegion("강남");
+        then(responseDtos.get(0).getTitle()).isEqualTo(savedRoom.getTitle());
+    }
 }
