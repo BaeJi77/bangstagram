@@ -22,31 +22,25 @@ public class RoomController {
     }
 
     @GetMapping("/rooms")
-    public ResponseEntity<List<RoomResponseDto>> findAllRooms() {
-        List<RoomResponseDto> responseDtoList = roomService.findAll();
-        log.info("{}", responseDtoList);
-        return new ResponseEntity<>(responseDtoList, HttpStatus.FOUND);
+    public List<RoomResponseDto> findAllRooms() {
+        return roomService.findAll();
     }
 
     @GetMapping("/rooms/{id}")
-    public ResponseEntity<RoomResponseDto> findById(@PathVariable Long id) {
-        RoomResponseDto responseDto = roomService.findById(id);
-        log.info("{}", responseDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.FOUND);
+    public RoomResponseDto findById(@PathVariable Long id) {
+        return roomService.findById(id);
     }
 
     @PostMapping("/rooms")
-    public ResponseEntity<RoomResponseDto> createRoom(@RequestBody @Valid RoomSaveRequestDto roomSaveRequestDto) {
-        RoomResponseDto createdRoom = roomService.createRoom(roomSaveRequestDto);
-        log.info("{}", createdRoom);
-        return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
+    public RoomResponseDto createRoom(@RequestBody @Valid RoomSaveRequestDto roomSaveRequestDto) {
+        log.info("{}", roomSaveRequestDto);
+        return roomService.createRoom(roomSaveRequestDto);
     }
 
     @PutMapping("/rooms/{id}")
-    public ResponseEntity<RoomResponseDto> updateRoom(@PathVariable Long id, @RequestBody @Valid RoomUpdateRequestDto roomUpdateRequestDto) {
-        RoomResponseDto updateRoom = roomService.updateRoom(id, roomUpdateRequestDto);
-        log.info("{}", updateRoom);
-        return new ResponseEntity<>(updateRoom, HttpStatus.CREATED);
+    public RoomResponseDto updateRoom(@PathVariable Long id, @RequestBody @Valid RoomUpdateRequestDto roomUpdateRequestDto) {
+        log.info("{}, {}", id, roomUpdateRequestDto);
+        return roomService.updateRoom(id, roomUpdateRequestDto);
     }
 
 }

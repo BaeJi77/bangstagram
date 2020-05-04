@@ -37,7 +37,7 @@ public class RoomControllerTest {
         given(roomService.findAll()).willReturn(Collections.singletonList(room));
 
         mockMvc.perform(get("/rooms"))
-                .andExpect(status().isFound())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", iterableWithSize(1)))
                 .andExpect(jsonPath("$[0]['title']", is(equalTo("room_title"))))
@@ -57,7 +57,7 @@ public class RoomControllerTest {
         given(roomService.findById(room.getId())).willReturn(room);
 
         mockMvc.perform(get("/rooms/1"))
-                .andExpect(status().isFound())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is(equalTo("room_title"))))
                 .andDo(print());

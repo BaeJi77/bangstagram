@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class RoomServiceTest {
@@ -39,11 +39,11 @@ public class RoomServiceTest {
                 .description("desc")
                 .build());
         List<RoomResponseDto> responseDtoList = roomService.findAll();
-        then(responseDtoList.get(0).getTitle()).isEqualTo(savedRoom.getTitle());
-        then(responseDtoList.get(0).getAddress()).isEqualTo(savedRoom.getAddress());
-        then(responseDtoList.get(0).getLink()).isEqualTo(savedRoom.getLink());
-        then(responseDtoList.get(0).getPhone()).isEqualTo(savedRoom.getPhone());
-        then(responseDtoList.get(0).getDescription()).isEqualTo(savedRoom.getDescription());
+        assertThat(responseDtoList.get(0).getTitle()).isEqualTo(savedRoom.getTitle());
+        assertThat(responseDtoList.get(0).getAddress()).isEqualTo(savedRoom.getAddress());
+        assertThat(responseDtoList.get(0).getLink()).isEqualTo(savedRoom.getLink());
+        assertThat(responseDtoList.get(0).getPhone()).isEqualTo(savedRoom.getPhone());
+        assertThat(responseDtoList.get(0).getDescription()).isEqualTo(savedRoom.getDescription());
     }
 
     @Test
@@ -57,11 +57,11 @@ public class RoomServiceTest {
                 .description("desc")
                 .build());
         RoomResponseDto responseDto = roomService.findById(savedRoom.getId());
-        then(responseDto.getTitle()).isEqualTo(savedRoom.getTitle());
-        then(responseDto.getAddress()).isEqualTo(savedRoom.getAddress());
-        then(responseDto.getLink()).isEqualTo(savedRoom.getLink());
-        then(responseDto.getPhone()).isEqualTo(savedRoom.getPhone());
-        then(responseDto.getDescription()).isEqualTo(savedRoom.getDescription());
+        assertThat(responseDto.getTitle()).isEqualTo(savedRoom.getTitle());
+        assertThat(responseDto.getAddress()).isEqualTo(savedRoom.getAddress());
+        assertThat(responseDto.getLink()).isEqualTo(savedRoom.getLink());
+        assertThat(responseDto.getPhone()).isEqualTo(savedRoom.getPhone());
+        assertThat(responseDto.getDescription()).isEqualTo(savedRoom.getDescription());
     }
 
     @Test
@@ -75,11 +75,11 @@ public class RoomServiceTest {
                 .description("desc")
                 .build();
         RoomResponseDto responseDto = roomService.createRoom(saveRequestDto);
-        then(responseDto.getTitle()).isEqualTo(saveRequestDto.getTitle());
-        then(responseDto.getAddress()).isEqualTo(saveRequestDto.getAddress());
-        then(responseDto.getLink()).isEqualTo(saveRequestDto.getLink());
-        then(responseDto.getPhone()).isEqualTo(saveRequestDto.getPhone());
-        then(responseDto.getDescription()).isEqualTo(saveRequestDto.getDescription());
+        assertThat(responseDto.getTitle()).isEqualTo(saveRequestDto.getTitle());
+        assertThat(responseDto.getAddress()).isEqualTo(saveRequestDto.getAddress());
+        assertThat(responseDto.getLink()).isEqualTo(saveRequestDto.getLink());
+        assertThat(responseDto.getPhone()).isEqualTo(saveRequestDto.getPhone());
+        assertThat(responseDto.getDescription()).isEqualTo(saveRequestDto.getDescription());
     }
 
     @Test
@@ -100,10 +100,10 @@ public class RoomServiceTest {
                 .description("desc2")
                 .build();
         RoomResponseDto responseDto = roomService.updateRoom(savedRoom.getId(), updateRequestDto);
-        then(responseDto.getTitle()).isEqualTo(updateRequestDto.getTitle());
-        then(responseDto.getAddress()).isEqualTo(updateRequestDto.getAddress());
-        then(responseDto.getLink()).isEqualTo(updateRequestDto.getLink());
-        then(responseDto.getPhone()).isEqualTo(updateRequestDto.getPhone());
-        then(responseDto.getDescription()).isEqualTo(updateRequestDto.getDescription());
+        assertThat(responseDto.getTitle()).isEqualTo(updateRequestDto.getTitle());
+        assertThat(responseDto.getAddress()).isEqualTo(updateRequestDto.getAddress());
+        assertThat(responseDto.getLink()).isEqualTo(updateRequestDto.getLink());
+        assertThat(responseDto.getPhone()).isEqualTo(updateRequestDto.getPhone());
+        assertThat(responseDto.getDescription()).isEqualTo(updateRequestDto.getDescription());
     }
 }

@@ -5,7 +5,6 @@ import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
 import com.bangstagram.room.domain.repository.RoomRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,15 +63,15 @@ public class RoomControllerUpdateTest {
         MvcResult mvcResult = mockMvc.perform(put("/rooms/"+id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequestDto)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
         RoomResponseDto responseDto = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), RoomResponseDto.class);
-        then(responseDto.getTitle()).isEqualTo(updateRequestDto.getTitle());
-        then(responseDto.getAddress()).isEqualTo(updateRequestDto.getAddress());
-        then(responseDto.getPhone()).isEqualTo(updateRequestDto.getPhone());
-        then(responseDto.getLink()).isEqualTo(updateRequestDto.getLink());
-        then(responseDto.getDescription()).isEqualTo(updateRequestDto.getDescription());
+        assertThat(responseDto.getTitle()).isEqualTo(updateRequestDto.getTitle());
+        assertThat(responseDto.getAddress()).isEqualTo(updateRequestDto.getAddress());
+        assertThat(responseDto.getPhone()).isEqualTo(updateRequestDto.getPhone());
+        assertThat(responseDto.getLink()).isEqualTo(updateRequestDto.getLink());
+        assertThat(responseDto.getDescription()).isEqualTo(updateRequestDto.getDescription());
     }
 
 }
