@@ -1,6 +1,8 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.user.domain.model.api.request.AuthRequestDto;
 import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
+import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
@@ -9,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,11 +31,11 @@ public class UserService {
 
     @Transactional
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
-        User user = save(joinRequestDto.newUser(passwordEncoder));
+        User user = save(joinRequestDto.newUser(passwordEncoder, ""));
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
-        return new JoinResponseDto(user,jwtToken);
+        return new JoinResponseDto(user, jwtToken);
     }
 
     private User save(User user) {
@@ -50,11 +50,32 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> findByEmail(String email) {
-        checkNotNull(email, "email must be provided.");
+    public User findByEmail(String email) {
 
-        return Optional.ofNullable(userRepository.findByEmail(email));
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("user not found."));
     }
 
+    @Transactional
+    public AuthResponseDto login(AuthRequestDto authRequestDto) {
+        String email = authRequestDto.getPrincipal();
+        String password = authRequestDto.getCredentials();
 
+        User user = findByEmail(email);
+        user.login(passwordEncoder, password);
+        user.afterLoginSuccess();
+
+        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
+
+        return new AuthResponseDto(user, jwtToken);
+    }
+
+    @Transactional
+    public AuthResponseDto authLogin(String email) {
+        User user = findByEmail(email);
+        user.afterLoginSuccess();
+
+        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
+
+        return new AuthResponseDto(user, jwtToken);
+    }
 }
