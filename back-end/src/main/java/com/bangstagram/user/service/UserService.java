@@ -59,11 +59,10 @@ public class UserService {
     public AuthResponseDto login(AuthRequestDto authRequestDto) {
         String email = authRequestDto.getPrincipal();
         String password = authRequestDto.getCredentials();
-        
+
         User user = findByEmail(email);
         user.login(passwordEncoder, password);
         user.afterLoginSuccess();
-        save(user);
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
@@ -74,7 +73,6 @@ public class UserService {
     public AuthResponseDto authLogin(String email) {
         User user = findByEmail(email);
         user.afterLoginSuccess();
-        save(user);
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
