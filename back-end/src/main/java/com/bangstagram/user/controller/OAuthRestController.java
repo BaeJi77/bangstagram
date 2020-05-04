@@ -22,7 +22,7 @@ public class OAuthRestController {
      *
      *  클라이언트에서 요청 -> redirectURI 주소인 oauth/naver로 code, state 받아옴
      */
-    @GetMapping("oauth/naver")
+    @GetMapping("/oauth/naver")
     public AuthResponseDto authNaver(@RequestParam("code") String code,
                                      @RequestParam("state") String state) {
         log.info("code:{}, state: {}", code, state);
@@ -36,7 +36,7 @@ public class OAuthRestController {
      *
      *  클라이언트에서 요청 -> redirectURI 주소인 oauth/kakao code 받아옴
      */
-    @GetMapping("oauth/kakao")
+    @GetMapping("/oauth/kakao")
     public AuthResponseDto authKakao(@RequestParam("code") String code) {
         log.info("code: {}", code);
 

@@ -22,17 +22,17 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @PostMapping("users/exists")
+    @PostMapping("/users/exists")
     public boolean checkUserExists(@RequestBody Map<String, String> request) {
         return userService.existsByEmail(request.get("email"));
     }
 
-    @PostMapping("users/join")
+    @PostMapping("/users/join")
     public JoinResponseDto join(@RequestBody @Valid JoinRequestDto joinRequestDto) {
         return userService.join(joinRequestDto);
     }
 
-    @PostMapping("users/login")
+    @PostMapping("/users/login")
     public AuthResponseDto login(@RequestBody @Valid AuthRequestDto authRequestDto) {
         log.info("authRequestDto: {}", authRequestDto.toString());
         return userService.login(authRequestDto);
