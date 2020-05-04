@@ -3,13 +3,13 @@ package com.bangstagram.user.domain.model.oauth.kakao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Getter
 public class KakaoLoginApi {
     private final String clientId;
@@ -29,15 +29,16 @@ public class KakaoLoginApi {
      *       - code(로그인 인증 요청 API 호출 성공 후 받은 인증코드 값)
      *       - redirect_url(코드가 리다이렉트된 URI)
      */
-    public String loginApiUrl(String code) {
+    public String getLoginApiUrl(String code) {
         return new StringBuilder(url)
-                .append("?grant_type="+"authorization_code")
-                .append("&client_id="+clientId)
-                .append("&code="+code).toString();
+                .append("?grant_type=" + "authorization_code")
+                .append("&client_id=" + clientId)
+                .append("&code=" + code)
+                .toString();
     }
 
     public String makeRequestBody(String code) throws JsonProcessingException {
-        Map<String,String> bodyMap = new HashMap<>();
+        Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("grant_type", "authorization_code");
         bodyMap.put("client_id", clientId);
         bodyMap.put("code", code);
@@ -62,15 +63,17 @@ public class KakaoLoginApi {
             this.scope = scope;
         }
 
-        public Tokens(String loginApiResult) throws ParseException {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(loginApiResult);
-
-            this.accessToken = (String) jsonObject.get("access_token");
-            this.refreshToken = (String) jsonObject.get("refresh_token");
-            this.tokenType = (String) jsonObject.get("token_type");
-            this.expiresIn = (Long) jsonObject.get("expires_in");
-            this.scope = (String) jsonObject.get("scope");
+        public Tokens(String loginApiResult) {
+            try {
+                org.json.JSONObject jsonObject = new org.json.JSONObject(loginApiResult);
+                this.accessToken = jsonObject.getString("access_token");
+                this.refreshToken = jsonObject.getString("refresh_token");
+                this.tokenType = jsonObject.getString("token_type");
+                this.expiresIn = jsonObject.getLong("expires_in");
+                this.scope = jsonObject.getString("scope");
+            } catch (JSONException jsonException) {
+                log.error("error message: {}", jsonException.getMessage());
+            }
         }
 
         public String parseToken2Header() {

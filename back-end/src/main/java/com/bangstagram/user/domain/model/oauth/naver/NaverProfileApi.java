@@ -1,10 +1,12 @@
 package com.bangstagram.user.domain.model.oauth.naver;
 
 import lombok.Getter;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+@Getter
+@Slf4j
 public class NaverProfileApi {
     private final String url;
 
@@ -17,9 +19,6 @@ public class NaverProfileApi {
      *  url    - https://openapi.naver.com/v1/nid/me
      *  header - access_token
      */
-    public String profileApiUrl() {
-        return url;
-    }
 
     @Getter
     static public class UserInfo {
@@ -31,13 +30,14 @@ public class NaverProfileApi {
             this.email = email;
         }
 
-        public UserInfo(String profileApiResult) throws ParseException {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(profileApiResult);
-            JSONObject response = (JSONObject) jsonObject.get("response");
-
-            this.name = (String) response.get("name");
-            this.email = (String) response.get("email");
+        public UserInfo(String profileApiResult) {
+            try {
+                JSONObject jsonObject = new JSONObject(profileApiResult);
+                this.name = jsonObject.getJSONObject("response").getString("name");
+                this.email = jsonObject.getJSONObject("response").getString("email");
+            } catch (JSONException jsonException) {
+                log.error("error message: {}", jsonException.getMessage());
+            }
         }
     }
 }

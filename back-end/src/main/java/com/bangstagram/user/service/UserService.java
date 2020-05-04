@@ -11,8 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Slf4j
@@ -36,7 +34,7 @@ public class UserService {
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
-        return new JoinResponseDto(user,jwtToken);
+        return new JoinResponseDto(user, jwtToken);
     }
 
     private User save(User user) {
@@ -51,31 +49,30 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> findByEmail(String email) {
-        checkNotNull(email, "email must be provided.");
+    public User findByEmail(String email) {
 
-        return Optional.ofNullable(userRepository.findByEmail(email));
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("user not found."));
     }
 
     @Transactional
     public AuthResponseDto login(String email, String password) {
-        User user = findByEmail(email).orElseThrow(() -> new RuntimeException("email not found"));
-        user.login(passwordEncoder,password);
+        User user = findByEmail(email);
+        user.login(passwordEncoder, password);
         user.afterLoginSuccess();
         save(user);
 
-        String jwtToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
+        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
         return new AuthResponseDto(user, jwtToken);
     }
 
     @Transactional
     public AuthResponseDto authLogin(String email) {
-        User user = findByEmail(email).orElseThrow(() -> new RuntimeException("email not found"));
+        User user = findByEmail(email);
         user.afterLoginSuccess();
         save(user);
 
-        String jwtToken = user.newJwtToken(jwt,new String[] {"USER_ROLE"});
+        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
         return new AuthResponseDto(user, jwtToken);
     }

@@ -20,7 +20,8 @@ public class JoinRequestDto {
     @NotEmpty
     private String loginPassword;
 
-    JoinRequestDto() {}
+    JoinRequestDto() {
+    }
 
     public JoinRequestDto(String name, String loginEmail, String loginPassword) {
         this.name = name;
@@ -29,6 +30,6 @@ public class JoinRequestDto {
     }
 
     public User newUser(PasswordEncoder passwordEncoder, String oAuth) {
-        return new User(name,loginEmail,passwordEncoder.encode(loginPassword), oAuth);
+        return new User(name, loginEmail, passwordEncoder.encode(loginPassword), oAuth);
     }
 }

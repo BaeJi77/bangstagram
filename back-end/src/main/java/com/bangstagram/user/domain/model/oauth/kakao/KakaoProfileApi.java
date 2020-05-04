@@ -1,19 +1,17 @@
 package com.bangstagram.user.domain.model.oauth.kakao;
 
 import lombok.Getter;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+@Slf4j
+@Getter
 public class KakaoProfileApi {
     private final String url;
 
     public KakaoProfileApi(String url) {
         this.url = url;
-    }
-
-    public String profileApiUrl() {
-        return url;
     }
 
     @Getter
@@ -26,14 +24,14 @@ public class KakaoProfileApi {
             this.email = email;
         }
 
-        public UserInfo(String profileApiResult) throws ParseException {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(profileApiResult);
-            JSONObject kakaoAccount = (JSONObject) jsonObject.get("kakao_account");
-            JSONObject profile = (JSONObject) kakaoAccount.get("profile");
-
-            this.name = (String) profile.get("nickname");
-            this.email = (String) kakaoAccount.get("email");
+        public UserInfo(String profileApiResult) {
+            try {
+                org.json.JSONObject jsonObject = new JSONObject(profileApiResult);
+                this.name = jsonObject.getJSONObject("kakao_account").getJSONObject("profile").getString("nickname");
+                this.email = jsonObject.getJSONObject("kakao_account").getString("email");
+            } catch (JSONException jsonException) {
+                log.error("error message: {}", jsonException.getMessage());
+            }
         }
     }
 }

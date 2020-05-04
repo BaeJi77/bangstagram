@@ -2,9 +2,7 @@ package com.bangstagram.user.controller;
 
 import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
 import com.bangstagram.user.service.OAuthService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +24,7 @@ public class OAuthRestController {
      */
     @GetMapping("oauth/naver")
     public AuthResponseDto authNaver(@RequestParam("code") String code,
-                                @RequestParam("state") String state) throws ParseException {
+                                     @RequestParam("state") String state) {
         log.info("code:{}, state: {}", code, state);
 
         return oAuthService.loginWithNaver(code, state);
@@ -39,7 +37,7 @@ public class OAuthRestController {
      *  클라이언트에서 요청 -> redirectURI 주소인 oauth/kakao code 받아옴
      */
     @GetMapping("oauth/kakao")
-    public AuthResponseDto authKakao(@RequestParam("code") String code) throws JsonProcessingException, ParseException {
+    public AuthResponseDto authKakao(@RequestParam("code") String code) {
         log.info("code: {}", code);
 
         return oAuthService.loginWithKakao(code);

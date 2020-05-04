@@ -4,6 +4,7 @@ import com.bangstagram.user.security.JWT;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Entity;
@@ -11,9 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-
-import static java.time.LocalDateTime.now;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Entity
 @Getter
@@ -52,7 +50,7 @@ public class User {
         this.password = password;
         this.loginCount = loginCount;
         this.lastLoginAt = lastLoginAt;
-        this.createAt = defaultIfNull(createAt, now());
+        this.createAt = ObjectUtils.defaultIfNull(createAt, LocalDateTime.now());
         this.oAuth = oAuth;
     }
 
@@ -68,6 +66,6 @@ public class User {
 
     public void afterLoginSuccess() {
         this.loginCount++;
-        lastLoginAt = now();
+        lastLoginAt = LocalDateTime.now();
     }
 }

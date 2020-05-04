@@ -5,16 +5,13 @@ import com.bangstagram.user.domain.model.oauth.kakao.KakaoLoginApi;
 import com.bangstagram.user.domain.model.oauth.kakao.KakaoProfileApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.bangstagram.user.util.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.bangstagram.user.util.OAuthUtils.get;
 
 @Service
 @Slf4j
@@ -39,38 +36,38 @@ public class OAuthService {
         this.kakaoProfileApi = kakaoProfileApi;
     }
 
-    public AuthResponseDto loginWithNaver(String code, String state) throws ParseException {
-        String loginApiUrl = naverLoginApi.loginApiUrl("authorization_code",code,state);
+    public AuthResponseDto loginWithNaver(String code, String state) {
+        String loginApiUrl = naverLoginApi.getLoginApiUrl("authorization_code", code, state);
 
-        String naverLoginApiResult = get(loginApiUrl, Collections.EMPTY_MAP, "application/x-www-form-urlencoded;charset=utf-8");
+        String naverLoginApiResult = HttpUtils.getMethod(loginApiUrl, Collections.EMPTY_MAP, "application/x-www-form-urlencoded;charset=utf-8");
         log.info("naver login result: {}", naverLoginApiResult);
 
         //TODO: (String) naverLoginApiResult -> JSONObject로 변경, accessToken 가져오기
         NaverLoginApi.Tokens tokens = new NaverLoginApi.Tokens(naverLoginApiResult);
         String header = tokens.parseToken2Header();
         // ------------
-        String profileApiUrl = naverProfileApi.profileApiUrl();
+        String profileApiUrl = naverProfileApi.getUrl();
 
-        Map<String,String> requestHeaders = new HashMap<>();
+        Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("Authorization", header);
 
-        String naverProfileApiResult = get(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
+        String naverProfileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
         log.info("naver profile info: {}", naverProfileApiResult);
 
         //TODO: (String) naverProfileApiResult -> JSONObject로 변경, email가져오기
         NaverProfileApi.UserInfo userInfo = new NaverProfileApi.UserInfo(naverProfileApiResult);
-        String name = (String) userInfo.getName();
-        String email = (String) userInfo.getEmail();
+        String name = userInfo.getName();
+        String email = userInfo.getEmail();
 
         return userService.authLogin(email);
     }
 
-    public AuthResponseDto loginWithKakao(String code) throws JsonProcessingException, ParseException {
-        String loginApiUrl = kakaoLoginApi.loginApiUrl(code);
+    public AuthResponseDto loginWithKakao(String code) {
+        String loginApiUrl = kakaoLoginApi.getLoginApiUrl(code);
         // String requestBody = kakaoLoginApi.makeRequestBody(code);
 
         // log.info("{}", requestBody);
-        String kakaoLoginApiResult = get(loginApiUrl,Collections.EMPTY_MAP,"application/x-www-form-urlencoded;charset=utf-8");
+        String kakaoLoginApiResult = HttpUtils.getMethod(loginApiUrl, Collections.EMPTY_MAP, "application/x-www-form-urlencoded;charset=utf-8");
 
         log.info("kakao login result: {}", kakaoLoginApiResult);
 
@@ -80,18 +77,18 @@ public class OAuthService {
 
         log.info("header: {}", header);
         // ---
-        String profileApiUrl = kakaoProfileApi.profileApiUrl();
+        String profileApiUrl = kakaoProfileApi.getUrl();
 
-        Map<String,String> requestHeaders = new HashMap<>();
+        Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("Authorization", header);
 
-        String kakaoProfileApiResult = get(profileApiUrl, requestHeaders,"application/json; charset=utf-8");
+        String kakaoProfileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
         log.info("kakao profile info: {}", kakaoProfileApiResult);
 
         //TODO: (String) naverProfileApiResult -> JSONObject로 변경, email가져오기
         KakaoProfileApi.UserInfo userInfo = new KakaoProfileApi.UserInfo(kakaoProfileApiResult);
-        String name = (String) userInfo.getName();
-        String email = (String) userInfo.getEmail();
+        String name = userInfo.getName();
+        String email = userInfo.getEmail();
 
         return userService.authLogin(email);
     }

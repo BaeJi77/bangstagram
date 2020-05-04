@@ -6,23 +6,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-public class OAuthUtils {
+public class HttpUtils {
 
-    public static String get(String apiUrl, Map<String, String> requestHeaders, String contentType){
+    public static String getMethod(String apiUrl, Map<String, String> requestHeaders, String contentType) {
         HttpURLConnection con = connect(apiUrl);
         try {
             con.setRequestMethod("GET");
-            con.setRequestProperty("Content-Type",contentType);
-            for(Map.Entry<String, String> header :requestHeaders.entrySet()) {
+            con.setRequestProperty("Content-Type", contentType);
+            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 con.setRequestProperty(header.getKey(), header.getValue());
             }
 
             int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                return readBody(con.getInputStream());
-            } else { // 에러 발생
+            if (responseCode != HttpURLConnection.HTTP_OK) // 에러 발생
                 return readBody(con.getErrorStream());
-            }
+            return readBody(con.getInputStream()); // 정상 호출
         } catch (IOException e) {
             throw new RuntimeException("API 요청과 응답 실패", e);
         } finally {
@@ -30,11 +28,11 @@ public class OAuthUtils {
         }
     }
 
-    public static String post(String apiUrl, String requestBody, String contentType){
+    public static String postMethod(String apiUrl, String requestBody, String contentType) {
         HttpURLConnection con = connect(apiUrl);
         try {
             con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type",contentType);
+            con.setRequestProperty("Content-Type", contentType);
             con.setDoOutput(true);
             con.setDoInput(true);
 
@@ -45,11 +43,9 @@ public class OAuthUtils {
             os.close();
 
             int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                return readBody(con.getInputStream());
-            } else { // 에러 발생
+            if (responseCode != HttpURLConnection.HTTP_OK) // 에러 발생
                 return readBody(con.getErrorStream());
-            }
+            return readBody(con.getInputStream()); // 정상 호출
         } catch (IOException e) {
             throw new RuntimeException("API 요청과 응답 실패", e);
         } finally {
@@ -57,10 +53,10 @@ public class OAuthUtils {
         }
     }
 
-    private static HttpURLConnection connect(String apiUrl){
+    private static HttpURLConnection connect(String apiUrl) {
         try {
             URL url = new URL(apiUrl);
-            return (HttpURLConnection)url.openConnection();
+            return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
             throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
         } catch (IOException e) {
@@ -68,7 +64,7 @@ public class OAuthUtils {
         }
     }
 
-    private static String readBody(InputStream body){
+    private static String readBody(InputStream body) {
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
