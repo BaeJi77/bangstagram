@@ -41,3 +41,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     generate-ddl: true
+jwt:
+  token:
+    header: api_key
+    issuer: bangstagram_server
+    secret: h9y2o0z2k0i8m
+    expirySeconds: 0
