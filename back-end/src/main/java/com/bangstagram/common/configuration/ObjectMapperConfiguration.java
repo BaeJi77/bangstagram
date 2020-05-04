@@ -1,4 +1,4 @@
-package com.bangstagram.configuration;
+package com.bangstagram.common.configuration;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package com.bangstagram.exception;
+package com.bangstagram.common.exception;
 
 /**
  * author: Ji-Hoon Bae

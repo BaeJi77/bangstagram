@@ -1,7 +1,7 @@
 package com.bangstagram.timeline.service;
 
 
-import com.bangstagram.exception.DoNotExistException;
+import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.timeline.domain.model.Timeline;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
 import com.bangstagram.timeline.dto.TimelineRequestDto;

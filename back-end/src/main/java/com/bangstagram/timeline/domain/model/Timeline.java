@@ -1,6 +1,6 @@
 package com.bangstagram.timeline.domain.model;
 
-import com.bangstagram.auditing.TimeAuditorEntity;
+import com.bangstagram.common.model.CommonEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +16,7 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
-public class Timeline extends TimeAuditorEntity {
+public class Timeline extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

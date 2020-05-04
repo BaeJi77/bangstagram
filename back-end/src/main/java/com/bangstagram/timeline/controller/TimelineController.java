@@ -19,21 +19,20 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 public class TimelineController {
-    private static final String TIMELINES = "/timelines";
     private final TimelineService timelineService;
 
     public TimelineController(TimelineService timelineService) {
         this.timelineService = timelineService;
     }
 
-    @PostMapping(TIMELINES)
+    @PostMapping("/timelines")
     public ResponseEntity createTimeline(@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
+        log.info("{}", timelineRequestDto);
         TimelineResponseDto newTimeline = timelineService.createNewTimeline(timelineRequestDto);
-        log.info("{}", newTimeline);
         return new ResponseEntity<>(newTimeline, HttpStatus.CREATED);
     }
 
-    @PutMapping(TIMELINES + "/{timelineId}")
+    @PutMapping("/timelines/{timelineId}")
     public ResponseEntity updateTimeline(@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
         TimelineResponseDto updatedResult = timelineService.updateTimeline(timelineId, timelineUpdateRequestDto);
         log.info("{}", updatedResult);
