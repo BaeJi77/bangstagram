@@ -34,6 +34,7 @@ public class UserRestController {
 
     @PostMapping("users/login")
     public AuthResponseDto login(@RequestBody @Valid AuthRequestDto authRequestDto) {
-        return userService.login(authRequestDto.getPrincipal(), authRequestDto.getCredentials());
+        log.info("authRequestDto: {}", authRequestDto.toString());
+        return userService.login(authRequestDto);
     }
 }

@@ -1,5 +1,6 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.user.domain.model.api.request.AuthRequestDto;
 import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
 import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
@@ -55,7 +56,10 @@ public class UserService {
     }
 
     @Transactional
-    public AuthResponseDto login(String email, String password) {
+    public AuthResponseDto login(AuthRequestDto authRequestDto) {
+        String email = authRequestDto.getPrincipal();
+        String password = authRequestDto.getCredentials();
+        
         User user = findByEmail(email);
         user.login(passwordEncoder, password);
         user.afterLoginSuccess();

@@ -1,10 +1,12 @@
 package com.bangstagram.user.domain.model.api.request;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@ToString
 public class AuthRequestDto {
     @NotBlank
     private String principal;
