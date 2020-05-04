@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,5 +46,23 @@ public class TimelineServiceTest {
         assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(newTimelineResponseDto.getTitle());
         assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(newTimelineResponseDto.getUserId());
         assertThat(expectedTimelineResponseDto.getRoomId()).isEqualTo(newTimelineResponseDto.getRoomId());
+    }
+
+    @Test
+    @DisplayName("(성공) 타임라인 가져오기: 특정 userId에 대하여 타임라인 얻기")
+    public void isSuccessGetAllTimelineRelatedUserId() {
+        long requestUserId = 1L;
+        TimelineResponseDto expectedTimelineResponseDto =
+                new TimelineResponseDto(1L, "foundTitle", "foundBody", LocalDateTime.now(), 1L, 1L);
+        TimelineRequestDto timelineRequestDto
+                = new TimelineRequestDto("foundTitle", "foundBody", 1L, 1L);
+
+        timelineService.createNewTimeline(timelineRequestDto);
+        List<TimelineResponseDto> foundResult = timelineService.getTimelineByUserId(requestUserId);
+
+        assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(foundResult.get(0).getTitle());
+        assertThat(expectedTimelineResponseDto.getBody()).isEqualTo(foundResult.get(0).getBody());
+        assertThat(expectedTimelineResponseDto.getRoomId()).isEqualTo(foundResult.get(0).getRoomId());
+        assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(foundResult.get(0).getUserId());
     }
 }
