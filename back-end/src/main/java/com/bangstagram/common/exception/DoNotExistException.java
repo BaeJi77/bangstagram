@@ -6,7 +6,7 @@ package com.bangstagram.common.exception;
  */
 
 public class DoNotExistException extends RuntimeException {
-    public DoNotExistException(String message, Long timelineId) {
-        super(message + timelineId);
+    public DoNotExistException(String message) {
+        super(message);
     }
 }

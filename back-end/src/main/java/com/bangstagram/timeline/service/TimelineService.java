@@ -41,7 +41,7 @@ public class TimelineService {
     @Transactional
     public TimelineResponseDto updateTimeline(Long timelineId, TimelineUpdateRequestDto timelineUpdateRequestDto) {
         Timeline foundTimeline = timelineRepository.findById(timelineId)
-                .orElseThrow(() -> new DoNotExistException("There is not target id in database. timelineId: ", timelineId));
+                .orElseThrow(() -> new DoNotExistException("요청하신 타임에 대한 정보를 찾을 수 없습니다. 해당 타임라인에 대하여 확인해주세요."));
 
         foundTimeline.update(timelineUpdateRequestDto.getTitle(), timelineUpdateRequestDto.getBody());
 
