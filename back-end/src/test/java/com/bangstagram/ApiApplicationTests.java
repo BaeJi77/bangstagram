@@ -1,4 +1,4 @@
-package com.bangstagram.api;
+package com.bangstagram;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
