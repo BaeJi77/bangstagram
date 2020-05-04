@@ -31,13 +31,13 @@ public class RoomController {
 
     @PostMapping("/rooms")
     public RoomResponseDto createRoom(@RequestBody @Valid RoomSaveRequestDto roomSaveRequestDto) {
-        log.info("{}", roomSaveRequestDto);
+        log.info("[create Room] {}", roomSaveRequestDto);
         return roomService.createRoom(roomSaveRequestDto);
     }
 
     @PutMapping("/rooms/{id}")
     public RoomResponseDto updateRoom(@PathVariable Long id, @RequestBody @Valid RoomUpdateRequestDto roomUpdateRequestDto) {
-        log.info("{}, {}", id, roomUpdateRequestDto);
+        log.info("[update Room] {}, {}", id, roomUpdateRequestDto);
         return roomService.updateRoom(id, roomUpdateRequestDto);
     }
 

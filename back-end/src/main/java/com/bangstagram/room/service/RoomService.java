@@ -1,5 +1,6 @@
 package com.bangstagram.room.service;
 
+import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomResponseDto;
 import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
@@ -62,6 +63,6 @@ public class RoomService {
     }
 
     private Room findRoomById(Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id + " 해당 정보가 없습니다."));
+        return roomRepository.findById(id).orElseThrow(() -> new DoNotExistException("해당 정보가 없습니다. id=", id));
     }
 }
