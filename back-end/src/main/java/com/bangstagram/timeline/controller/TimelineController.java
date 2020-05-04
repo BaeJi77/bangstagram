@@ -29,13 +29,17 @@ public class TimelineController {
     public ResponseEntity createTimeline(@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
         log.info("{}", timelineRequestDto);
         TimelineResponseDto newTimeline = timelineService.createNewTimeline(timelineRequestDto);
-        return new ResponseEntity<>(newTimeline, HttpStatus.CREATED);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(newTimeline);
     }
 
     @PutMapping("/timelines/{timelineId}")
     public ResponseEntity updateTimeline(@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
+        log.info("{}", timelineUpdateRequestDto);
         TimelineResponseDto updatedResult = timelineService.updateTimeline(timelineId, timelineUpdateRequestDto);
-        log.info("{}", updatedResult);
-        return new ResponseEntity<>(updatedResult, HttpStatus.CREATED);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedResult);
     }
 }
