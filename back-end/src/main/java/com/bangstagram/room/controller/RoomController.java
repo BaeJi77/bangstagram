@@ -49,4 +49,9 @@ public class RoomController {
         return new ResponseEntity<>(updateRoom, HttpStatus.CREATED);
     }
 
+    @GetMapping("/rooms/search")
+    public ResponseEntity<List<RoomResponseDto>> findRoomByRegion(@RequestParam(value="region") String region) {
+        List<RoomResponseDto> searchedRooms = roomService.findRoomByRegion(region);
+        return new ResponseEntity<>(searchedRooms, HttpStatus.FOUND);
+    }
 }

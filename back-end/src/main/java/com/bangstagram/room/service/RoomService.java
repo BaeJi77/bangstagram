@@ -63,6 +63,12 @@ public class RoomService {
                 .build();
     }
 
+    public List<RoomResponseDto> findRoomByRegion(String region) {
+        return roomRepository.findByAddressContaining(region).stream()
+                .map(RoomResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
     private Room findRoomById(Long id) {
         return roomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id + " 해당 정보가 없습니다."));
     }
