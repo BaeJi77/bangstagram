@@ -15,6 +15,9 @@ public class TimelineResponseDto {
     private Long userId;
     private Long roomId;
 
+    public TimelineResponseDto() {
+    }
+
     @Builder
     public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, Long userId, Long roomId) {
         this.id = id;
