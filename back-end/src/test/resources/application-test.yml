@@ -7,6 +7,9 @@ spring:
 
   jpa:
     open-in-view: false
+    properties:
+      format_sql: true
+      use_sql_comments : true
 
   devtools:
     livereload:
@@ -15,8 +18,8 @@ spring:
   freemarker:
     cache: false
 
-  logging:
-    level: info
+debug: true
+
 ---
 
 # h2
@@ -41,9 +44,3 @@ spring:
     hibernate:
       ddl-auto: create-drop
     generate-ddl: true
-jwt:
-  token:
-    header: api_key
-    issuer: bangstagram_server
-    secret: h9y2o0z2k0i8m
-    expirySeconds: 0
