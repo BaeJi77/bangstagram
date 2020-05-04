@@ -54,10 +54,12 @@ public class TimelineServiceTest {
         long requestUserId = 1L;
         TimelineResponseDto expectedTimelineResponseDto =
                 new TimelineResponseDto(1L, "foundTitle", "foundBody", LocalDateTime.now(), 1L, 1L);
-        TimelineRequestDto timelineRequestDto
-                = new TimelineRequestDto("foundTitle", "foundBody", 1L, 1L);
+        for (int i = 1; i <= 5 ; i++) {
+            timelineService.createNewTimeline(
+                    new TimelineRequestDto("foundTitle", "foundBody", (long) i, 1L)
+            );
+        }
 
-        timelineService.createNewTimeline(timelineRequestDto);
         List<TimelineResponseDto> foundResult = timelineService.getTimelineByUserId(requestUserId);
 
         assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(foundResult.get(0).getTitle());
