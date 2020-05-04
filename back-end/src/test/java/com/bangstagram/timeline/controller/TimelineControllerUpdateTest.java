@@ -33,18 +33,17 @@ public class TimelineControllerUpdateTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private static final String TIMELINE_URL_PATH = "/timelines";
     private String requestUrlPath;
 
     @BeforeEach
     void setUp() throws Exception {
         String goodJsonData = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
-        MvcResult result = mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
+        MvcResult result = mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
                 .andReturn();
         TimelineResponseDto newTimeline
                 = mapper.readValue(result.getResponse().getContentAsString(), TimelineResponseDto.class);
 
-        requestUrlPath = TIMELINE_URL_PATH + "/" + newTimeline.getId();
+        requestUrlPath = "/timelines/" + newTimeline.getId();
     }
 
     @Test
@@ -52,7 +51,7 @@ public class TimelineControllerUpdateTest {
     public void isSuccessUpdateTimeline() throws Exception {
         String goodJsonData = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\"}";
         MvcResult result = mockMvc.perform(put(requestUrlPath).contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
         TimelineResponseDto newTimelineResponse
@@ -65,7 +64,7 @@ public class TimelineControllerUpdateTest {
     @Test
     @DisplayName("(실패) 타임라인 업데이트: 존재하지 않는 id 업데이트를 한 경우")
     public void isFailDoNotExistTimelineId() throws Exception {
-        String doNotExistTimeline = TIMELINE_URL_PATH + "/987654321";
+        String doNotExistTimeline = "/timelines/987654321";
         String goodJsonData = "{\"title\": \"new\",\n\t\"body\": \"new\"}";
         mockMvc.perform(put(doNotExistTimeline).contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
                 .andExpect(status().isBadRequest())

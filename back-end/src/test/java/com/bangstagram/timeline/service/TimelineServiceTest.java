@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date: 2020.04.29
  */
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TimelineServiceTest {
     @Autowired
     private TimelineService timelineService;

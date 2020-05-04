@@ -31,13 +31,11 @@ public class TimelineControllerCreateTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private static final String TIMELINE_URL_PATH = "/timelines";
-
     @Test
     @DisplayName("(성공) 타임라인 만들기: 모든 데이터 잘 들어갔을 때")
     public void isSuccessCreateTimelineWithGoodData() throws Exception {
         String goodJsonData = "{\n\t\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
-        MvcResult result = mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
+        MvcResult result = mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(goodJsonData))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andReturn();
@@ -54,7 +52,7 @@ public class TimelineControllerCreateTest {
     @DisplayName("(실패) 타임라인 만들기: Title 없을 때")
     public void isFailCreateTimelineWithoutTitle() throws Exception {
         String jsonDataWithoutTitle = "{\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
-        mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutTitle))
+        mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutTitle))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -63,7 +61,7 @@ public class TimelineControllerCreateTest {
     @DisplayName("(실패) 타임라인 만들기: Body 없을 때")
     public void isFailCreateTimelineWithoutBody() throws Exception {
         String jsonDataWithoutBody = "{\n\t\"title\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
-        mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutBody))
+        mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutBody))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -72,7 +70,7 @@ public class TimelineControllerCreateTest {
     @DisplayName("(실패) 타임라인 만들기: UserId 없을 때")
     public void isFailCreateTimelineWithoutUserId() throws Exception {
         String jsonDataWithoutUserId = "{\n\t\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"roomId\": 1\n}";
-        mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutUserId))
+        mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutUserId))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -81,7 +79,7 @@ public class TimelineControllerCreateTest {
     @DisplayName("(실패) 타임라인 만들기: RoomId 없을 때")
     public void isFailCreateTimelineWithoutRoomId() throws Exception {
         String jsonDataWithoutRoomId = "{\n\t\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1}";
-        mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutRoomId))
+        mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(jsonDataWithoutRoomId))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }
