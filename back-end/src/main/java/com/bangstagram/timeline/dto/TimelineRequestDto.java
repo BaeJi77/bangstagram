@@ -6,6 +6,10 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.28
+ */
 
 @Getter
 public class TimelineRequestDto {
