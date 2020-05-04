@@ -1,6 +1,7 @@
 package com.bangstagram.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,9 @@ class UserRestControllerTest {
         map.put("email","sa01747@naver.com");
 
         ObjectMapper mapper = new ObjectMapper();
-        mockMvc.perform(post("http://localhost:9090/users/exists").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(map)))
+        mockMvc.perform(post("/users/exists")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(map)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -38,11 +41,20 @@ class UserRestControllerTest {
     @DisplayName("회원가입_하기")
     void join() throws Exception {
         Map<String,String> map = new HashMap<>();
+        map.put("name","홍길동");
         map.put("loginEmail","sa01747@naver.com");
         map.put("loginPassword","test1234");
 
         ObjectMapper mapper = new ObjectMapper();
-        mockMvc.perform(post("http://localhost:9090/users/join").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(map)))
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name","홍길동");
+        jsonObject.put("loginEmail","sa01747@naver.com");
+        jsonObject.put("loginPassword","test1234");
+
+        mockMvc.perform(post("/users/join")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonObject.toString()))
+                //.content(mapper.writeValueAsString(map)))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

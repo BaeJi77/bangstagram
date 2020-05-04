@@ -3,6 +3,7 @@ package com.bangstagram.user.service;
 import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
 import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
+import com.bangstagram.user.domain.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,9 @@ public class UserServiceTest {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     private String name;
@@ -33,6 +37,7 @@ public class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        userRepository.deleteAll();
         name = "tester";
         email = "test@gmail.com";
         password = "test1234";
