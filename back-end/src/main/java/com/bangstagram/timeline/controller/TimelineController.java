@@ -27,7 +27,7 @@ public class TimelineController {
 
     @PostMapping("/timelines")
     public ResponseEntity createTimeline(@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
-        log.info("{}", timelineRequestDto);
+        log.info("[Timeline]: {}", timelineRequestDto);
         TimelineResponseDto newTimeline = timelineService.createNewTimeline(timelineRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -36,7 +36,7 @@ public class TimelineController {
 
     @PutMapping("/timelines/{timelineId}")
     public ResponseEntity updateTimeline(@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
-        log.info("{}", timelineUpdateRequestDto);
+        log.info("[Timeline]: {}", timelineUpdateRequestDto);
         TimelineResponseDto updatedResult = timelineService.updateTimeline(timelineId, timelineUpdateRequestDto);
 
         return ResponseEntity.status(HttpStatus.OK)
