@@ -2,14 +2,12 @@ package com.bangstagram.user.domain.model.oauth.kakao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @Getter
 public class KakaoLoginApi {
     private final String clientId;
@@ -55,25 +53,15 @@ public class KakaoLoginApi {
         private Long expiresIn;
         private String scope;
 
+        public Tokens() {}
+
+        @Builder
         public Tokens(String accessToken, String refreshToken, String tokenType, Long expiresIn, String scope) {
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
             this.tokenType = tokenType;
             this.expiresIn = expiresIn;
             this.scope = scope;
-        }
-
-        public Tokens(String loginApiResult) {
-            try {
-                org.json.JSONObject jsonObject = new org.json.JSONObject(loginApiResult);
-                this.accessToken = jsonObject.getString("access_token");
-                this.refreshToken = jsonObject.getString("refresh_token");
-                this.tokenType = jsonObject.getString("token_type");
-                this.expiresIn = jsonObject.getLong("expires_in");
-                this.scope = jsonObject.getString("scope");
-            } catch (JSONException jsonException) {
-                log.error("error message: {}", jsonException.getMessage());
-            }
         }
 
         public String parseToken2Header() {
