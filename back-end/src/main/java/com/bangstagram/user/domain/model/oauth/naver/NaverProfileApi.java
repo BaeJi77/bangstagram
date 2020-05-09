@@ -1,12 +1,10 @@
 package com.bangstagram.user.domain.model.oauth.naver;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
-import org.json.JSONObject;
+import lombok.ToString;
 
 @Getter
-@Slf4j
 public class NaverProfileApi {
     private final String url;
 
@@ -21,23 +19,17 @@ public class NaverProfileApi {
      */
 
     @Getter
+    @ToString
     static public class UserInfo {
         String name;
         String email;
 
+        public UserInfo() {}
+
+        @Builder
         public UserInfo(String name, String email) {
             this.name = name;
             this.email = email;
-        }
-
-        public UserInfo(String profileApiResult) {
-            try {
-                JSONObject jsonObject = new JSONObject(profileApiResult);
-                this.name = jsonObject.getJSONObject("response").getString("name");
-                this.email = jsonObject.getJSONObject("response").getString("email");
-            } catch (JSONException jsonException) {
-                log.error("error message: {}", jsonException.getMessage());
-            }
         }
     }
 }
