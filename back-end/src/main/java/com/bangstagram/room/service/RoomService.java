@@ -74,6 +74,18 @@ public class RoomService {
                 .build();
     }
 
+    public List<RoomResponseDto> findRoomByRegion(String region) {
+        return roomRepository.findByAddressContaining(region).stream()
+                .map(room -> RoomResponseDto.builder()
+                        .title(room.getTitle())
+                        .address(room.getAddress())
+                        .link(room.getLink())
+                        .phone(room.getPhone())
+                        .description(room.getDescription())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     private Room findRoomById(Long id) {
         return roomRepository.findById(id).orElseThrow(() -> new DoNotExistException("해당 방탈출 정보가 없습니다."));
     }
