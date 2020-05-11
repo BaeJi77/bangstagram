@@ -1,7 +1,8 @@
 package com.bangstagram.user.controller;
 
 import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
-import com.bangstagram.user.service.OAuthService;
+import com.bangstagram.user.service.OAuthKakaoService;
+import com.bangstagram.user.service.OAuthNaverService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,10 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class OAuthRestController {
-    private final OAuthService oAuthService;
+    private final OAuthNaverService oAuthNaverService;
 
-    public OAuthRestController(OAuthService oAuthService) {
-        this.oAuthService = oAuthService;
+    private final OAuthKakaoService oAuthKakaoService;
+
+    public OAuthRestController(OAuthNaverService oAuthNaverService, OAuthKakaoService oAuthKakaoService) {
+        this.oAuthNaverService = oAuthNaverService;
+        this.oAuthKakaoService = oAuthKakaoService;
     }
 
     /***
@@ -27,7 +31,7 @@ public class OAuthRestController {
                                      @RequestParam("state") String state) {
         log.info("code:{}, state: {}", code, state);
 
-        return oAuthService.loginWithNaver(code, state);
+        return oAuthNaverService.login(code, state);
     }
 
     /***
@@ -40,6 +44,6 @@ public class OAuthRestController {
     public AuthResponseDto authKakao(@RequestParam("code") String code) {
         log.info("code: {}", code);
 
-        return oAuthService.loginWithKakao(code);
+        return oAuthKakaoService.login(code);
     }
 }

@@ -1,10 +1,8 @@
 package com.bangstagram.user.domain.model.oauth.naver;
 
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONException;
-import org.json.JSONObject;
+import lombok.Builder;
+import lombok.ToString;
 
-@Slf4j
 public class NaverLoginApi {
     private final String clientId;
 
@@ -36,29 +34,21 @@ public class NaverLoginApi {
                 .toString();
     }
 
+    @ToString
     static public class Tokens {
         private String accessToken;
         private String refreshToken;
         private String tokenType;
         private String expiresIn;
 
+        public Tokens() {}
+
+        @Builder
         public Tokens(String accessToken, String refreshToken, String tokenType, String expiresIn) {
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
             this.tokenType = tokenType;
             this.expiresIn = expiresIn;
-        }
-
-        public Tokens(String loginApiResult) {
-            try {
-                JSONObject jsonObject = new JSONObject(loginApiResult);
-                this.accessToken = jsonObject.getString("access_token");
-                this.refreshToken = jsonObject.getString("refresh_token");
-                this.tokenType = jsonObject.getString("token_type");
-                this.expiresIn = jsonObject.getString("expires_in");
-            } catch (JSONException jsonException) {
-                log.error("error message: {}", jsonException.getMessage());
-            }
         }
 
         public String parseToken2Header() {
