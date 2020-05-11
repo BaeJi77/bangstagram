@@ -1,8 +1,8 @@
 package com.bangstagram.room.service;
 
 import com.bangstagram.common.exception.DoNotExistException;
-import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomResponseDto;
+import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
 import com.bangstagram.room.domain.model.Room;
 import com.bangstagram.room.domain.repository.RoomRepository;
@@ -63,6 +63,6 @@ public class RoomService {
     }
 
     private Room findRoomById(Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new DoNotExistException("해당 정보가 없습니다. id=", id));
+        return roomRepository.findById(id).orElseThrow(() -> new DoNotExistException("방탈출 정보에 대한 해당 정보가 없습니다."));
     }
 }
