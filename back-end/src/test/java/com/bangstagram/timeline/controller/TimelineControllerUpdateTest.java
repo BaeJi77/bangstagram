@@ -37,7 +37,6 @@ public class TimelineControllerUpdateTest {
     private String requestUrlPath;
 
     @BeforeEach
-    @WithMockUser(roles = {"USER_ROLE"})
     void setUp() throws Exception {
         String goodJsonData = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
         MvcResult result = mockMvc.perform(post("/timelines")
@@ -51,6 +50,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(성공) 타임라인 업데이트: 해당 Id가 존재 + 모든 데이터 존재할 경우")
     public void isSuccessUpdateTimeline() throws Exception {
         String goodJsonData = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\"}";
@@ -68,6 +68,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(실패) 타임라인 업데이트: 존재하지 않는 id 업데이트를 한 경우")
     public void isFailDoNotExistTimelineId() throws Exception {
         String doNotExistTimeline = "/timelines/987654321";
@@ -80,6 +81,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(실패) 타임라인 업데이트: Title 없을 때")
     public void isFailUpdateTimelineWithoutTitle() throws Exception {
         String jsonDataWithoutTitle = "{\"body\": \"hoon\"}";
@@ -91,6 +93,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(실패) 타임라인 업데이트: Body 없을 때")
     public void isFailUpdateTimelineWithoutBody() throws Exception {
         String jsonDataWithoutBody = "{\"title\": \"new\"}";
