@@ -15,21 +15,21 @@ public class JoinRequestDto {
 
     @NotBlank
     @Email
-    private String loginEmail;
+    private String email;
 
     @NotEmpty
-    private String loginPassword;
+    private String password;
 
     JoinRequestDto() {
     }
 
     public JoinRequestDto(String name, String loginEmail, String loginPassword) {
         this.name = name;
-        this.loginEmail = loginEmail;
-        this.loginPassword = loginPassword;
+        this.email = loginEmail;
+        this.password = loginPassword;
     }
 
-    public User newUser(PasswordEncoder passwordEncoder, String oAuth) {
-        return new User(name, loginEmail, passwordEncoder.encode(loginPassword), oAuth);
+    public User newUser(PasswordEncoder passwordEncoder) {
+        return new User(name, email, passwordEncoder.encode(password));
     }
 }
