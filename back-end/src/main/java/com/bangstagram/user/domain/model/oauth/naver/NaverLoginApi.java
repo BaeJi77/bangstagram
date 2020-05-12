@@ -3,6 +3,11 @@ package com.bangstagram.user.domain.model.oauth.naver;
 import lombok.Builder;
 import lombok.ToString;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 public class NaverLoginApi {
     private final String clientId;
 

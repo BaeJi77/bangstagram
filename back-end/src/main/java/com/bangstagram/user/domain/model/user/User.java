@@ -13,6 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @Entity
 @Getter
 public class User {

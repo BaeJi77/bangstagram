@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @RestController
 @Slf4j
 public class OAuthRestController {

@@ -20,6 +20,11 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.05
+ */
+
 @SpringBootTest
 @Slf4j
 public class UserServiceTest {

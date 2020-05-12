@@ -14,6 +14,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @Service
 @Slf4j
 public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,KakaoProfileApi.UserInfo> {

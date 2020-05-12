@@ -15,6 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.01
+ */
+
 @Configuration
 @EnableConfigurationProperties({NaverProperty.class, KakaoProperty.class, JwtProperty.class})
 @EnableWebSecurity

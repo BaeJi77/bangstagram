@@ -20,6 +20,10 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.13
+ */
 @SpringBootTest
 @Slf4j
 class UserTest {

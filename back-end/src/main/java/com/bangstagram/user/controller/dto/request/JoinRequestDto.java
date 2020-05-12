@@ -8,6 +8,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.01
+ */
+
+
 @Getter
 public class JoinRequestDto {
     @NotBlank

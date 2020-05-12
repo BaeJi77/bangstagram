@@ -4,6 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @Getter
 public class NaverProfileApi {
     private final String url;
