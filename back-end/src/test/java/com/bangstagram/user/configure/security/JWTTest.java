@@ -1,4 +1,4 @@
-package com.bangstagram.user.security;
+package com.bangstagram.user.configure.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

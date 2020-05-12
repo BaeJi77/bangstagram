@@ -1,7 +1,7 @@
 package com.bangstagram.room.controller;
 
-import com.bangstagram.room.controller.dto.RoomResponseDto;
-import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
+import com.bangstagram.room.controller.dto.request.RoomSaveRequestDto;
+import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

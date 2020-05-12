@@ -1,6 +1,6 @@
 package com.bangstagram.user.service;
 
-import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
+import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 
 public interface OAuthServiceImpl<T,R> {
     AuthResponseDto login(String code, String... state);

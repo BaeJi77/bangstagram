@@ -1,7 +1,7 @@
 package com.bangstagram.timeline.controller;
 
 
-import com.bangstagram.timeline.dto.TimelineResponseDto;
+import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -49,6 +50,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(성공) 타임라인 업데이트: 해당 Id가 존재 + 모든 데이터 존재할 경우")
     public void isSuccessUpdateTimeline() throws Exception {
         String goodJsonData = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\"}";
@@ -66,6 +68,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(실패) 타임라인 업데이트: 존재하지 않는 id 업데이트를 한 경우")
     public void isFailDoNotExistTimelineId() throws Exception {
         String doNotExistTimeline = "/timelines/987654321";
@@ -78,6 +81,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(실패) 타임라인 업데이트: Title 없을 때")
     public void isFailUpdateTimelineWithoutTitle() throws Exception {
         String jsonDataWithoutTitle = "{\"body\": \"hoon\"}";
@@ -89,6 +93,7 @@ public class TimelineControllerUpdateTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(실패) 타임라인 업데이트: Body 없을 때")
     public void isFailUpdateTimelineWithoutBody() throws Exception {
         String jsonDataWithoutBody = "{\"title\": \"new\"}";

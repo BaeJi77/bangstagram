@@ -1,4 +1,4 @@
-package com.bangstagram.timeline.dto;
+package com.bangstagram.timeline.controller.dto.request;
 
 import com.bangstagram.timeline.domain.model.Timeline;
 import lombok.Getter;

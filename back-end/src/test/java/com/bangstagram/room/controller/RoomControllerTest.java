@@ -1,9 +1,10 @@
 package com.bangstagram.room.controller;
 
-import com.bangstagram.room.controller.dto.RoomResponseDto;
+import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.service.RoomService;
-import com.bangstagram.user.configure.WebSecurityConfigure;
-import org.junit.jupiter.api.*;
+import com.bangstagram.user.configure.security.WebSecurityConfigure;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

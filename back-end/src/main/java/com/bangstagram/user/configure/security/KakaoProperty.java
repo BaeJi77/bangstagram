@@ -1,11 +1,13 @@
-package com.bangstagram.user.property;
+package com.bangstagram.user.configure.security;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Component
+@Setter
 @Getter
+@ConfigurationProperties(prefix = "oauth.kakao")
 public class KakaoProperty {
     @Value("${oauth.kakao.clientId}")
     private String kakaoClientId;

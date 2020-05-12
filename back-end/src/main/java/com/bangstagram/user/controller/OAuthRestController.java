@@ -1,6 +1,6 @@
 package com.bangstagram.user.controller;
 
-import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
+import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.service.OAuthKakaoService;
 import com.bangstagram.user.service.OAuthNaverService;
 import lombok.extern.slf4j.Slf4j;

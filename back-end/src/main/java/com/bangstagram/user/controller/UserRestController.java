@@ -1,9 +1,9 @@
 package com.bangstagram.user.controller;
 
-import com.bangstagram.user.domain.model.api.request.AuthRequestDto;
-import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
-import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
-import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
+import com.bangstagram.user.controller.dto.request.AuthRequestDto;
+import com.bangstagram.user.controller.dto.request.JoinRequestDto;
+import com.bangstagram.user.controller.dto.response.AuthResponseDto;
+import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

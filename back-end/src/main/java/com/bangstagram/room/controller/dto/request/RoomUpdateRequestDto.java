@@ -1,4 +1,4 @@
-package com.bangstagram.room.controller.dto;
+package com.bangstagram.room.controller.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

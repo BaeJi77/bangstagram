@@ -1,7 +1,7 @@
 package com.bangstagram.user.service;
 
-import com.bangstagram.user.domain.model.api.request.JoinRequestDto;
-import com.bangstagram.user.domain.model.api.response.JoinResponseDto;
+import com.bangstagram.user.controller.dto.request.JoinRequestDto;
+import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 @SpringBootTest
@@ -76,13 +75,10 @@ public class UserServiceTest {
     @Test
     @DisplayName("이메일을_조회한다")
     void testFindByEmail() {
-        User user = userService.findByEmail(email).orElse(null);
-        assertThat(user, is(nullValue()));
-
         // 회원가입 -> 이메일 DB에 저장.
         userService.join(new JoinRequestDto(name,email,password));
 
-        user = userService.findByEmail(email).orElse(null);
+        User user = userService.findByEmail(email);
         assertThat(user, (notNullValue()));
         assertThat(user.getSeq(), is(notNullValue()));
         assertThat(user.getName(), is(name));

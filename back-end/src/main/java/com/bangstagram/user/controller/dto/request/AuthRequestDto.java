@@ -1,4 +1,4 @@
-package com.bangstagram.user.domain.model.api.request;
+package com.bangstagram.user.controller.dto.request;
 
 import lombok.Getter;
 import lombok.ToString;
