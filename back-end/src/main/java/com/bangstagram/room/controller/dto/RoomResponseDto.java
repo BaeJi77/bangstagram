@@ -1,6 +1,5 @@
 package com.bangstagram.room.controller.dto;
 
-import com.bangstagram.room.domain.model.Room;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -27,7 +26,4 @@ public class RoomResponseDto {
         this.description = description;
     }
 
-    public RoomResponseDto(Room room) {
-        this(room.getId(), room.getTitle(), room.getLink(), room.getPhone(), room.getAddress(), room.getDescription());
-    }
 }

@@ -41,4 +41,9 @@ public class RoomController {
         return roomService.updateRoom(id, roomUpdateRequestDto);
     }
 
+    @GetMapping("/rooms/search")
+    public List<RoomResponseDto> findRoomByRegion(@RequestParam(value="region") String region) {
+        log.info("[search Room By Region] {}", region);
+        return roomService.findRoomByRegion(region);
+    }
 }
