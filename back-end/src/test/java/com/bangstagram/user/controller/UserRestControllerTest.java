@@ -2,7 +2,9 @@ package com.bangstagram.user.controller;
 
 import com.bangstagram.user.configure.security.JWT;
 import com.bangstagram.user.controller.dto.request.AuthRequestDto;
+import com.bangstagram.user.controller.dto.request.JoinRequestDto;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
+import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,6 +66,19 @@ class UserRestControllerTest {
     @Test
     @DisplayName("회원가입_하기")
     void join() throws Exception {
+        User user = User.builder()
+                .seq(1L)
+                .name("테스터")
+                .email("sa01747@naver.com")
+                .password("test1234")
+                .loginCount(0)
+                .createAt(LocalDateTime.now())
+                .build();
+        String jwtToken = user.newJwtToken(jwt, new String[] {"USER_ROLE"});
+
+        JoinRequestDto joinRequestDto = new JoinRequestDto("테스터","sa01747@naver.com","test1234");
+        given(userService.join(joinRequestDto)).willReturn(new JoinResponseDto(user,jwtToken));
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("name","홍길동");
         jsonObject.put("email","sa01747@naver.com");
