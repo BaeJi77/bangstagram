@@ -73,4 +73,17 @@ public class RoomControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @WithMockUser(roles = "USER_ROLE")
+    @DisplayName("방탈출 정보 지역별 검색")
+    void searchRoomByRegion() throws Exception {
+        RoomResponseDto room = RoomResponseDto.builder().title("room_title").address("서울 서초구 서초대로77길").build();
+        given(roomService.findRoomByRegion("서초")).willReturn(Collections.singletonList(room));
+
+        mockMvc.perform(get("/rooms/search").param("region", "서초"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0]['title']", is(equalTo("room_title"))))
+                .andDo(print());
+    }
 }

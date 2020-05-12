@@ -106,4 +106,12 @@ public class RoomServiceTest {
         assertThat(responseDto.getPhone()).isEqualTo(updateRequestDto.getPhone());
         assertThat(responseDto.getDescription()).isEqualTo(updateRequestDto.getDescription());
     }
+
+    @Test
+    @DisplayName("방탈출 지역별 검색 테스트: 데이터베이스 검색")
+    void findRoomByRegion() {
+        Room savedRoom = roomRepository.save(Room.builder().title("room_title").address("서울 서초구 서초대로77길").build());
+        List<RoomResponseDto> responseDtos = roomService.findRoomByRegion("서초");
+        assertThat(responseDtos.get(0).getTitle()).isEqualTo(savedRoom.getTitle());
+    }
 }
