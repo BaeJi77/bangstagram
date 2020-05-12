@@ -1,12 +1,12 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.user.configure.security.JWT;
 import com.bangstagram.user.controller.dto.request.AuthRequestDto;
 import com.bangstagram.user.controller.dto.request.JoinRequestDto;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
-import com.bangstagram.user.security.JWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

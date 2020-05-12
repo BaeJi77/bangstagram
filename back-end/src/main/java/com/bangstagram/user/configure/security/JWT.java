@@ -1,4 +1,4 @@
-package com.bangstagram.user.security;
+package com.bangstagram.user.configure.security;
 
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;

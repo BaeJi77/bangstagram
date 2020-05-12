@@ -1,6 +1,6 @@
 package com.bangstagram.user.domain.model.user;
 
-import com.bangstagram.user.security.JWT;
+import com.bangstagram.user.configure.security.JWT;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;

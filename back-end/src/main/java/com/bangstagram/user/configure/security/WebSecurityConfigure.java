@@ -1,13 +1,10 @@
-package com.bangstagram.user.configure;
+package com.bangstagram.user.configure.security;
 
 import com.bangstagram.user.domain.model.oauth.kakao.KakaoLoginApi;
 import com.bangstagram.user.domain.model.oauth.kakao.KakaoProfileApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
-import com.bangstagram.user.property.JwtProperty;
-import com.bangstagram.user.property.KakaoProperty;
-import com.bangstagram.user.property.NaverProperty;
-import com.bangstagram.user.security.JWT;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,19 +15,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.annotation.Resource;
-
 @Configuration
+@EnableConfigurationProperties({NaverProperty.class, KakaoProperty.class, JwtProperty.class})
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
-    @Resource
-    private JwtProperty jwtProperty;
 
-    @Resource
-    private NaverProperty naverProperty;
+    private final JwtProperty jwtProperty;
+    private final NaverProperty naverProperty;
+    private final KakaoProperty kakaoProperty;
 
-    @Resource
-    private KakaoProperty kakaoProperty;
+    public WebSecurityConfigure(JwtProperty jwtProperty, NaverProperty naverProperty, KakaoProperty kakaoProperty) {
+        this.jwtProperty = jwtProperty;
+        this.naverProperty = naverProperty;
+        this.kakaoProperty = kakaoProperty;
+    }
 
     @Bean
     public JWT jwt() {
