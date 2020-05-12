@@ -76,13 +76,13 @@ public class UserServiceTest {
     @Test
     @DisplayName("이메일을_조회한다")
     void testFindByEmail() {
-        User user = userService.findByEmail(email).orElse(null);
+        User user = userService.findByEmail(email);
         assertThat(user, is(nullValue()));
 
         // 회원가입 -> 이메일 DB에 저장.
         userService.join(new JoinRequestDto(name,email,password));
 
-        user = userService.findByEmail(email).orElse(null);
+        user = userService.findByEmail(email);
         assertThat(user, (notNullValue()));
         assertThat(user.getSeq(), is(notNullValue()));
         assertThat(user.getName(), is(name));
