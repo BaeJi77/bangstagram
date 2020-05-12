@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -36,6 +37,7 @@ public class TimelineControllerUpdateTest {
     private String requestUrlPath;
 
     @BeforeEach
+    @WithMockUser(roles = {"USER_ROLE"})
     void setUp() throws Exception {
         String goodJsonData = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
         MvcResult result = mockMvc.perform(post("/timelines")
