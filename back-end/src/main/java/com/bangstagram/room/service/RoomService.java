@@ -1,8 +1,8 @@
 package com.bangstagram.room.service;
 
 import com.bangstagram.common.exception.DoNotExistException;
-import com.bangstagram.room.controller.dto.RoomResponseDto;
 import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
+import com.bangstagram.room.controller.dto.RoomResponseDto;
 import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
 import com.bangstagram.room.domain.model.Room;
 import com.bangstagram.room.domain.repository.RoomRepository;
@@ -23,14 +23,26 @@ public class RoomService {
     @Transactional(readOnly = true)
     public List<RoomResponseDto> findAll() {
         return roomRepository.findAll().stream()
-                .map(RoomResponseDto::new)
+                .map(room -> RoomResponseDto.builder()
+                        .title(room.getTitle())
+                        .address(room.getAddress())
+                        .link(room.getLink())
+                        .phone(room.getPhone())
+                        .description(room.getDescription())
+                        .build())
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public RoomResponseDto findById(Long id) {
         Room room = findRoomById(id);
-        return new RoomResponseDto(room);
+        return RoomResponseDto.builder()
+                .title(room.getTitle())
+                .address(room.getAddress())
+                .link(room.getLink())
+                .phone(room.getPhone())
+                .description(room.getDescription())
+                .build();
     }
 
     public RoomResponseDto createRoom(RoomSaveRequestDto requestDto) {
@@ -62,7 +74,19 @@ public class RoomService {
                 .build();
     }
 
+    public List<RoomResponseDto> findRoomByRegion(String region) {
+        return roomRepository.findByAddressContaining(region).stream()
+                .map(room -> RoomResponseDto.builder()
+                        .title(room.getTitle())
+                        .address(room.getAddress())
+                        .link(room.getLink())
+                        .phone(room.getPhone())
+                        .description(room.getDescription())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     private Room findRoomById(Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new DoNotExistException("방탈출 정보에 대한 해당 정보가 없습니다."));
+        return roomRepository.findById(id).orElseThrow(() -> new DoNotExistException("해당 방탈출 정보가 없습니다."));
     }
 }
