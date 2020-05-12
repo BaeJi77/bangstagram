@@ -1,8 +1,8 @@
 package com.bangstagram.room.controller;
 
-import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
-import com.bangstagram.room.controller.dto.RoomResponseDto;
-import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
+import com.bangstagram.room.controller.dto.request.RoomSaveRequestDto;
+import com.bangstagram.room.controller.dto.request.RoomUpdateRequestDto;
+import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

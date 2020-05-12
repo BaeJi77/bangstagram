@@ -1,6 +1,6 @@
 package com.bangstagram.user.service;
 
-import com.bangstagram.user.domain.model.api.response.AuthResponseDto;
+import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
 import com.bangstagram.user.util.HttpUtils;

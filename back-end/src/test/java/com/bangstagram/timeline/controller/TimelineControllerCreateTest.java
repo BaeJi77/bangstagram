@@ -1,7 +1,7 @@
 package com.bangstagram.timeline.controller;
 
 
-import com.bangstagram.timeline.dto.TimelineResponseDto;
+import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

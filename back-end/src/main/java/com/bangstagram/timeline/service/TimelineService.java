@@ -2,11 +2,11 @@ package com.bangstagram.timeline.service;
 
 
 import com.bangstagram.common.exception.DoNotExistException;
+import com.bangstagram.timeline.controller.dto.request.TimelineRequestDto;
+import com.bangstagram.timeline.controller.dto.request.TimelineUpdateRequestDto;
+import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.domain.model.Timeline;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
-import com.bangstagram.timeline.dto.TimelineRequestDto;
-import com.bangstagram.timeline.dto.TimelineResponseDto;
-import com.bangstagram.timeline.dto.TimelineUpdateRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

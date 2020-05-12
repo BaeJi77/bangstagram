@@ -1,9 +1,9 @@
 package com.bangstagram.room.service;
 
 import com.bangstagram.common.exception.DoNotExistException;
-import com.bangstagram.room.controller.dto.RoomSaveRequestDto;
-import com.bangstagram.room.controller.dto.RoomResponseDto;
-import com.bangstagram.room.controller.dto.RoomUpdateRequestDto;
+import com.bangstagram.room.controller.dto.request.RoomSaveRequestDto;
+import com.bangstagram.room.controller.dto.request.RoomUpdateRequestDto;
+import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.domain.model.Room;
 import com.bangstagram.room.domain.repository.RoomRepository;
 import org.springframework.stereotype.Service;

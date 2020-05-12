@@ -1,8 +1,8 @@
 package com.bangstagram.timeline.controller;
 
-import com.bangstagram.timeline.dto.TimelineRequestDto;
-import com.bangstagram.timeline.dto.TimelineResponseDto;
-import com.bangstagram.timeline.dto.TimelineUpdateRequestDto;
+import com.bangstagram.timeline.controller.dto.request.TimelineRequestDto;
+import com.bangstagram.timeline.controller.dto.request.TimelineUpdateRequestDto;
+import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.service.TimelineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

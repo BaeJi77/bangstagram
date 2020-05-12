@@ -1,16 +1,16 @@
-package com.bangstagram.user.domain.model.api.response;
+package com.bangstagram.user.controller.dto.response;
 
 import com.bangstagram.user.domain.model.user.User;
 import lombok.Getter;
 
 @Getter
-public class AuthResponseDto {
+public class JoinResponseDto {
     private final User user;
 
     private final String jwtToken;
 
-    public AuthResponseDto(User user, String jwtToken) {
+    public JoinResponseDto(User user, String apiToken) {
         this.user = user;
-        this.jwtToken = jwtToken;
+        this.jwtToken = apiToken;
     }
 }

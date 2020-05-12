@@ -1,4 +1,4 @@
-package com.bangstagram.user.domain.model.api.request;
+package com.bangstagram.user.controller.dto.request;
 
 import com.bangstagram.user.domain.model.user.User;
 import lombok.Getter;
