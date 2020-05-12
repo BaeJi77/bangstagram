@@ -80,6 +80,7 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/login").permitAll()
                 .antMatchers("/oauth/naver").permitAll()
                 .antMatchers("/oauth/kakao").permitAll()
+                .antMatchers("/rooms/**").permitAll()
                 .antMatchers("/**").hasRole("USER_ROLE")
                 .anyRequest().permitAll()
                 .and()
