@@ -19,9 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableConfigurationProperties({NaverProperty.class, KakaoProperty.class, JwtProperty.class})
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
-
     private final JwtProperty jwtProperty;
+
     private final NaverProperty naverProperty;
+
     private final KakaoProperty kakaoProperty;
 
     public WebSecurityConfigure(JwtProperty jwtProperty, NaverProperty naverProperty, KakaoProperty kakaoProperty) {
