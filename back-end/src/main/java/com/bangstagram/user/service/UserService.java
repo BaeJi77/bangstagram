@@ -1,5 +1,6 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.user.configure.security.JWT;
 import com.bangstagram.user.controller.dto.request.AuthRequestDto;
 import com.bangstagram.user.controller.dto.request.JoinRequestDto;
@@ -31,7 +32,7 @@ public class UserService {
 
     @Transactional
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
-        User user = save(joinRequestDto.newUser(passwordEncoder, ""));
+        User user = save(joinRequestDto.newUser(passwordEncoder));
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
 
@@ -51,8 +52,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findByEmail(String email) {
-
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("user not found."));
+        return userRepository.findByEmail(email).orElseThrow(() -> new DoNotExistException("user not found."));
     }
 
     @Transactional
@@ -71,6 +71,8 @@ public class UserService {
 
     @Transactional
     public AuthResponseDto authLogin(String email) {
+        checkNotNull(email, "email must be provided.");
+
         User user = findByEmail(email);
         user.afterLoginSuccess();
 

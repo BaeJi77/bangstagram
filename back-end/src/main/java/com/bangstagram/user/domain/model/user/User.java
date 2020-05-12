@@ -33,17 +33,15 @@ public class User {
 
     private LocalDateTime createAt;
 
-    private String oAuth;
-
     public User() {
     } // jpa 사용시 기본생성자 필수
 
-    public User(String name, String email, String password, String oAuth) {
-        this(null, name, email, password, 0, null, null, oAuth);
+    public User(String name, String email, String password) {
+        this(null, name, email, password, 0, null, null);
     }
 
     @Builder
-    public User(Long seq, String name, String email, String password, int loginCount, LocalDateTime lastLoginAt, LocalDateTime createAt, String oAuth) {
+    public User(Long seq, String name, String email, String password, int loginCount, LocalDateTime lastLoginAt, LocalDateTime createAt) {
         this.seq = seq;
         this.name = name;
         this.email = email;
@@ -51,7 +49,6 @@ public class User {
         this.loginCount = loginCount;
         this.lastLoginAt = lastLoginAt;
         this.createAt = ObjectUtils.defaultIfNull(createAt, LocalDateTime.now());
-        this.oAuth = oAuth;
     }
 
     public String newJwtToken(JWT jwt, String[] roles) {
