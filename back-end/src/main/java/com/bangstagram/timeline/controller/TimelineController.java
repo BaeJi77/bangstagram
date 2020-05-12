@@ -5,8 +5,6 @@ import com.bangstagram.timeline.controller.dto.request.TimelineUpdateRequestDto;
 import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.service.TimelineService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,20 +24,14 @@ public class TimelineController {
     }
 
     @PostMapping("/timelines")
-    public ResponseEntity createTimeline(@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
-        log.info("[Timeline]: {}", timelineRequestDto);
-        TimelineResponseDto newTimeline = timelineService.createNewTimeline(timelineRequestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(newTimeline);
+    public TimelineResponseDto createTimeline(@RequestBody @Valid TimelineRequestDto timelineRequestDto) {
+        log.info("[create Timeline]: {}", timelineRequestDto);
+        return timelineService.createNewTimeline(timelineRequestDto);
     }
 
-    @PutMapping("/timelines/{timelineId}")
-    public ResponseEntity updateTimeline(@PathVariable("timelineId") Long timelineId, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
-        log.info("[Timeline]: {}", timelineUpdateRequestDto);
-        TimelineResponseDto updatedResult = timelineService.updateTimeline(timelineId, timelineUpdateRequestDto);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(updatedResult);
+    @PutMapping("/timelines/{id}")
+    public TimelineResponseDto updateTimeline(@PathVariable("id") long id, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
+        log.info("[update Timeline]: {}", timelineUpdateRequestDto);
+        return timelineService.updateTimeline(id, timelineUpdateRequestDto);
     }
 }
