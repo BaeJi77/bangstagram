@@ -69,7 +69,7 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
 
     @Override
     public KakaoLoginApi.Tokens newAccessToken(String loginApiResult) {
-        log.info("kakao login api result: {}", loginApiResult);
+        log.info("[kakao login api result] loginApiResult: {}", loginApiResult);
 
         KakaoLoginApi.Tokens tokens = new KakaoLoginApi.Tokens();
         try {
@@ -91,7 +91,7 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
 
     @Override
     public KakaoProfileApi.UserInfo newUserInfo(String profileApiResult) {
-        log.info("kakao profile info: {}", profileApiResult);
+        log.info("[kakao profile info] profileApiResult: {}", profileApiResult);
 
         KakaoProfileApi.UserInfo userInfo = new KakaoProfileApi.UserInfo();
         try {
