@@ -1,21 +1,16 @@
 package com.bangstagram.user.service;
 
 import com.bangstagram.user.configure.security.JwtAuthenticationToken;
-import com.bangstagram.user.controller.dto.request.AuthRequestDto;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
 import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
-import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.util.HttpUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
