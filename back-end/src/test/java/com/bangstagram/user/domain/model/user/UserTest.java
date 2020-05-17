@@ -56,7 +56,7 @@ class UserTest {
     @Test
     void newJwtToken() {
         User user = User.builder()
-                .seq(1L)
+                .id(1L)
                 .name("홍길동")
                 .email("sa01747@naver.com")
                 .password("test1234")
@@ -69,7 +69,7 @@ class UserTest {
 
         assertThat(claims.getEmail().equals(user.getEmail()), is(true));
         assertThat(claims.getName().equals(user.getName()), is(true));
-        assertThat(claims.getUserKey().equals(user.getSeq()), is(true));
+        assertThat(claims.getUserKey().equals(user.getId()), is(true));
         assertThat(claims.getRoles()[0].equals("USER_ROLE"), is(true));
         assertThat(claims.getRoles()[1].equals("MANAGER_ROLE"), is(true));
     }
@@ -95,7 +95,7 @@ class UserTest {
     @Test
     void afterLoginSuccess() {
         User user = User.builder()
-                    .seq(1L)
+                    .id(1L)
                     .name(name)
                     .email(email)
                     .password(password)

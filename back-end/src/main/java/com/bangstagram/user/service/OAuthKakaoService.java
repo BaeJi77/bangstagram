@@ -1,13 +1,19 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.user.configure.security.JwtAuthenticationToken;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.domain.model.oauth.kakao.KakaoLoginApi;
 import com.bangstagram.user.domain.model.oauth.kakao.KakaoProfileApi;
+import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.util.HttpUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,21 +27,21 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,KakaoProfileApi.UserInfo> {
+public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens, KakaoProfileApi.UserInfo> {
     private final UserService userService;
+
+    private final ObjectMapper mapper;
 
     private final KakaoLoginApi kakaoLoginApi;
 
     private final KakaoProfileApi kakaoProfileApi;
 
-    private final ObjectMapper mapper;
-
     public OAuthKakaoService(UserService userService, ObjectMapper mapper,
-                        KakaoLoginApi kakaoLoginApi, KakaoProfileApi kakaoProfileApi) {
+                             KakaoLoginApi kakaoLoginApi, KakaoProfileApi kakaoProfileApi) {
         this.userService = userService;
+        this.mapper = mapper;
         this.kakaoLoginApi = kakaoLoginApi;
         this.kakaoProfileApi = kakaoProfileApi;
-        this.mapper = mapper;
     }
 
     @Override
@@ -61,10 +67,16 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
         String profileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
 
         KakaoProfileApi.UserInfo userInfo = newUserInfo(profileApiResult);
-        String name = userInfo.getName();
         String email = userInfo.getEmail();
 
-        return userService.authLogin(email);
+        // 로그인 인증(AuthenticationManager 거치지 않고, SecurityContextHolder에 Authentication 등록)
+        AuthResponseDto authResponseDto = userService.authLogin(email);
+        JwtAuthenticationToken authenticated
+                = new JwtAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
+        authenticated.setDetails(authResponseDto);
+        SecurityContextHolder.getContext().setAuthentication(authenticated);
+
+        return (AuthResponseDto) authenticated.getDetails();
     }
 
     @Override

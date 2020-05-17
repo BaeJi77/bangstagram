@@ -39,9 +39,7 @@ public class UserService {
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
         User user = save(joinRequestDto.newUser(passwordEncoder));
 
-        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
-
-        return new JoinResponseDto(user, jwtToken);
+        return new JoinResponseDto(user);
     }
 
     private User save(User user) {
@@ -69,7 +67,7 @@ public class UserService {
         user.login(passwordEncoder, password);
         user.afterLoginSuccess();
 
-        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
+        String jwtToken = user.newJwtToken(jwt, new String[]{"ROLE_USER"});
 
         return new AuthResponseDto(user, jwtToken);
     }
@@ -81,7 +79,7 @@ public class UserService {
         User user = findByEmail(email);
         user.afterLoginSuccess();
 
-        String jwtToken = user.newJwtToken(jwt, new String[]{"USER_ROLE"});
+        String jwtToken = user.newJwtToken(jwt, new String[]{"ROLE_USER"});
 
         return new AuthResponseDto(user, jwtToken);
     }

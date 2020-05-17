@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long seq;
+    private Long id;
 
     private String name;
 
@@ -46,8 +46,8 @@ public class User {
     }
 
     @Builder
-    public User(Long seq, String name, String email, String password, int loginCount, LocalDateTime lastLoginAt, LocalDateTime createAt) {
-        this.seq = seq;
+    public User(Long id, String name, String email, String password, int loginCount, LocalDateTime lastLoginAt, LocalDateTime createAt) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -57,7 +57,7 @@ public class User {
     }
 
     public String newJwtToken(JWT jwt, String[] roles) {
-        JWT.Claims claims = JWT.Claims.of(seq, name, email, roles);
+        JWT.Claims claims = JWT.Claims.of(id, name, email, roles);
         return jwt.newToken(claims);
     }
 

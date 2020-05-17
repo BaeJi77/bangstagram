@@ -47,7 +47,7 @@ public class JWT {
         builder.withIssuer(issuer);
         builder.withIssuedAt(now);
         if( expirySeconds > 0 )
-            builder.withExpiresAt(new Date(now.getTime() * expirySeconds * 1000L)); // 만료일
+            builder.withExpiresAt(new Date(now.getTime() + expirySeconds * 1000L)); // 30분 후 만료
         builder.withClaim("userKey", claims.userKey);
         builder.withClaim("name", claims.name);
         builder.withClaim("email", claims.email);

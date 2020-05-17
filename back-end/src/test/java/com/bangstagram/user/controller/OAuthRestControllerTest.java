@@ -49,7 +49,7 @@ class OAuthRestControllerTest {
     void authNaver() throws Exception {
         // 네이버 아이디로 회원가입 시키기
         User user = User.builder()
-                .seq(1L)
+                .id(1L)
                 .name("테스터")
                 .email("sa01747@naver.com")
                 .password("test1234")
@@ -80,7 +80,7 @@ class OAuthRestControllerTest {
     void authKakao() throws Exception {
         // 1. 카카오 아이디로 회원가입 시키기
         User user = User.builder()
-                .seq(1L)
+                .id(1L)
                 .name("테스터")
                 .email("sa833591@gmail.com")
                 .password("test1234")
