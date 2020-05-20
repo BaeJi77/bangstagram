@@ -12,5 +12,5 @@ public interface OAuthServiceImpl<T,R> {
 
     T newAccessToken(String result);
 
-    R newUserInfo(String result);
+    R newProfileInfo(String result);
 }

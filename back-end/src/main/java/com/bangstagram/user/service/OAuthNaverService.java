@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens, NaverProfileApi.UserInfo> {
+public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens, NaverProfileApi.ProfileInfo> {
     private final UserService userService;
 
     private final ObjectMapper mapper;
@@ -43,28 +43,14 @@ public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens,
 
     @Override
     public AuthResponseDto login(String code, String... state) {
-        //TODO 네이버 login Token 가져오기
+        // 1. 사용자 토큰 발급 요청 API 호출하여 access_token 가져오기
+        String accessTokenHeader = getAccessTokenAsHeader(code, state[0]);
 
-        String loginApiUrl = naverLoginApi.getLoginApiUrl("authorization_code", code, state[0]);
+        // 2. 사용자 정보 요청 API 호출하여 회원 정보 가져오기
+        NaverProfileApi.ProfileInfo profileInfo = getProfileInfo(accessTokenHeader);
+        String email = profileInfo.getEmail();
 
-        String loginApiResult = HttpUtils.getMethod(loginApiUrl, Collections.EMPTY_MAP, "application/x-www-form-urlencoded;charset=utf-8");
-
-        NaverLoginApi.Tokens tokens = newAccessToken(loginApiResult);
-        String header = tokens.parseToken2Header();
-
-        //TODO 네이버 profile 정보 가져오기
-
-        String profileApiUrl = naverProfileApi.getUrl();
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("Authorization", header);
-
-        String profileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
-
-        NaverProfileApi.UserInfo userInfo = newUserInfo(profileApiResult);
-        String email = userInfo.getEmail();
-
-        // 로그인 인증(AuthenticationManager 거치지 않고, SecurityContextHolder에 Authentication 등록)
+        // 3. 로그인 인증(AuthenticationManager 거치지 않고, SecurityContextHolder에 Authentication 등록)
         AuthResponseDto authResponseDto = userService.authLogin(email);
         JwtAuthenticationToken authenticated
                 = new JwtAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
@@ -74,9 +60,30 @@ public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens,
         return (AuthResponseDto) authenticated.getDetails();
     }
 
+    private String getAccessTokenAsHeader(String code, String state) {
+        String loginApiUrl = naverLoginApi.getLoginApiUrl("authorization_code", code, state);
+
+        String loginApiResult = HttpUtils.getMethod(loginApiUrl, Collections.EMPTY_MAP, "application/x-www-form-urlencoded;charset=utf-8");
+
+        NaverLoginApi.Tokens tokens = newAccessToken(loginApiResult);
+
+        return tokens.parseToken2Header(); // Bearer ~
+    }
+
+    private NaverProfileApi.ProfileInfo getProfileInfo(String accessTokenHeader) {
+        String profileApiUrl = naverProfileApi.getUrl();
+
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("Authorization", accessTokenHeader);
+
+        String profileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
+
+        return newProfileInfo(profileApiResult);
+    }
+
     @Override
     public NaverLoginApi.Tokens newAccessToken(String loginApiResult) {
-        log.info("[naver login api result] loginApiResult: {}", loginApiResult);
+        log.info("[naver request access_token api result] loginApiResult: {}", loginApiResult);
 
         NaverLoginApi.Tokens tokens = new NaverLoginApi.Tokens();
         try {
@@ -96,13 +103,13 @@ public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens,
     }
 
     @Override
-    public NaverProfileApi.UserInfo newUserInfo(String profileApiResult) {
-        log.info("[naver profile api info] profileApiResult: {}", profileApiResult);
+    public NaverProfileApi.ProfileInfo newProfileInfo(String profileApiResult) {
+        log.info("[naver ProfileInfo api] profileApiResult: {}", profileApiResult);
 
-        NaverProfileApi.UserInfo userInfo = new NaverProfileApi.UserInfo();
+        NaverProfileApi.ProfileInfo profileInfo = new NaverProfileApi.ProfileInfo();
         try {
             JsonNode jsonNode = mapper.readTree(profileApiResult);
-            userInfo = NaverProfileApi.UserInfo.builder()
+            profileInfo = NaverProfileApi.ProfileInfo.builder()
                     .name(jsonNode.path("response").path("name").textValue())
                     .email(jsonNode.path("response").path("email").textValue())
                     .build();
@@ -111,6 +118,6 @@ public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens,
             log.error("error message: {}", e.getMessage());
         }
 
-        return userInfo;
+        return profileInfo;
     }
 }

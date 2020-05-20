@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /***
  * author: Hyo-Jin Kim
@@ -52,6 +53,11 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(AuthenticationManager authenticationManager, JWT jwt) {
+        return new JwtAuthenticationTokenFilter(authenticationManager, jwt);
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -80,6 +86,8 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                     .disable();
+         http
+                .addFilterBefore(jwtAuthenticationTokenFilter(authenticationManagerBean(), jwt()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

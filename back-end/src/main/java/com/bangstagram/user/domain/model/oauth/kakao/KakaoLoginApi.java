@@ -1,7 +1,13 @@
 package com.bangstagram.user.domain.model.oauth.kakao;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /***
  * author: Hyo-Jin Kim
@@ -9,6 +15,7 @@ import lombok.Getter;
  */
 
 @Getter
+@Slf4j
 public class KakaoLoginApi {
     private final String clientId;
 
@@ -35,18 +42,22 @@ public class KakaoLoginApi {
                 .toString();
     }
 
-    /*
-    public String makeRequestBody(String code) throws JsonProcessingException {
-        Map<String, String> bodyMap = new HashMap<>();
-        bodyMap.put("grant_type", "authorization_code");
-        bodyMap.put("client_id", clientId);
-        bodyMap.put("code", code);
-        bodyMap.put("redirect_uri", "http://localhost:9090/oauth/kakao");
+    public String buildRequestBody(String code, ObjectMapper mapper) {
+        try {
+            Map<String, String> bodyMap = new HashMap<>();
+            bodyMap.put("grant_type", "authorization_code");
+            bodyMap.put("client_id", clientId);
+            bodyMap.put("code", code);
+            bodyMap.put("redirect_uri", "http://localhost:9090/oauth/kakao");
 
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(bodyMap);
+            return mapper.writeValueAsString(bodyMap);
+
+        } catch(JsonProcessingException e) {
+            log.error(e.getMessage());
+        }
+
+        return null;
     }
-    */
 
     static public class Tokens {
         private String accessToken;

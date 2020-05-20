@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens, KakaoProfileApi.UserInfo> {
+public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens, KakaoProfileApi.ProfileInfo> {
     private final UserService userService;
 
     private final ObjectMapper mapper;
@@ -43,30 +42,14 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
 
     @Override
     public AuthResponseDto login(String code, String... state) {
-        //TODO 카카오 login Token 가져오기
+        // 1. 사용자 토큰 발급 요청 API 호출하여 access_token 가져오기
+        String accessTokenHeader = getAccessTokenAsHeader(code);
 
-        String loginApiUrl = kakaoLoginApi.getLoginApiUrl(code);
-        // String requestBody = kakaoLoginApi.makeRequestBody(code);
-        // log.info("{}", requestBody);
+        // 2. 사용자 정보 요청 API 호출하여 회원 정보 가져오기
+        KakaoProfileApi.ProfileInfo profileInfo = getProfileInfo(accessTokenHeader);
+        String email = profileInfo.getEmail();
 
-        String loginApiResult = HttpUtils.getMethod(loginApiUrl, Collections.EMPTY_MAP, "application/x-www-form-urlencoded;charset=utf-8");
-
-        KakaoLoginApi.Tokens tokens = newAccessToken(loginApiResult);
-        String header = tokens.parseToken2Header();
-
-        //TODO 카카오 profile 정보 가져오기
-
-        String profileApiUrl = kakaoProfileApi.getUrl();
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("Authorization", header);
-
-        String profileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
-
-        KakaoProfileApi.UserInfo userInfo = newUserInfo(profileApiResult);
-        String email = userInfo.getEmail();
-
-        // 로그인 인증(AuthenticationManager 거치지 않고, SecurityContextHolder에 Authentication 등록)
+        // 3. 로그인 인증(AuthenticationManager 거치지 않고, SecurityContextHolder에 Authentication 등록)
         AuthResponseDto authResponseDto = userService.authLogin(email);
         JwtAuthenticationToken authenticated
                 = new JwtAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
@@ -76,9 +59,33 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
         return (AuthResponseDto) authenticated.getDetails();
     }
 
+    private String getAccessTokenAsHeader(String code) {
+        String loginApiUrl = kakaoLoginApi.getLoginApiUrl(code);
+
+        String requestBody = kakaoLoginApi.buildRequestBody(code, mapper);
+        log.info("[OAuthKakaoService login] requestBody: {}", requestBody);
+
+        String loginApiResult = HttpUtils.postMethod(loginApiUrl, requestBody, "application/x-www-form-urlencoded;charset=utf-8");
+
+        KakaoLoginApi.Tokens tokens = newAccessToken(loginApiResult);
+
+        return tokens.parseToken2Header(); // Bearer ~
+    }
+
+    private KakaoProfileApi.ProfileInfo getProfileInfo(String accessTokenHeader) {
+        String profileApiUrl = kakaoProfileApi.getUrl();
+
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("Authorization", accessTokenHeader);
+
+        String profileApiResult = HttpUtils.getMethod(profileApiUrl, requestHeaders, "application/json; charset=utf-8");
+
+        return newProfileInfo(profileApiResult);
+    }
+
     @Override
     public KakaoLoginApi.Tokens newAccessToken(String loginApiResult) {
-        log.info("[kakao login api result] loginApiResult: {}", loginApiResult);
+        log.info("[kakao request access_token api result] loginApiResult: {}", loginApiResult);
 
         KakaoLoginApi.Tokens tokens = new KakaoLoginApi.Tokens();
         try {
@@ -99,13 +106,13 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
     }
 
     @Override
-    public KakaoProfileApi.UserInfo newUserInfo(String profileApiResult) {
-        log.info("[kakao profile info] profileApiResult: {}", profileApiResult);
+    public KakaoProfileApi.ProfileInfo newProfileInfo(String profileApiResult) {
+        log.info("[kakao ProfileInfo api] profileApiResult: {}", profileApiResult);
 
-        KakaoProfileApi.UserInfo userInfo = new KakaoProfileApi.UserInfo();
+        KakaoProfileApi.ProfileInfo profileInfo = new KakaoProfileApi.ProfileInfo();
         try {
             JsonNode jsonNode = mapper.readTree(profileApiResult);
-            userInfo = KakaoProfileApi.UserInfo.builder()
+            profileInfo = KakaoProfileApi.ProfileInfo.builder()
                     .name(jsonNode.path("kakao_account").path("profile").path("nickname").textValue())
                     .email(jsonNode.path("kakao_account").path("email").textValue())
                     .build();
@@ -114,6 +121,6 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
             log.error("error message: {}", e.getMessage());
         }
 
-        return userInfo;
+        return profileInfo;
     }
 }

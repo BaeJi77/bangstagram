@@ -56,6 +56,14 @@ public class JWT {
         return builder.sign(algorithm);
     }
 
+    public String refreshToken(String token) {
+        Claims claims = verify(token);
+        claims.eraseIssuedAt();
+        claims.eraseExpiresAt();
+
+        return newToken(claims);
+    }
+
     public Claims verify(String token) {
         return new Claims(jwtVerifier.verify(token));
     }
@@ -103,6 +111,14 @@ public class JWT {
                     .name(name)
                     .email(email)
                     .roles(roles).build();
+        }
+
+        public void eraseIssuedAt() {
+            this.issuedAt = null;
+        }
+
+        public void eraseExpiresAt() {
+            this.expiresAt = null;
         }
 
         @Override
