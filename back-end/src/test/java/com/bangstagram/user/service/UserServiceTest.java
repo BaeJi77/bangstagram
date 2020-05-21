@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 @SpringBootTest
-@Slf4j
 public class UserServiceTest {
     @Autowired
     private UserService userService;
@@ -60,8 +59,6 @@ public class UserServiceTest {
         User user = response.getUser();
         assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getEmail(), is(email));
-
-        log.info("Inserted user: {}", user);
     }
 
     @Test
@@ -107,7 +104,6 @@ public class UserServiceTest {
         assertThat(user.getLoginCount(), is(not(afterLoginUser.getLoginCount())));
         assertThat(user.getLastLoginAt(), is(not(afterLoginUser.getLastLoginAt())));
         // assertThat(jwtToken.equals(afterLoginJwtToken), true);
-        log.info("[After Login Success] afterLoginJwtToken: {}", afterLoginJwtToken);
 
         // 3. 로그인(패스워드 불일치)
         AuthRequestDto fail_authRequestDto = new AuthRequestDto(email, "wrongPasssword");
@@ -132,6 +128,5 @@ public class UserServiceTest {
         assertThat(user.getLoginCount(), is(not(afterLoginUser.getLoginCount())));
         assertThat(user.getLastLoginAt(), is(not(afterLoginUser.getLastLoginAt())));
         // assertThat(jwtToken.equals(afterLoginJwtToken), true);
-        log.info("[After Login Success] afterLoginJwtToken: {}", afterLoginJwtToken);
     }
 }

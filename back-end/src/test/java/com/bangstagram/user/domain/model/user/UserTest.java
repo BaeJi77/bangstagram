@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Date: 2020.05.13
  */
 @SpringBootTest
-@Slf4j
 class UserTest {
     private Long seq;
 
@@ -107,12 +106,10 @@ class UserTest {
         int asisLoginCount = user.getLoginCount();
         LocalDateTime asisLastLoginAt = user.getLastLoginAt();
         assertThat(user.getLoginCount(), is(0));
-        log.info("[beforeLogin] loginCount: {}, lastLoginAt: {}", user.getLoginCount(), user.getLastLoginAt());
 
         user.afterLoginSuccess(); // 로그인 후 loginCount + 1, lastLoginAt 그 시간으로
 
         assertThat(user.getLoginCount(), is(not(asisLoginCount)));
         assertThat(user.getLastLoginAt(), is(not(asisLastLoginAt)));
-        log.info("[afterLoginSuccess] loginCount: {}, lastLoginAt: {}", user.getLoginCount(), user.getLastLoginAt());
     }
 }

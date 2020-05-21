@@ -17,7 +17,6 @@ import static org.hamcrest.core.Is.is;
  */
 
 @SpringBootTest
-@Slf4j
 class JwtAuthenticationTest {
     private Long id;
 
@@ -49,8 +48,5 @@ class JwtAuthenticationTest {
         assertThat(jwtAuthentication.getId(), is(jwtAuthenticationByUser.getId()));
         assertThat(jwtAuthentication.getName(), is(jwtAuthenticationByUser.getName()));
         assertThat(jwtAuthentication.getEmail(), is(jwtAuthenticationByUser.getEmail()));
-
-        log.info("jwtAuthentication: {}", jwtAuthentication.toString());
-        log.info("jwtAuthenticationByUser: {}", jwtAuthenticationByUser.toString());
     }
 }
