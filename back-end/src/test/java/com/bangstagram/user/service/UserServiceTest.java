@@ -54,9 +54,6 @@ public class UserServiceTest {
 
         String jwtToken = response.getJwtToken();
         assertThat(jwtToken, is(notNullValue()));
-
-        log.info("Inserted user: {}", user);
-        log.info("Created jwtToken: {}", jwtToken);
     }
 
     @Test
