@@ -28,10 +28,10 @@ public class JoinRequestDto {
 
     JoinRequestDto() {}
 
-    public JoinRequestDto(String name, String loginEmail, String loginPassword) {
+    public JoinRequestDto(String name, String email, String password) {
         this.name = name;
-        this.email = loginEmail;
-        this.password = loginPassword;
+        this.email = email;
+        this.password = password;
     }
 
     public User newUser(PasswordEncoder passwordEncoder) {
