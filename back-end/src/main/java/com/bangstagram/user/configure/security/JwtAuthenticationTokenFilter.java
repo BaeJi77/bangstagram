@@ -85,8 +85,8 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
                 token = URLDecoder.decode(token, "UTF-8");
                 String[] parts = token.split(" "); // Bearer ~encodedToken
                 if( parts.length == 2 ) {
-                    String bearer = parts[0];
-                    String encodedToken = parts[1];
+                    String bearer = parts[0]; // Bearer
+                    String encodedToken = parts[1]; // encodedToken
                     return BEARER.matcher(bearer).matches() ? encodedToken : null;
                 }
 

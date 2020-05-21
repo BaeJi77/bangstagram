@@ -18,7 +18,8 @@ public class AuthRequestDto {
     @NotBlank
     private String credentials;
 
-    AuthRequestDto() {}
+    protected AuthRequestDto() { // protected
+    }
 
     public AuthRequestDto(String principal, String credentials) {
         this.principal = principal;

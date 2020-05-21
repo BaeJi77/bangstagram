@@ -26,7 +26,8 @@ public class JoinRequestDto {
     @NotEmpty
     private String password;
 
-    JoinRequestDto() {}
+    protected JoinRequestDto() { // protected
+    }
 
     public JoinRequestDto(String name, String email, String password) {
         this.name = name;
