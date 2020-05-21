@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  * Date: 2020.05.05
  */
 
-@Slf4j
 @SpringBootTest
 public class JWTTest {
     @Autowired

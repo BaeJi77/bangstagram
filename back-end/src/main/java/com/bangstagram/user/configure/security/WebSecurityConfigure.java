@@ -1,12 +1,12 @@
 package com.bangstagram.user.configure.security;
 
-import com.bangstagram.user.domain.model.oauth.kakao.KakaoLoginApi;
-import com.bangstagram.user.domain.model.oauth.kakao.KakaoProfileApi;
-import com.bangstagram.user.domain.model.oauth.naver.NaverLoginApi;
-import com.bangstagram.user.domain.model.oauth.naver.NaverProfileApi;
+import com.bangstagram.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /***
  * author: Hyo-Jin Kim
@@ -21,19 +22,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 
 @Configuration
-@EnableConfigurationProperties({NaverProperty.class, KakaoProperty.class, JwtProperty.class})
+@EnableConfigurationProperties({JwtProperty.class})
 @EnableWebSecurity
 public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     private final JwtProperty jwtProperty;
 
-    private final NaverProperty naverProperty;
-
-    private final KakaoProperty kakaoProperty;
-
-    public WebSecurityConfigure(JwtProperty jwtProperty, NaverProperty naverProperty, KakaoProperty kakaoProperty) {
+    public WebSecurityConfigure(JwtProperty jwtProperty) {
         this.jwtProperty = jwtProperty;
-        this.naverProperty = naverProperty;
-        this.kakaoProperty = kakaoProperty;
     }
 
     @Bean
@@ -41,24 +36,25 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
         return new JWT(jwtProperty.getIssuer(), jwtProperty.getSecret(), jwtProperty.getExpirySeconds());
     }
 
-    @Bean
-    public NaverLoginApi naverLoginApi() {
-        return new NaverLoginApi(naverProperty.getNaverClientId(),naverProperty.getNaverClientSecret(),naverProperty.getNaverTokenRequestUrl());
+    @Autowired
+    public void configureAuthentication(AuthenticationManagerBuilder builder, JwtAuthenticationProvider jwtAuthenticationProvider) {
+        builder.authenticationProvider(jwtAuthenticationProvider);
     }
 
     @Bean
-    public NaverProfileApi naverProfileApi() {
-        return new NaverProfileApi(naverProperty.getNaverProfileRequestUrl());
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
-    public KakaoLoginApi kakaoLoginApi() {
-        return new KakaoLoginApi(kakaoProperty.getKakaoClientId(),kakaoProperty.getKakaoLoginTokenUrl());
+    public JwtAuthenticationProvider jwtAuthenticationProvider(UserService userService) {
+        return new JwtAuthenticationProvider(userService);
     }
 
     @Bean
-    public KakaoProfileApi kakaoProfileApi() {
-        return new KakaoProfileApi(kakaoProperty.getKakaoProfileInfoUrl());
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(AuthenticationManager authenticationManager, JWT jwt) {
+        return new JwtAuthenticationTokenFilter(authenticationManager, jwt);
     }
 
     @Bean
@@ -70,26 +66,28 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
-                .disable()
+                    .disable()
                 .headers()
-                .disable()
+                    .disable()
                 .exceptionHandling()
-                .and()
+                    .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                 .authorizeRequests()
-                .antMatchers("/users/join").permitAll()
-                .antMatchers("/users/exists").permitAll()
-                .antMatchers("/users/login").permitAll()
-                .antMatchers("/oauth/naver").permitAll()
-                .antMatchers("/oauth/kakao").permitAll()
-                .antMatchers("/rooms/**").permitAll()
-                .antMatchers("/**").hasRole("USER_ROLE")
-                .anyRequest().permitAll()
-                .and()
+                    .antMatchers("/users/join").permitAll()
+                    .antMatchers("/users/exists").permitAll()
+                    .antMatchers("/users/login").permitAll()
+                    .antMatchers("/oauth/naver").permitAll()
+                    .antMatchers("/oauth/kakao").permitAll()
+                    .antMatchers("/rooms/**").permitAll()
+                    .antMatchers("/**").hasRole("USER")
+                    .anyRequest().permitAll()
+                    .and()
                 .formLogin()
-                .disable();
+                    .disable();
+         http
+                .addFilterBefore(jwtAuthenticationTokenFilter(authenticationManagerBean(), jwt()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

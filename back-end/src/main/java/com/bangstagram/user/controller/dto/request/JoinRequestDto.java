@@ -7,12 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.StringJoiner;
 
 /***
  * author: Hyo-Jin Kim
  * Date: 2020.05.01
  */
-
 
 @Getter
 public class JoinRequestDto {
@@ -26,7 +26,7 @@ public class JoinRequestDto {
     @NotEmpty
     private String password;
 
-    JoinRequestDto() {
+    protected JoinRequestDto() { // protected
     }
 
     public JoinRequestDto(String name, String email, String password) {
@@ -37,5 +37,14 @@ public class JoinRequestDto {
 
     public User newUser(PasswordEncoder passwordEncoder) {
         return new User(name, email, passwordEncoder.encode(password));
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", JoinRequestDto.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("email='" + email + "'")
+                .add("password='" + password + "'")
+                .toString();
     }
 }

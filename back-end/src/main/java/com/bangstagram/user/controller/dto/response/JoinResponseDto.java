@@ -3,6 +3,8 @@ package com.bangstagram.user.controller.dto.response;
 import com.bangstagram.user.domain.model.user.User;
 import lombok.Getter;
 
+import java.util.StringJoiner;
+
 /***
  * author: Hyo-Jin Kim
  * Date: 2020.05.01
@@ -12,10 +14,14 @@ import lombok.Getter;
 public class JoinResponseDto {
     private final User user;
 
-    private final String jwtToken;
-
-    public JoinResponseDto(User user, String apiToken) {
+    public JoinResponseDto(User user) {
         this.user = user;
-        this.jwtToken = apiToken;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", JoinResponseDto.class.getSimpleName() + "[", "]")
+                .add("user=" + user)
+                .toString();
     }
 }

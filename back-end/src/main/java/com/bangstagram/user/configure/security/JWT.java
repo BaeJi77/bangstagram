@@ -47,13 +47,21 @@ public class JWT {
         builder.withIssuer(issuer);
         builder.withIssuedAt(now);
         if( expirySeconds > 0 )
-            builder.withExpiresAt(new Date(now.getTime() * expirySeconds * 1000L)); // 만료일
+            builder.withExpiresAt(new Date(now.getTime() + expirySeconds * 1000L)); // 30분 후 만료
         builder.withClaim("userKey", claims.userKey);
         builder.withClaim("name", claims.name);
         builder.withClaim("email", claims.email);
         builder.withArrayClaim("roles", claims.roles);
 
         return builder.sign(algorithm);
+    }
+
+    public String refreshToken(String token) {
+        Claims claims = verify(token);
+        claims.eraseIssuedAt();
+        claims.eraseExpiresAt();
+
+        return newToken(claims);
     }
 
     public Claims verify(String token) {
@@ -103,6 +111,14 @@ public class JWT {
                     .name(name)
                     .email(email)
                     .roles(roles).build();
+        }
+
+        public void eraseIssuedAt() {
+            this.issuedAt = null;
+        }
+
+        public void eraseExpiresAt() {
+            this.expiresAt = null;
         }
 
         @Override

@@ -17,14 +17,14 @@ public class KakaoProfileApi {
     }
 
     @Getter
-    static public class UserInfo {
+    static public class ProfileInfo {
         String name;
         String email;
 
-        public UserInfo() {}
+        public ProfileInfo() {}
 
         @Builder
-        public UserInfo(String name, String email) {
+        public ProfileInfo(String name, String email) {
             this.name = name;
             this.email = email;
         }

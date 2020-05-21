@@ -6,9 +6,12 @@ import com.bangstagram.user.controller.dto.request.JoinRequestDto;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
+import com.bangstagram.user.domain.repository.UserRepository;
 import com.bangstagram.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -40,11 +44,16 @@ class UserRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private UserService userService;
 
-    @MockBean
-    private JWT jwt;
+    @Autowired
+    private UserRepository userRepository;
+
+    @BeforeEach()
+    void setUp() {
+        userRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("이메일_중복_확인하기")
@@ -52,8 +61,6 @@ class UserRestControllerTest {
         join();
         Map<String,String> map = new HashMap<>();
         map.put("email","sa01747@naver.com");
-
-        given(userService.existsByEmail(map.get("email"))).willReturn(true);
 
         ObjectMapper mapper = new ObjectMapper();
         MvcResult result = mockMvc.perform(post("/users/exists")
@@ -71,22 +78,18 @@ class UserRestControllerTest {
     @DisplayName("회원가입_하기")
     void join() throws Exception {
         User user = User.builder()
-                .seq(1L)
+                .id(1L)
                 .name("테스터")
                 .email("sa01747@naver.com")
                 .password("test1234")
                 .loginCount(0)
                 .createAt(LocalDateTime.now())
                 .build();
-        String jwtToken = user.newJwtToken(jwt, new String[] {"USER_ROLE"});
-
-        JoinRequestDto joinRequestDto = new JoinRequestDto("테스터","sa01747@naver.com","test1234");
-        given(userService.join(joinRequestDto)).willReturn(new JoinResponseDto(user,jwtToken));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("name","홍길동");
-        jsonObject.put("email","sa01747@naver.com");
-        jsonObject.put("password","test1234");
+        jsonObject.put("name",user.getName());
+        jsonObject.put("email",user.getEmail());
+        jsonObject.put("password",user.getPassword());
 
         mockMvc.perform(post("/users/join")
                 .content(jsonObject.toString())
@@ -100,21 +103,19 @@ class UserRestControllerTest {
     @DisplayName("로그인_하기")
     void login() throws Exception {
         User user = User.builder()
-                .seq(1L)
+                .id(1L)
                 .name("홍길동")
                 .email("sa01747@naver.com")
                 .password("test1234")
                 .loginCount(0)
                 .createAt(LocalDateTime.now())
                 .build();
-        String jwtToken = user.newJwtToken(jwt, new String[] {"USER_ROLE"});
 
-        AuthRequestDto authRequestDto = new AuthRequestDto("sa01747@naver.com","test1234");
-        given(userService.login(authRequestDto)).willReturn(new AuthResponseDto(user,jwtToken));
+        userService.join(new JoinRequestDto(user.getName(), user.getEmail(), user.getPassword())); // 회원가입
 
         JSONObject requestJSON = new JSONObject();
-        requestJSON.put("principal", "sa01747@naver.com");
-        requestJSON.put("credentials", "test1234");
+        requestJSON.put("principal", user.getEmail());
+        requestJSON.put("credentials", user.getPassword());
         mockMvc.perform(post("/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestJSON.toString()))

@@ -46,7 +46,7 @@ jwt:
     header: api_key
     issuer: bangstagram_server
     secret: h9y2o0z2k0i8m
-    expirySeconds: 0
+    expirySeconds: 1800 # 30분
 oauth:
   naver:
     clientId: XtF1W2Q5emLFga3N4wv0

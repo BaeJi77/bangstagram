@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Date: 2020.05.13
  */
 @SpringBootTest
-@Slf4j
 class UserTest {
     private Long seq;
 
@@ -56,7 +55,7 @@ class UserTest {
     @Test
     void newJwtToken() {
         User user = User.builder()
-                .seq(1L)
+                .id(1L)
                 .name("홍길동")
                 .email("sa01747@naver.com")
                 .password("test1234")
@@ -69,7 +68,7 @@ class UserTest {
 
         assertThat(claims.getEmail().equals(user.getEmail()), is(true));
         assertThat(claims.getName().equals(user.getName()), is(true));
-        assertThat(claims.getUserKey().equals(user.getSeq()), is(true));
+        assertThat(claims.getUserKey().equals(user.getId()), is(true));
         assertThat(claims.getRoles()[0].equals("USER_ROLE"), is(true));
         assertThat(claims.getRoles()[1].equals("MANAGER_ROLE"), is(true));
     }
@@ -95,7 +94,7 @@ class UserTest {
     @Test
     void afterLoginSuccess() {
         User user = User.builder()
-                    .seq(1L)
+                    .id(1L)
                     .name(name)
                     .email(email)
                     .password(password)
@@ -107,12 +106,10 @@ class UserTest {
         int asisLoginCount = user.getLoginCount();
         LocalDateTime asisLastLoginAt = user.getLastLoginAt();
         assertThat(user.getLoginCount(), is(0));
-        log.info("[beforeLogin] loginCount: {}, lastLoginAt: {}", user.getLoginCount(), user.getLastLoginAt());
 
         user.afterLoginSuccess(); // 로그인 후 loginCount + 1, lastLoginAt 그 시간으로
 
         assertThat(user.getLoginCount(), is(not(asisLoginCount)));
         assertThat(user.getLastLoginAt(), is(not(asisLastLoginAt)));
-        log.info("[afterLoginSuccess] loginCount: {}, lastLoginAt: {}", user.getLoginCount(), user.getLastLoginAt());
     }
 }

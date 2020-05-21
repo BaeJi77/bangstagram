@@ -1,9 +1,9 @@
 package com.bangstagram.user.controller.dto.request;
 
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import java.util.StringJoiner;
 
 /***
  * author: Hyo-Jin Kim
@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
  */
 
 @Getter
-@ToString
 public class AuthRequestDto {
     @NotBlank
     private String principal;
@@ -19,11 +18,19 @@ public class AuthRequestDto {
     @NotBlank
     private String credentials;
 
-    AuthRequestDto() {
+    protected AuthRequestDto() { // protected
     }
 
     public AuthRequestDto(String principal, String credentials) {
         this.principal = principal;
         this.credentials = credentials;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", AuthRequestDto.class.getSimpleName() + "[", "]")
+                .add("principal='" + principal + "'")
+                .add("credentials='" + credentials + "'")
+                .toString();
     }
 }

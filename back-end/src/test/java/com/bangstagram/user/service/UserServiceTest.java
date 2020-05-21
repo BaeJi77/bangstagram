@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 @SpringBootTest
-@Slf4j
 public class UserServiceTest {
     @Autowired
     private UserService userService;
@@ -54,11 +53,11 @@ public class UserServiceTest {
     @Test
     @DisplayName("회원가입을_하다")
     void join() {
-        JoinResponseDto response = userService.join(new JoinRequestDto(name,email,password));
+        JoinResponseDto response = userService.join(new JoinRequestDto(name, email, password));
         assertThat(response, is(notNullValue()));
 
         User user = response.getUser();
-        assertThat(user.getSeq(), is(notNullValue()));
+        assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getEmail(), is(email));
 
         String jwtToken = response.getJwtToken();
@@ -72,7 +71,7 @@ public class UserServiceTest {
         assertThat(isExist, is(false));
 
         // 회원가입 -> 이메일 DB에 저장.
-        userService.join(new JoinRequestDto(name,email,password));
+        userService.join(new JoinRequestDto(name, email, password));
 
         isExist = userService.existsByEmail(email);
         assertThat(isExist, is(true));
@@ -82,14 +81,14 @@ public class UserServiceTest {
     @DisplayName("이메일을_조회한다")
     void findByEmail() {
         // 회원가입 -> 이메일 DB에 저장.
-        userService.join(new JoinRequestDto(name,email,password));
+        userService.join(new JoinRequestDto(name, email, password));
 
         User user = userService.findByEmail(email);
         assertThat(user, (notNullValue()));
-        assertThat(user.getSeq(), is(notNullValue()));
+        assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getName(), is(name));
         assertThat(user.getEmail(), is(email));
-        assertThat(passwordEncoder.matches(password,user.getPassword()), is(true)); // 비밀번호 일치 확인
+        assertThat(passwordEncoder.matches(password, user.getPassword()), is(true)); // 비밀번호 일치 확인
 
     }
 
@@ -97,23 +96,20 @@ public class UserServiceTest {
     @DisplayName("이메일_패스워드로_로그인_한다")
     void login() {
         // 1. 회원가입 -> 이메일 DB에 저장.
-        JoinResponseDto joinResponseDto = userService.join(new JoinRequestDto(name,email,password));
+        JoinResponseDto joinResponseDto = userService.join(new JoinRequestDto(name, email, password));
         User user = joinResponseDto.getUser();
-        String jwtToken = joinResponseDto.getJwtToken();
 
         // 2. 로그인(성공)
-        AuthRequestDto success_authRequestDto = new AuthRequestDto(email,password);
+        AuthRequestDto success_authRequestDto = new AuthRequestDto(email, password);
         AuthResponseDto authResponseDto = userService.login(success_authRequestDto);
         User afterLoginUser = authResponseDto.getUser();
         String afterLoginJwtToken = authResponseDto.getJwtToken();
         assertThat(user.getLoginCount(), is(not(afterLoginUser.getLoginCount())));
         assertThat(user.getLastLoginAt(), is(not(afterLoginUser.getLastLoginAt())));
         // assertThat(jwtToken.equals(afterLoginJwtToken), true);
-        log.info("[Before Login] jwtToken: {}", jwtToken);
-        log.info("[After Login Success] afterLoginJwtToken: {}", afterLoginJwtToken);
 
         // 3. 로그인(패스워드 불일치)
-        AuthRequestDto fail_authRequestDto = new AuthRequestDto(email,"wrongPasssword");
+        AuthRequestDto fail_authRequestDto = new AuthRequestDto(email, "wrongPasssword");
         IllegalArgumentException thrown = assertThrows(
                 IllegalArgumentException.class,
                 () -> userService.login(fail_authRequestDto));
@@ -125,9 +121,8 @@ public class UserServiceTest {
     @DisplayName("소셜_아이디로_로그인_한다")
     void authLogin() {
         // 1. 회원가입 -> 이메일 DB에 저장.
-        JoinResponseDto joinResponseDto = userService.join(new JoinRequestDto(name,email,password));
+        JoinResponseDto joinResponseDto = userService.join(new JoinRequestDto(name, email, password));
         User user = joinResponseDto.getUser();
-        String jwtToken = joinResponseDto.getJwtToken();
 
         // 2. 로그인(성공)
         AuthResponseDto authResponseDto = userService.authLogin(email);
@@ -136,9 +131,5 @@ public class UserServiceTest {
         assertThat(user.getLoginCount(), is(not(afterLoginUser.getLoginCount())));
         assertThat(user.getLastLoginAt(), is(not(afterLoginUser.getLastLoginAt())));
         // assertThat(jwtToken.equals(afterLoginJwtToken), true);
-        log.info("[Before Login] jwtToken: {}", jwtToken);
-        log.info("[After Login Success] afterLoginJwtToken: {}", afterLoginJwtToken);
-
-
     }
 }
