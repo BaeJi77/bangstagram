@@ -59,6 +59,9 @@ public class UserServiceTest {
         User user = response.getUser();
         assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getEmail(), is(email));
+
+        String jwtToken = response.getJwtToken();
+        assertThat(jwtToken, is(notNullValue()));
     }
 
     @Test
