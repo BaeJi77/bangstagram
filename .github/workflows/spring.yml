@@ -5,7 +5,7 @@ name: Spring boot build and test
 
 on:
   push:
-    branches: [ '**' ]
+    branches: [ master, develop ]
   pull_request:
     branches: [ '**' ]
     paths:
@@ -38,8 +38,5 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build
-      run: ./gradlew bootRun
-    
-    - name: Test
-      run: ./gradlew test
+      run: ./gradlew build
   
