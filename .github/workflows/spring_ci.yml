@@ -5,9 +5,9 @@ name: Spring boot build and test
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master, develop ]
+  pull_request:
+    branches: [ * ]
     paths:
     - 'back-end/**'
   
