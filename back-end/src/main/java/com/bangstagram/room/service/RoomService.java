@@ -29,6 +29,7 @@ public class RoomService {
                         .link(room.getLink())
                         .phone(room.getPhone())
                         .description(room.getDescription())
+                        .themes(room.getThemes())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -42,6 +43,7 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
+                .themes(room.getThemes())
                 .build();
     }
 
@@ -55,14 +57,15 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
+                .themes(room.getThemes())
                 .build();
     }
 
     @Transactional
     public RoomResponseDto updateRoom(Long id, RoomUpdateRequestDto roomUpdateRequestDto) {
         Room room = findRoomById(id);
-        room.update(roomUpdateRequestDto.getTitle(), roomUpdateRequestDto.getLink(),
-                roomUpdateRequestDto.getPhone(), roomUpdateRequestDto.getAddress(), roomUpdateRequestDto.getDescription());
+        room.update(roomUpdateRequestDto.getTitle(), roomUpdateRequestDto.getLink(), roomUpdateRequestDto.getPhone(),
+                roomUpdateRequestDto.getAddress(), roomUpdateRequestDto.getDescription(), roomUpdateRequestDto.getThemes());
 
         return RoomResponseDto.builder()
                 .id(room.getId())
@@ -71,6 +74,7 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
+                .themes(room.getThemes())
                 .build();
     }
 
@@ -82,8 +86,13 @@ public class RoomService {
                         .link(room.getLink())
                         .phone(room.getPhone())
                         .description(room.getDescription())
+                        .themes(room.getThemes())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public void deleteRoom(Long id) {
+        roomRepository.deleteById(id);
     }
 
     private Room findRoomById(Long id) {

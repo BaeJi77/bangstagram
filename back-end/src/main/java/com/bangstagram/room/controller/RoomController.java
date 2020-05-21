@@ -46,4 +46,10 @@ public class RoomController {
         log.info("[search Room By Region] {}", region);
         return roomService.findRoomByRegion(region);
     }
+
+    @DeleteMapping("/rooms/{id}")
+    public void deleteRoom(@PathVariable Long id) {
+        log.info("[delete Room] id={}", id);
+        roomService.deleteRoom(id);
+    }
 }
