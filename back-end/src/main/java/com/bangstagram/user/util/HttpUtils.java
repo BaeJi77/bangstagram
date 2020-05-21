@@ -6,6 +6,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 public class HttpUtils {
 
     public static String getMethod(String apiUrl, Map<String, String> requestHeaders, String contentType) {

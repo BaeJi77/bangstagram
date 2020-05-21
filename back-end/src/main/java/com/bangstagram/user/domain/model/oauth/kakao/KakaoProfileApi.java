@@ -3,6 +3,11 @@ package com.bangstagram.user.domain.model.oauth.kakao;
 import lombok.Builder;
 import lombok.Getter;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @Getter
 public class KakaoProfileApi {
     private final String url;

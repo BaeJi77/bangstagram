@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @RestController
 @Slf4j
 public class OAuthRestController {
@@ -29,7 +34,7 @@ public class OAuthRestController {
     @GetMapping("/oauth/naver")
     public AuthResponseDto authNaver(@RequestParam("code") String code,
                                      @RequestParam("state") String state) {
-        log.info("code:{}, state: {}", code, state);
+        log.info("[Authentication Naver] code:{}, state: {}", code, state);
 
         return oAuthNaverService.login(code, state);
     }
@@ -42,7 +47,7 @@ public class OAuthRestController {
      */
     @GetMapping("/oauth/kakao")
     public AuthResponseDto authKakao(@RequestParam("code") String code) {
-        log.info("code: {}", code);
+        log.info("[Authentication Kakao] code: {}", code);
 
         return oAuthKakaoService.login(code);
     }

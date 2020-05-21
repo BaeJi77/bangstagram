@@ -1,12 +1,12 @@
 package com.bangstagram.user.domain.model.oauth.kakao;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.Map;
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
 
 @Getter
 public class KakaoLoginApi {
@@ -35,6 +35,7 @@ public class KakaoLoginApi {
                 .toString();
     }
 
+    /*
     public String makeRequestBody(String code) throws JsonProcessingException {
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("grant_type", "authorization_code");
@@ -45,6 +46,7 @@ public class KakaoLoginApi {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(bodyMap);
     }
+    */
 
     static public class Tokens {
         private String accessToken;

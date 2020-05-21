@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Map;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @RestController
 @Slf4j
 public class UserRestController {
@@ -34,7 +39,7 @@ public class UserRestController {
 
     @PostMapping("/users/login")
     public AuthResponseDto login(@RequestBody @Valid AuthRequestDto authRequestDto) {
-        log.info("authRequestDto: {}", authRequestDto.toString());
+        log.info("[login]: {}", authRequestDto.toString());
         return userService.login(authRequestDto);
     }
 }

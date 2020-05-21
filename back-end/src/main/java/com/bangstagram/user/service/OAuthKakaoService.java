@@ -14,6 +14,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.08
+ */
+
 @Service
 @Slf4j
 public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,KakaoProfileApi.UserInfo> {
@@ -64,7 +69,7 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
 
     @Override
     public KakaoLoginApi.Tokens newAccessToken(String loginApiResult) {
-        log.info("kakao login api result: {}", loginApiResult);
+        log.info("[kakao login api result] loginApiResult: {}", loginApiResult);
 
         KakaoLoginApi.Tokens tokens = new KakaoLoginApi.Tokens();
         try {
@@ -86,7 +91,7 @@ public class OAuthKakaoService implements OAuthServiceImpl<KakaoLoginApi.Tokens,
 
     @Override
     public KakaoProfileApi.UserInfo newUserInfo(String profileApiResult) {
-        log.info("kakao profile info: {}", profileApiResult);
+        log.info("[kakao profile info] profileApiResult: {}", profileApiResult);
 
         KakaoProfileApi.UserInfo userInfo = new KakaoProfileApi.UserInfo();
         try {

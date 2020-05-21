@@ -10,6 +10,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.05
+ */
+
 @Slf4j
 @SpringBootTest
 public class JWTTest {

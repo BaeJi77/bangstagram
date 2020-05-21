@@ -5,6 +5,11 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.01
+ */
+
 @Getter
 @ToString
 public class AuthRequestDto {

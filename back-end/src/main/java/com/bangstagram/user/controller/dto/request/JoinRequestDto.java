@@ -8,6 +8,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.01
+ */
+
+
 @Getter
 public class JoinRequestDto {
     @NotBlank
@@ -15,21 +21,21 @@ public class JoinRequestDto {
 
     @NotBlank
     @Email
-    private String loginEmail;
+    private String email;
 
     @NotEmpty
-    private String loginPassword;
+    private String password;
 
     JoinRequestDto() {
     }
 
-    public JoinRequestDto(String name, String loginEmail, String loginPassword) {
+    public JoinRequestDto(String name, String email, String password) {
         this.name = name;
-        this.loginEmail = loginEmail;
-        this.loginPassword = loginPassword;
+        this.email = email;
+        this.password = password;
     }
 
-    public User newUser(PasswordEncoder passwordEncoder, String oAuth) {
-        return new User(name, loginEmail, passwordEncoder.encode(loginPassword), oAuth);
+    public User newUser(PasswordEncoder passwordEncoder) {
+        return new User(name, email, passwordEncoder.encode(password));
     }
 }

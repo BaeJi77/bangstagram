@@ -14,6 +14,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.13
+ */
+
 @Service
 @Slf4j
 public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens, NaverProfileApi.UserInfo> {
@@ -62,7 +67,7 @@ public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens,
 
     @Override
     public NaverLoginApi.Tokens newAccessToken(String loginApiResult) {
-        log.info("naver login api result: {}", loginApiResult);
+        log.info("[naver login api result] loginApiResult: {}", loginApiResult);
 
         NaverLoginApi.Tokens tokens = new NaverLoginApi.Tokens();
         try {
@@ -83,7 +88,7 @@ public class OAuthNaverService implements OAuthServiceImpl<NaverLoginApi.Tokens,
 
     @Override
     public NaverProfileApi.UserInfo newUserInfo(String profileApiResult) {
-        log.info("naver profile api info: {}", profileApiResult);
+        log.info("[naver profile api info] profileApiResult: {}", profileApiResult);
 
         NaverProfileApi.UserInfo userInfo = new NaverProfileApi.UserInfo();
         try {

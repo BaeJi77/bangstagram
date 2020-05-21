@@ -13,6 +13,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Arrays;
 import java.util.Date;
 
+/***
+ * author: Hyo-Jin Kim
+ * Date: 2020.05.05
+ */
+
 @Getter
 public class JWT {
     private final String issuer;
