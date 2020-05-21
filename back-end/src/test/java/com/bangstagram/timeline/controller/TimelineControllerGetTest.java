@@ -1,7 +1,7 @@
 package com.bangstagram.timeline.controller;
 
+import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
-import com.bangstagram.timeline.dto.TimelineResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -41,8 +42,6 @@ public class TimelineControllerGetTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private static final String TIMELINE_URL_PATH = "/timelines";
-
     @BeforeEach
     public void setUp() throws JSONException {
         timelineRepository.deleteAll();
@@ -59,7 +58,7 @@ public class TimelineControllerGetTest {
         jsonDummyList.stream()
                 .forEach(newTimelineData -> {
                     try {
-                        mockMvc.perform(post(TIMELINE_URL_PATH).contentType(MediaType.APPLICATION_JSON).content(newTimelineData.toString()));
+                        mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(newTimelineData.toString()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -67,10 +66,11 @@ public class TimelineControllerGetTest {
     }
 
     @Test
+    @WithMockUser(roles = {"USER_ROLE"})
     @DisplayName("(성공) 타임라인 가져오기 (userId): userId에 해당하는 timeline array 획득")
     public void isSuccessFindAllTimelineRelatedUserId() throws Exception {
         for (int i = 1; i <= 5 ; i++) {
-            MvcResult result = mockMvc.perform(get(TIMELINE_URL_PATH + "/" + i).contentType(MediaType.APPLICATION_JSON))
+            MvcResult result = mockMvc.perform(get("/timelines" + "/" + i).contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andReturn();
 
@@ -84,5 +84,4 @@ public class TimelineControllerGetTest {
         }
     }
 
-    // get하는데 실패하는 경우?
 }

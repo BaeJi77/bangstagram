@@ -4,6 +4,8 @@ import com.bangstagram.timeline.domain.model.Timeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * author: Ji-Hoon Bae
  * Date: 2020.04.28

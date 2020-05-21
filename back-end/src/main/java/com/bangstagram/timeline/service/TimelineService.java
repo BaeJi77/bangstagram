@@ -7,10 +7,12 @@ import com.bangstagram.timeline.controller.dto.request.TimelineUpdateRequestDto;
 import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.domain.model.Timeline;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
-import com.bangstagram.timeline.dto.TimelineRequestDto;
-import com.bangstagram.timeline.dto.TimelineResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * author: Ji-Hoon Bae

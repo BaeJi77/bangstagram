@@ -40,7 +40,7 @@ public class TimelineControllerCreateTest {
         MvcResult result = mockMvc.perform(post("/timelines")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(goodJsonData))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
         TimelineResponseDto newTimelineResponse
