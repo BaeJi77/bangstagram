@@ -1,6 +1,9 @@
-package com.bangstagram.api.timeline.service;
+package com.bangstagram.timeline.service;
 
 
+import com.bangstagram.timeline.controller.dto.request.TimelineRequestDto;
+import com.bangstagram.timeline.controller.dto.request.TimelineUpdateRequestDto;
+import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
 import com.bangstagram.timeline.dto.TimelineRequestDto;
 import com.bangstagram.timeline.dto.TimelineResponseDto;
@@ -12,11 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+/**
+ * author: Ji-Hoon Bae
+ * Date: 2020.04.29
+ */
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TimelineServiceTest {
     @Autowired
     private TimelineService timelineService;
@@ -30,11 +37,19 @@ public class TimelineServiceTest {
     }
 
     @Test
-    @DisplayName("(성공) 타임라인 만들기: DB 접속 후 데이터와 비교하기")
+    @DisplayName("(성공) 타임라인 만들기: 새로 만든 데이터와 기대값과 비교")
     public void isSuccessCreateNewTimeline() {
         // given => 데이터 셋업
-        TimelineResponseDto expectedTimelineResponseDto =
-                new TimelineResponseDto(1L, "new", "new", LocalDateTime.now(), 1L, 1L);
+        TimelineResponseDto expectedTimelineResponseDto
+                = TimelineResponseDto.builder()
+                .id(1L)
+                .title("new")
+                .body("new")
+                .userId(1L)
+                .roomId(1L)
+                .createdAt(LocalDateTime.now())
+                .build();
+
         TimelineRequestDto timelineRequestDto
                 = new TimelineRequestDto("new", "new", 1L, 1L);
 
@@ -66,5 +81,33 @@ public class TimelineServiceTest {
         assertThat(expectedTimelineResponseDto.getBody()).isEqualTo(foundResult.get(0).getBody());
         assertThat(expectedTimelineResponseDto.getRoomId()).isEqualTo(foundResult.get(0).getRoomId());
         assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(foundResult.get(0).getUserId());
+    }
+
+    @Test
+    @DisplayName("(성공) 타임라인 업데이트: 업데이트한 데이터와 기대값과 같은지 비교")
+    public void isSuccessUpdateTimeline() {
+        TimelineResponseDto expectedTimelineResponseDto
+                = TimelineResponseDto.builder()
+                .id(1L)
+                .title("new")
+                .body("new")
+                .userId(1L)
+                .roomId(1L)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        TimelineRequestDto oldTimelineRequestDto
+                = new TimelineRequestDto("old", "old", 1L, 1L);
+        TimelineUpdateRequestDto updateRequestDto
+                = new TimelineUpdateRequestDto("new", "new");
+
+        TimelineResponseDto oldTimelineResponseDto = timelineService.createNewTimeline(oldTimelineRequestDto);
+        TimelineResponseDto updatedTimelineResponseDto
+                = timelineService.updateTimeline(oldTimelineResponseDto.getId(), updateRequestDto);
+
+        assertThat(expectedTimelineResponseDto.getBody()).isEqualTo(updatedTimelineResponseDto.getBody());
+        assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(updatedTimelineResponseDto.getTitle());
+        assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(updatedTimelineResponseDto.getUserId());
+        assertThat(expectedTimelineResponseDto.getRoomId()).isEqualTo(updatedTimelineResponseDto.getRoomId());
     }
 }

@@ -21,11 +21,14 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'com.auth0:java-jwt:3.9.0'
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'org.apache.commons:commons-lang3:3.10'
+
     implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'org.projectlombok:lombok'
 
     //db
     implementation 'com.h2database:h2'
@@ -33,6 +36,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {

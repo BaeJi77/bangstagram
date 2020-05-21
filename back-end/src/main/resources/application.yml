@@ -41,3 +41,19 @@ spring:
     hibernate:
       ddl-auto: create-drop
     generate-ddl: true
+jwt:
+  token:
+    header: api_key
+    issuer: bangstagram_server
+    secret: h9y2o0z2k0i8m
+    expirySeconds: 0
+oauth:
+  naver:
+    clientId: XtF1W2Q5emLFga3N4wv0
+    clientSecret: GDb74_7kCw
+    tokenRequestUrl: https://nid.naver.com/oauth2.0/token
+    profileRequestUrl: https://openapi.naver.com/v1/nid/me
+  kakao:
+    clientId: 97baa0b614b0cff3ba0c550e515bfffb
+    tokenRequestUrl: https://kauth.kakao.com/oauth/token
+    profileRequestUrl: https://kapi.kakao.com/v2/user/me
