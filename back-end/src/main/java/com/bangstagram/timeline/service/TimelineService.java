@@ -11,8 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
 
 /**
  * author: Ji-Hoon Bae
@@ -60,7 +63,7 @@ public class TimelineService {
 
     @Transactional(readOnly = true)
     public List<TimelineResponseDto> getTimelineByUserId(Long userId) {
-        return timelineRepository.findByUserId(userId).stream()
+        return timelineRepository.findAllByUserId(userId).stream()
                 .map(timeline -> TimelineResponseDto.builder()
                         .id(timeline.getId())
                         .title(timeline.getTitle())
@@ -69,6 +72,6 @@ public class TimelineService {
                         .userId(timeline.getUserId())
                         .roomId(timeline.getRoomId())
                         .build())
-                .collect(Collectors.toList());
+                .collect(collectingAndThen(toList(), Collections::unmodifiableList)); // 불변성이 존재하는 리스트를 만든다
     }
 }

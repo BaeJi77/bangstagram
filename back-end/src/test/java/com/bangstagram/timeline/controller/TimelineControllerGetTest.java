@@ -4,7 +4,6 @@ import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +16,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,26 +41,16 @@ public class TimelineControllerGetTest {
     private ObjectMapper mapper;
 
     @BeforeEach
-    public void setUp() throws JSONException {
+    public void setUp() throws Exception {
         timelineRepository.deleteAll();
-        ArrayList<JSONObject> jsonDummyList = new ArrayList<>();
         for (int i = 1; i <= 5 ; i++) {
             JSONObject jsonDummy = new JSONObject();
             jsonDummy.put("title", "testTitle");
             jsonDummy.put("body", "testBody");
             jsonDummy.put("roomId", 1);
             jsonDummy.put("userId", (long) i);
-            jsonDummyList.add(jsonDummy);
+            mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(jsonDummy.toString()));
         }
-
-        jsonDummyList.stream()
-                .forEach(newTimelineData -> {
-                    try {
-                        mockMvc.perform(post("/timelines").contentType(MediaType.APPLICATION_JSON).content(newTimelineData.toString()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
     }
 
     @Test
@@ -83,5 +71,4 @@ public class TimelineControllerGetTest {
             assertThat(newTimelineList.get(0).getUserId()).isEqualTo((long) i);
         }
     }
-
 }

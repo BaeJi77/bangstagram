@@ -37,7 +37,7 @@ public class TimelineController {
     }
 
     @GetMapping("/timelines/{id}")
-    public List<TimelineResponseDto> getTimelineByid(@PathVariable long id) {
+    public List<TimelineResponseDto> getTimelineById(@PathVariable long id) {
         log.info("[get Timeline]: {}", id);
         return timelineService.getTimelineByUserId(id);
     }

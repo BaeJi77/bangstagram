@@ -13,5 +13,5 @@ import java.util.List;
 
 @Repository
 public interface TimelineRepository extends JpaRepository <Timeline, Long> {
-    List<Timeline> findByUserId(Long userId);
+    List<Timeline> findAllByUserId(Long id);
 }
