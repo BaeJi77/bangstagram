@@ -2,7 +2,6 @@ package com.bangstagram.room.service;
 
 import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.room.controller.dto.request.ThemeSaveRequestDto;
-import com.bangstagram.room.controller.dto.request.ThemeUpdateRequestDto;
 import com.bangstagram.room.controller.dto.response.ThemeResponseDto;
 import com.bangstagram.room.domain.model.Room;
 import com.bangstagram.room.domain.model.Theme;
@@ -46,6 +45,7 @@ public class ThemeService {
 
         return ThemeResponseDto.builder()
                 .id(theme.getId())
+                .roomId(room.getId())
                 .title(theme.getTitle())
                 .imgSrc(theme.getImgSrc())
                 .description(theme.getDescription())
