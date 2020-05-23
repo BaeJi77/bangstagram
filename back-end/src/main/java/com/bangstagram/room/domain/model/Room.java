@@ -12,7 +12,6 @@ import java.util.List;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ROOM_ID")
     private Long id;
 
     @Column(nullable = false)
@@ -27,39 +26,40 @@ public class Room {
 
     private String address;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Theme> themes = new ArrayList<>();
 
     public Room() {
     }
 
     @Builder
-    public Room(Long id, String title, String link, String description, String phone, String address, List<Theme> themes) {
+    public Room(Long id, String title, String link, String description, String phone, String address) {
         this.id = id;
         this.title = title;
         this.link = link;
         this.description = description;
         this.phone = phone;
         this.address = address;
-        this.themes.addAll(themes);
     }
 
-    public void update(String title, String link, String phone, String address, String description, List<Theme> themes) {
+    public void update(String title, String link, String phone, String address, String description) {
         this.title = title;
         this.link = link;
         this.phone = phone;
         this.address = address;
         this.description = description;
-        this.themes = themes;
     }
 
     public void addTheme(Theme theme) {
-        if(this.themes == null) {
-            this.themes = new ArrayList<>();
-        }
-        this.themes.add(theme);
-        if(theme.getRoom() != this) {
-            theme.setRoom(this);
-        }
+        themes.add(theme);
+    }
+
+    public void addThemes(List<Theme> themes) {
+        this.themes.addAll(themes);
+    }
+
+    public void updateThemes(List<Theme> themes) {
+        this.themes.clear();
+        this.themes.addAll(themes);
     }
 }
