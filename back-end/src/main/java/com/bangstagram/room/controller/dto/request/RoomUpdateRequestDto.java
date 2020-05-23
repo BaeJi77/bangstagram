@@ -1,6 +1,5 @@
 package com.bangstagram.room.controller.dto.request;
 
-import com.bangstagram.room.domain.model.Theme;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,13 +16,13 @@ public class RoomUpdateRequestDto {
     private String link;
     private String phone;
     private String description;
-    private List<Theme> themes;
+    private List<ThemeUpdateRequestDto> themes;
 
     public RoomUpdateRequestDto() {
     }
 
     @Builder
-    public RoomUpdateRequestDto(String title, String link, String phone, String address, String description, List<Theme> themes) {
+    public RoomUpdateRequestDto(String title, String link, String phone, String address, String description, List<ThemeUpdateRequestDto> themes) {
         this.title = title;
         this.link = link;
         this.phone = phone;
