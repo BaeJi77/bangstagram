@@ -23,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = RoomController.class,
-excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigure.class)
-})
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigure.class)
+        })
 public class RoomControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -34,7 +34,7 @@ public class RoomControllerTest {
     private RoomService roomService;
 
     @Test
-    @WithMockUser(roles = "USER_ROLE")
+    @WithMockUser(roles = "USER")
     @DisplayName("방탈출 리스트 조회 테스트")
     void findAllRooms() throws Exception {
         RoomResponseDto room = RoomResponseDto.builder()
@@ -54,7 +54,7 @@ public class RoomControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER_ROLE")
+    @WithMockUser(roles = "USER")
     @DisplayName("방탈출 ID 조회 테스트")
     void findById() throws Exception {
         RoomResponseDto room = RoomResponseDto.builder()
@@ -75,7 +75,7 @@ public class RoomControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER_ROLE")
+    @WithMockUser(roles = "USER")
     @DisplayName("방탈출 정보 지역별 검색")
     void searchRoomByRegion() throws Exception {
         RoomResponseDto room = RoomResponseDto.builder().title("room_title").address("서울 서초구 서초대로77길").build();
