@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * author: Ji-Hoon Bae
@@ -33,5 +34,11 @@ public class TimelineController {
     public TimelineResponseDto updateTimeline(@PathVariable("id") long id, @RequestBody @Valid TimelineUpdateRequestDto timelineUpdateRequestDto) {
         log.info("[update Timeline]: {}", timelineUpdateRequestDto);
         return timelineService.updateTimeline(id, timelineUpdateRequestDto);
+    }
+
+    @GetMapping("/timelines/{id}")
+    public List<TimelineResponseDto> getTimelineById(@PathVariable long id) {
+        log.info("[get Timeline]: {}", id);
+        return timelineService.getTimelineByUserId(id);
     }
 }

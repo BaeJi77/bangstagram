@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,8 +62,30 @@ public class TimelineServiceTest {
     }
 
     @Test
+    @DisplayName("(성공) 타임라인 가져오기: 특정 userId에 대하여 타임라인 얻기")
+    public void isSuccessGetAllTimelineRelatedUserId() {
+        // given => 데이터 셋업
+        long requestUserId = 1L;
+        TimelineResponseDto expectedTimelineResponseDto =
+                new TimelineResponseDto(1L, "foundTitle", "foundBody", LocalDateTime.now(), 1L, 1L);
+        for (int i = 1; i <= 5 ; i++) {
+            timelineService.createNewTimeline(new TimelineRequestDto("foundTitle", "foundBody", (long) i, 1L));
+        }
+
+        // when => 테스트하고 싶은 항목 실행
+        List<TimelineResponseDto> foundResult = timelineService.getTimelineByUserId(requestUserId);
+
+        // then => 비교
+        assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(foundResult.get(0).getTitle());
+        assertThat(expectedTimelineResponseDto.getBody()).isEqualTo(foundResult.get(0).getBody());
+        assertThat(expectedTimelineResponseDto.getRoomId()).isEqualTo(foundResult.get(0).getRoomId());
+        assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(foundResult.get(0).getUserId());
+    }
+
+    @Test
     @DisplayName("(성공) 타임라인 업데이트: 업데이트한 데이터와 기대값과 같은지 비교")
     public void isSuccessUpdateTimeline() {
+        // given => 데이터 셋업
         TimelineResponseDto expectedTimelineResponseDto
                 = TimelineResponseDto.builder()
                 .id(1L)
@@ -78,10 +101,12 @@ public class TimelineServiceTest {
         TimelineUpdateRequestDto updateRequestDto
                 = new TimelineUpdateRequestDto("new", "new");
 
+        // when => 테스트하고 싶은 항목 실행
         TimelineResponseDto oldTimelineResponseDto = timelineService.createNewTimeline(oldTimelineRequestDto);
         TimelineResponseDto updatedTimelineResponseDto
                 = timelineService.updateTimeline(oldTimelineResponseDto.getId(), updateRequestDto);
 
+        // then => 비교
         assertThat(expectedTimelineResponseDto.getBody()).isEqualTo(updatedTimelineResponseDto.getBody());
         assertThat(expectedTimelineResponseDto.getTitle()).isEqualTo(updatedTimelineResponseDto.getTitle());
         assertThat(expectedTimelineResponseDto.getUserId()).isEqualTo(updatedTimelineResponseDto.getUserId());
