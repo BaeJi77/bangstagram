@@ -6,7 +6,6 @@ import com.bangstagram.user.controller.dto.response.AuthResponseDto;
 import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /***
  * author: Hyo-Jin Kim
@@ -59,9 +59,6 @@ public class UserServiceTest {
         User user = response.getUser();
         assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getEmail(), is(email));
-
-        String jwtToken = response.getJwtToken();
-        assertThat(jwtToken, is(notNullValue()));
     }
 
     @Test
