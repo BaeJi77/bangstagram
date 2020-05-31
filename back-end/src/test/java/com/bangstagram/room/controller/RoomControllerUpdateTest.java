@@ -53,7 +53,7 @@ public class RoomControllerUpdateTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER_ROLE")
+    @WithMockUser(roles = "USER")
     void updateRoom() throws Exception {
         RoomUpdateRequestDto updateRequestDto = RoomUpdateRequestDto.builder()
                 .title("update_title")
@@ -62,7 +62,7 @@ public class RoomControllerUpdateTest {
                 .link("update_link")
                 .description("update_desc")
                 .build();
-        MvcResult mvcResult = mockMvc.perform(put("/rooms/"+id)
+        MvcResult mvcResult = mockMvc.perform(put("/rooms/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequestDto)))
                 .andExpect(status().isOk())

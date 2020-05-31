@@ -28,7 +28,7 @@ public class RoomControllerCreateTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @WithMockUser(roles = "USER_ROLE")
+    @WithMockUser(roles = "USER")
     @DisplayName("방탈출 정보 생성")
     void createRoom() throws Exception {
         RoomSaveRequestDto saveRequestDto = RoomSaveRequestDto.builder()
