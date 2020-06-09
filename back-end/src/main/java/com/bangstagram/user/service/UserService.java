@@ -5,6 +5,7 @@ import com.bangstagram.user.configure.security.JWT;
 import com.bangstagram.user.controller.dto.request.AuthRequestDto;
 import com.bangstagram.user.controller.dto.request.JoinRequestDto;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
+import com.bangstagram.user.controller.dto.response.CheckEmailResponseDto;
 import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
@@ -47,10 +48,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public boolean existsByEmail(String email) {
+    public CheckEmailResponseDto existsByEmail(String email) {
         checkNotNull(email, "email must be provided.");
 
-        return userRepository.existsByEmail(email);
+        return new CheckEmailResponseDto(userRepository.existsByEmail(email));
     }
 
     @Transactional(readOnly = true)
