@@ -66,8 +66,14 @@ public class TimelineServiceTest {
     public void isSuccessGetAllTimelineRelatedUserId() {
         // given => 데이터 셋업
         long requestUserId = 1L;
-        TimelineResponseDto expectedTimelineResponseDto =
-                new TimelineResponseDto(1L, "foundTitle", "foundBody", LocalDateTime.now(), 1L, 1L);
+        TimelineResponseDto expectedTimelineResponseDto = TimelineResponseDto.builder()
+                .id(1L)
+                .title("foundTitle")
+                .body("foundBody")
+                .userId(1L)
+                .roomId(1L)
+                .build();
+
         for (int i = 1; i <= 5 ; i++) {
             timelineService.createNewTimeline(new TimelineRequestDto("foundTitle", "foundBody", (long) i, 1L));
         }
