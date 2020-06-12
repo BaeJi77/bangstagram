@@ -2,85 +2,26 @@ ifndef::snippets[]
 :snippets: ../../../build/generated-snippets
 endif::[]
 
-:toc-title: 목차
-:sectlinks:
+= Banstagram Rest docs
 
-== 유저
+== 목차
+. <<유저>>
+.. <<회원가입>>
+.. <<로그인>>
+.. <<이메일 중복 체크>>
+. <<인증>>
+.. <<KAKAO 인증>>
+.. <<NAVER 인증>>
+. <<타임라인>>
+. <<타임라인 댓글>>
+. <<방탈출>>
+. <<테마>>
+. <<후기>>
 
-=== 이메일 중복 체크
-
-==== Request
-
-include::{snippets}/users/exists/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/users/exists/http-response.adoc[]
-
-include::{snippets}/users/exists/response-fields.adoc[]
-
-=== 회원 가입
-
-==== Request
-
-include::{snippets}/users/join/http-request.adoc[]
-
-==== Response
-include::{snippets}/users/join/http-response.adoc[]
-
-include::{snippets}/users/join/response-fields-user.adoc[]
-
-=== 로그인
-
-=== Request
-
-include::{snippets}/users/login/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/users/login/http-response.adoc[]
-
-include::{snippets}/users/login/response-fields.adoc[]
-
-
-== 인증
-
-=== kakao 인증
-
-==== Request
-
-include::{snippets}/oauth/kakao/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/oauth/kakao/http-response.adoc[]
-
-include::{snippets}/oauth/kakao/response-fields.adoc[]
-
-
-=== naver
-
-==== Request
-
-include::{snippets}/oauth/naver/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/oauth/naver/http-response.adoc[]
-
-include::{snippets}/oauth/naver/response-fields.adoc[]
-
-
-== 타임라인
-
-
-== 타임라인 댓글
-
-
-== 방탈출
-
-
-== 테마
-
-
-== 후기
+include::user.adoc[]
+include::oauth.adoc[]
+include::timeline.adoc[]
+include::timelineComment.adoc[]
+include::room.adoc[]
+include::theme.adoc[]
+include::review.adoc[]

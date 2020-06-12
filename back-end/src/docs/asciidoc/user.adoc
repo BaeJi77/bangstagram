@@ -1,0 +1,31 @@
+[#유저]
+== 유저
+
+[#회원가입]
+=== 회원 가입
+==== Request
+include::{snippets}/users/join/http-request.adoc[]
+
+==== Response
+include::{snippets}/users/join/http-response.adoc[]
+include::{snippets}/users/join/response-fields-user.adoc[]
+
+
+
+=== 이메일 중복 체크
+==== Request
+include::{snippets}/users/exists/http-request.adoc[]
+
+==== Response
+include::{snippets}/users/exists/http-response.adoc[]
+include::{snippets}/users/exists/response-fields.adoc[]
+
+[#로그인]
+=== 로그인
+=== Request
+include::{snippets}/users/login/http-request.adoc[]
+
+=== Response
+include::{snippets}/users/login/http-response.adoc[]
+include::{snippets}/users/login/response-fields.adoc[]
+
