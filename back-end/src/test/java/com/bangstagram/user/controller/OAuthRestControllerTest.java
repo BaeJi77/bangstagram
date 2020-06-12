@@ -1,25 +1,33 @@
 package com.bangstagram.user.controller;
 
 import com.bangstagram.user.configure.security.JWT;
-import com.bangstagram.user.controller.dto.request.JoinRequestDto;
 import com.bangstagram.user.controller.dto.response.AuthResponseDto;
-import com.bangstagram.user.controller.dto.response.JoinResponseDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.service.OAuthKakaoService;
 import com.bangstagram.user.service.OAuthNaverService;
-import com.bangstagram.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 
+import static com.bangstagram.common.ApiDocumentUtils.getDocumentRequest;
+import static com.bangstagram.common.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureRestDocs(uriScheme = "http", uriHost = "docs.api.com")
 class OAuthRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +56,9 @@ class OAuthRestControllerTest {
     @Test
     @DisplayName("네이버_소셜로그인_하기")
     void authNaver() throws Exception {
-        // 네이버 아이디로 회원가입 시키기
+        // given
+
+        // 1. 네이버 아이디로 회원가입
         User user = User.builder()
                 .id(1L)
                 .name("테스터")
@@ -66,19 +77,40 @@ class OAuthRestControllerTest {
         user.afterLoginSuccess();
         given(oAuthNaverService.login(exCode,exState)).willReturn(new AuthResponseDto(user,jwtToken));
 
-        mockMvc.perform(get("/oauth/naver")
+        ResultActions result = mockMvc.perform(get("/oauth/naver")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("code",exCode)
-                .param("state", exState))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .param("code", exCode)
+                .param("state", exState));
 
+        // when
+        when(oAuthNaverService.login(exCode,exState)).thenReturn(new AuthResponseDto(user,jwtToken));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(document("/oauth/naver",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestParameters(
+                                parameterWithName("code").description("네이버 인증 코드"),
+                                parameterWithName("state").description("네이버 인증 상태")
+                        ),
+                        responseFields(
+                                fieldWithPath("jwtToken").type(JsonFieldType.STRING).description("JWT토큰"),
+                                fieldWithPath("user.id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("user.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("user.email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("user.loginCount").type(JsonFieldType.NUMBER).description("로그인성공횟수"),
+                                fieldWithPath("user.lastLoginAt").type(JsonFieldType.ARRAY).description("마지막로그인날짜"),
+                                fieldWithPath("user.createAt").type(JsonFieldType.ARRAY).description("생성날짜")
+                        )
+                ))
+                .andDo(print());
     }
 
     @Test
     @DisplayName("카카오_소셜로그인_하기")
     void authKakao() throws Exception {
-        // 1. 카카오 아이디로 회원가입 시키기
+        // 1. 카카오 아이디로 회원가입
         User user = User.builder()
                 .id(1L)
                 .name("테스터")
@@ -95,10 +127,27 @@ class OAuthRestControllerTest {
         user.afterLoginSuccess();
         given(oAuthKakaoService.login(exCode)).willReturn(new AuthResponseDto(user,jwtToken));
 
-        mockMvc.perform(get("/oauth/kakao")
+        ResultActions result = mockMvc.perform(get("/oauth/kakao")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("code",exCode))
-                .andExpect(status().isOk())
+                .param("code",exCode));
+
+        result.andExpect(status().isOk())
+                .andDo(document("/oauth/kakao",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestParameters(
+                                parameterWithName("code").description("카카오 인증 코드")
+                        ),
+                        responseFields(
+                                fieldWithPath("jwtToken").type(JsonFieldType.STRING).description("JWT토큰"),
+                                fieldWithPath("user.id").type(JsonFieldType.NUMBER).description("아이디"),
+                                fieldWithPath("user.name").type(JsonFieldType.STRING).description("이름"),
+                                fieldWithPath("user.email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("user.loginCount").type(JsonFieldType.NUMBER).description("로그인성공횟수"),
+                                fieldWithPath("user.lastLoginAt").type(JsonFieldType.ARRAY).description("마지막로그인날짜"),
+                                fieldWithPath("user.createAt").type(JsonFieldType.ARRAY).description("생성날짜")
+                        )
+                ))
                 .andDo(print());
 
     }
