@@ -34,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureRestDocs(uriScheme = "http", uriHost = "docs.api.com")
 class UserRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -58,7 +58,8 @@ class UserRestControllerTest {
     @DisplayName("이메일_중복_확인하기")
     void checkExistedEmail() throws Exception {
         // given
-        join();
+//        join();
+//        userService.join()
 
         Map<String,String> request = new HashMap<>();
         request.put("email","sa01747@naver.com");
@@ -71,7 +72,7 @@ class UserRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/users/exists",
+                .andDo(document("users/exists",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
@@ -111,7 +112,7 @@ class UserRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/users/join",
+                .andDo(document("users/join",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
@@ -158,7 +159,7 @@ class UserRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/users/login",
+                .andDo(document("users/login",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
