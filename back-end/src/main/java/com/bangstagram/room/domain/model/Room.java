@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,11 +26,15 @@ public class Room {
 
     private String address;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Theme> themes = new ArrayList<>();
+
     public Room() {
     }
 
     @Builder
-    public Room(String title, String link, String description, String phone, String address) {
+    public Room(Long id, String title, String link, String description, String phone, String address) {
+        this.id = id;
         this.title = title;
         this.link = link;
         this.description = description;
@@ -42,5 +48,18 @@ public class Room {
         this.phone = phone;
         this.address = address;
         this.description = description;
+    }
+
+    public void addTheme(Theme theme) {
+        themes.add(theme);
+    }
+
+    public void addThemes(List<Theme> themes) {
+        this.themes.addAll(themes);
+    }
+
+    public void updateThemes(List<Theme> themes) {
+        this.themes.clear();
+        this.themes.addAll(themes);
     }
 }
