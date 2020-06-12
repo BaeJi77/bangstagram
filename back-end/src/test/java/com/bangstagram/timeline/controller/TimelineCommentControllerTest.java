@@ -48,7 +48,7 @@ class TimelineCommentControllerTest {
 
     // 성
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     @DisplayName("타임라인 코멘트 만들기: 모든 정보가 정상일 때")
     void createNewTimelineComment() throws Exception {
         //given
