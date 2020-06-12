@@ -122,17 +122,15 @@ class TimelineControllerTest {
             jsonDummy.put("body", "testBody");
             jsonDummy.put("roomId", 1);
             jsonDummy.put("userId", (long) i);
-            MvcResult result = mockMvc.perform(post("/timelines")
+            mockMvc.perform(post("/timelines")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(jsonDummy.toString()))
                     .andReturn();
 
-            TimelineResponseDto newTimeline
-                    = mapper.readValue(result.getResponse().getContentAsString(), TimelineResponseDto.class);
-            createdIdList.add(newTimeline.getId());
+            createdIdList.add((long) i);
         }
 
-        for (int i = 0; i < 5 ; i++) {
+        for (int i = 0 ; i < 5 ; i++) {
             MvcResult result = mockMvc.perform(get("/timelines" + "/" + createdIdList.get(i))
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
