@@ -4,10 +4,9 @@ import com.bangstagram.common.model.CommonEntity;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author: Ji-Hoon Bae
@@ -29,6 +28,10 @@ public class Timeline extends CommonEntity {
 
     private Long roomId;
 
+    @OneToMany
+    @JoinColumn
+    private List<TimelineComment> timelineComments = new ArrayList<>();
+
     public Timeline() {
     }
 
@@ -43,5 +46,9 @@ public class Timeline extends CommonEntity {
     public void update(String title, String body) {
         this.title = title;
         this.body = body;
+    }
+
+    public void addTimelineComment(TimelineComment timelineComment) {
+        this.timelineComments.add(timelineComment);
     }
 }

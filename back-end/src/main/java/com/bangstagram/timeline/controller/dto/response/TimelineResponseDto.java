@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author: Ji-Hoon Bae
@@ -18,18 +20,20 @@ public class TimelineResponseDto {
     private LocalDateTime createdAt;
     private Long userId;
     private Long roomId;
+    private List<TimelineCommentResponseDto> timelineComments = new ArrayList<>();
 
     public TimelineResponseDto() {
     }
 
     @Builder
-    public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, Long userId, Long roomId) {
+    public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, Long userId, Long roomId, List<TimelineCommentResponseDto> timelineComments) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.createdAt = createdAt;
         this.userId = userId;
         this.roomId = roomId;
+        this.timelineComments = timelineComments;
     }
 
     @Override
@@ -41,6 +45,7 @@ public class TimelineResponseDto {
                 ", createdAt=" + createdAt +
                 ", userId=" + userId +
                 ", roomId=" + roomId +
+                ", timelineComments=" + timelineComments +
                 '}';
     }
 }
