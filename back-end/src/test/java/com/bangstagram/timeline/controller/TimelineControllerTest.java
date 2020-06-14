@@ -43,7 +43,7 @@ class TimelineControllerTest {
 
     // 타임라인 create 로직 테스트
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 만들기: 모든 데이터 잘 들어갔을 때")
     public void isSuccessCreateTimelineWithGoodData() throws Exception {
         String goodJsonData = "{\n\t\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
@@ -63,7 +63,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 만들기: Title 없을 때")
     public void isFailCreateTimelineWithoutTitle() throws Exception {
         String jsonDataWithoutTitle = "{\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
@@ -75,7 +75,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 만들기: Body 없을 때")
     public void isFailCreateTimelineWithoutBody() throws Exception {
         String jsonDataWithoutBody = "{\n\t\"title\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
@@ -87,7 +87,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 만들기: UserId 없을 때")
     public void isFailCreateTimelineWithoutUserId() throws Exception {
         String jsonDataWithoutUserId = "{\n\t\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"roomId\": 1\n}";
@@ -99,7 +99,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 만들기: RoomId 없을 때")
     public void isFailCreateTimelineWithoutRoomId() throws Exception {
         String jsonDataWithoutRoomId = "{\n\t\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1}";
@@ -112,7 +112,7 @@ class TimelineControllerTest {
 
     // 타임라인 Get 로직 테스트
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 가져오기 (userId): userId에 해당하는 timeline array 획득")
     public void isSuccessFindAllTimelineRelatedUserId() throws Exception {
         ArrayList<Long> createdIdList = new ArrayList<Long>();
@@ -150,7 +150,7 @@ class TimelineControllerTest {
 
     // 타임라인 Update 로직 테스트
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 업데이트: 해당 Id가 존재 + 모든 데이터 존재할 경우")
     public void isSuccessUpdateTimeline() throws Exception {
         String createNewTimelineJson = "{\"title\": \"hoon\",\n\t\"body\": \"hoon\",\n\t\"userId\": 1,\n\t\"roomId\": 1\n}";
@@ -177,7 +177,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 업데이트: 존재하지 않는 id 업데이트를 한 경우")
     public void isFailDoNotExistTimelineId() throws Exception {
         String doNotExistTimeline = "/timelines/987654321";
@@ -190,7 +190,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 업데이트: Title 없을 때")
     public void isFailUpdateTimelineWithoutTitle() throws Exception {
         String jsonDataWithoutTitle = "{\"body\": \"hoon\"}";
@@ -202,7 +202,7 @@ class TimelineControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER_ROLE"})
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 업데이트: Body 없을 때")
     public void isFailUpdateTimelineWithoutBody() throws Exception {
         String jsonDataWithoutBody = "{\"title\": \"new\"}";
