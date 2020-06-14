@@ -7,22 +7,32 @@ import com.bangstagram.room.service.ReviewService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Collections;
 
+import static com.bangstagram.common.ApiDocumentUtils.getDocumentRequest;
+import static com.bangstagram.common.ApiDocumentUtils.getDocumentResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @SpringBootTest
 class ReviewControllerTest {
@@ -62,11 +72,42 @@ class ReviewControllerTest {
                         .build());
 
         // when
-        byte[] contentAsByteArray = mockMvc.perform(post("/rooms/{roomId}/themes/{themeId}/reviews", 1L, 1L)
-                .content(objectMapper.writeValueAsString(saveRequestDto))
-                .contentType(MediaType.APPLICATION_JSON))
+        ResultActions result = mockMvc.perform(post("/rooms/{roomId}/themes/{themeId}/reviews", 1L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(saveRequestDto)));
+
+        byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("/rooms/review-create",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("roomId").description("방탈출 id"),
+                                parameterWithName("themeId").description("테마 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("themeId").type(JsonFieldType.NUMBER).description("테마 id"),
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("별점"),
+                                fieldWithPath("level").type(JsonFieldType.STRING).description("난이도"),
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공/실패"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰내용"),
+                                fieldWithPath("leftTime").type(JsonFieldType.NUMBER).description("남은 시간"),
+                                fieldWithPath("hintCount").type(JsonFieldType.NUMBER).description("힌트 사용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("리뷰 id"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("themeId").type(JsonFieldType.NUMBER).description("테마 id"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰내용"),
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("별점"),
+                                fieldWithPath("level").type(JsonFieldType.STRING).description("난이도"),
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공/실패"),
+                                fieldWithPath("leftTime").type(JsonFieldType.NUMBER).description("남은 시간"),
+                                fieldWithPath("hintCount").type(JsonFieldType.NUMBER).description("힌트 사용")
+                        )
+                ))
                 .andDo(print())
                 .andReturn().getResponse().getContentAsByteArray();
 
@@ -99,9 +140,33 @@ class ReviewControllerTest {
         given(reviewService.findByThemeId(any(Long.class), any(Long.class))).willReturn(Collections.singletonList(reviewResponseDto));
 
         // when
-        byte[] contentAsByteArray = mockMvc.perform(get("/rooms/{roomId}/themes/{themeId}/reviews", 1L, 1L))
+        ResultActions result = mockMvc.perform(get("/rooms/{roomId}/themes/{themeId}/reviews", 1L, 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("/rooms/review-find",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("roomId").description("방탈출 id"),
+                                parameterWithName("themeId").description("테마 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("리뷰 list"),
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("리뷰 id"),
+                                fieldWithPath("[].userId").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("[].themeId").type(JsonFieldType.NUMBER).description("테마 id"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("리뷰내용"),
+                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("별점"),
+                                fieldWithPath("[].level").type(JsonFieldType.STRING).description("난이도"),
+                                fieldWithPath("[].success").type(JsonFieldType.BOOLEAN).description("성공/실패"),
+                                fieldWithPath("[].leftTime").type(JsonFieldType.NUMBER).description("남은 시간"),
+                                fieldWithPath("[].hintCount").type(JsonFieldType.NUMBER).description("힌트 사용")
+                        )
+                ))
                 .andDo(print())
                 .andReturn().getResponse().getContentAsByteArray();
 
@@ -143,11 +208,41 @@ class ReviewControllerTest {
                         .build());
 
         // when
-        byte[] contentAsByteArray = mockMvc.perform(put("/rooms/{roomId}/themes/{themeId}/reviews/{reviewId}", 1L, 1L, 1L)
+        ResultActions result = mockMvc.perform(put("/rooms/{roomId}/themes/{themeId}/reviews/{reviewId}", 1L, 1L, 1L)
                 .content(objectMapper.writeValueAsString(updateRequestDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON));
+
+        byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andDo(document("/rooms/review-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("roomId").description("방탈출 id"),
+                                parameterWithName("themeId").description("테마 id"),
+                                parameterWithName("reviewId").description("리뷰 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("별점"),
+                                fieldWithPath("level").type(JsonFieldType.STRING).description("난이도"),
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공/실패"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰내용"),
+                                fieldWithPath("leftTime").type(JsonFieldType.NUMBER).description("남은 시간"),
+                                fieldWithPath("hintCount").type(JsonFieldType.NUMBER).description("힌트 사용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("리뷰 id"),
+                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("themeId").type(JsonFieldType.NUMBER).description("테마 id"),
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰내용"),
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("별점"),
+                                fieldWithPath("level").type(JsonFieldType.STRING).description("난이도"),
+                                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공/실패"),
+                                fieldWithPath("leftTime").type(JsonFieldType.NUMBER).description("남은 시간"),
+                                fieldWithPath("hintCount").type(JsonFieldType.NUMBER).description("힌트 사용")
+                        )
+                ))
                 .andDo(print())
                 .andReturn().getResponse().getContentAsByteArray();
 
@@ -164,6 +259,15 @@ class ReviewControllerTest {
     void deleteReview() throws Exception {
         mockMvc.perform(delete("/rooms/{roomId}/themes/{themeId}/reviews/{reviewId}", 1L, 1L, 1L))
                 .andExpect(status().isOk())
+                .andDo(document("/rooms/review-delete",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("roomId").description("방탈출 id"),
+                                parameterWithName("themeId").description("테마 id"),
+                                parameterWithName("reviewId").description("리뷰 id")
+                        ))
+                )
                 .andDo(print());
     }
 }
