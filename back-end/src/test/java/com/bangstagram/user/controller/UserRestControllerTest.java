@@ -1,5 +1,6 @@
 package com.bangstagram.user.controller;
 
+import com.bangstagram.user.controller.dto.request.JoinRequestDto;
 import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
 import com.bangstagram.user.service.UserService;
@@ -34,8 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureRestDocs(uriScheme = "http", uriHost = "docs.api.com")
 class UserRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -58,12 +59,13 @@ class UserRestControllerTest {
     @DisplayName("이메일_중복_확인하기")
     void checkExistedEmail() throws Exception {
         // given
-        join();
+        JoinRequestDto joinRequestDto = new JoinRequestDto("name","sa01747@naver.com", "test1234");
+        userService.join(joinRequestDto); //join
 
+        // when
         Map<String,String> request = new HashMap<>();
         request.put("email","sa01747@naver.com");
 
-        // when
         ObjectMapper mapper = new ObjectMapper();
         ResultActions result = mockMvc.perform(post("/users/exists")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,14 +73,14 @@ class UserRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/users/exists",
+                .andDo(document("users/exists",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
                         ),
                         responseFields(
-                                fieldWithPath("result").type(JsonFieldType.BOOLEAN).description("이메일 중복 유무 결과")
+                                fieldWithPath("result").type(JsonFieldType.BOOLEAN).description("이메일 중복 유무")
                         )
                 ))
                 .andDo(print());
@@ -111,7 +113,7 @@ class UserRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/users/join",
+                .andDo(document("users/join",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
@@ -146,7 +148,7 @@ class UserRestControllerTest {
                 .build();
 
         // when
-        join(); // 회원가입
+        userService.join(new JoinRequestDto(user.getName(), user.getEmail(), user.getPassword())); // join
 
         Map<String, String> requestBody = new HashMap();
         requestBody.put("principal", user.getEmail());
@@ -158,7 +160,7 @@ class UserRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/users/login",
+                .andDo(document("users/login",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(

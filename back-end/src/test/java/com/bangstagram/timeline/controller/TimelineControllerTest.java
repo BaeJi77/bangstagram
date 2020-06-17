@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -16,15 +17,18 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TimelineControllerTest {
     @Autowired
@@ -51,7 +55,16 @@ class TimelineControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(goodJsonData))
                 .andExpect(status().isOk())
-                .andDo(print())
+                .andDo(document("timeline/create",
+                        responseFields(
+                                fieldWithPath("id").description("timeline id"),
+                                fieldWithPath("title").description("title"),
+                                fieldWithPath("body").description("body"),
+                                fieldWithPath("userId").description("userId"),
+                                fieldWithPath("roomId").description("roomId"),
+                                fieldWithPath("createdAt").description("created time")
+                        )
+                ))
                 .andReturn();
         TimelineResponseDto newTimelineResponse
                 = mapper.readValue(result.getResponse().getContentAsString(), TimelineResponseDto.class);
@@ -113,39 +126,40 @@ class TimelineControllerTest {
     // 타임라인 Get 로직 테스트
     @Test
     @WithMockUser(roles = {"USER"})
-    @DisplayName("타임라인 가져오기 (userId): userId에 해당하는 timeline array 획득")
+    @DisplayName("타임라인 가져오기 : 데이터 만들고 잘 찾아오는지 체크")
     public void isSuccessFindAllTimelineRelatedUserId() throws Exception {
-        ArrayList<Long> createdIdList = new ArrayList<Long>();
-        for (int i = 1; i <= 5 ; i++) {
-            JSONObject jsonDummy = new JSONObject();
-            jsonDummy.put("title", "testTitle");
-            jsonDummy.put("body", "testBody");
-            jsonDummy.put("roomId", 1);
-            jsonDummy.put("userId", (long) i);
-            MvcResult result = mockMvc.perform(post("/timelines")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(jsonDummy.toString()))
-                    .andReturn();
+        JSONObject jsonDummy = new JSONObject();
+        jsonDummy.put("title", "testTitle");
+        jsonDummy.put("body", "testBody");
+        jsonDummy.put("roomId", 1);
+        jsonDummy.put("userId", (long) 1);
+        MvcResult createdResult = mockMvc.perform(post("/timelines")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonDummy.toString()))
+                .andExpect(status().isOk())
+                .andReturn();
 
-            TimelineResponseDto newTimeline
-                    = mapper.readValue(result.getResponse().getContentAsString(), TimelineResponseDto.class);
-            createdIdList.add(newTimeline.getId());
-        }
+        TimelineResponseDto madeTimeline
+                = mapper.readValue(createdResult.getResponse().getContentAsString(), TimelineResponseDto.class);
 
-        for (int i = 0; i < 5 ; i++) {
-            MvcResult result = mockMvc.perform(get("/timelines" + "/" + createdIdList.get(i))
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andReturn();
+        assertThat(madeTimeline.getTitle()).isEqualTo(madeTimeline.getTitle());
 
-            List<TimelineResponseDto> newTimelineList
-                    = mapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<TimelineResponseDto>>() {});
+        MvcResult getResult = mockMvc.perform(get("/timelines" + "/" + madeTimeline.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
 
-            assertThat(newTimelineList.get(0).getTitle()).isEqualTo("testTitle");
-            assertThat(newTimelineList.get(0).getBody()).isEqualTo("testBody");
-            assertThat(newTimelineList.get(0).getRoomId()).isEqualTo(1L);
-            assertThat(newTimelineList.get(0).getUserId()).isEqualTo((long) createdIdList.get(i));
-        }
+        List<TimelineResponseDto> newTimelineList
+                = mapper.readValue(getResult.getResponse().getContentAsString(), new TypeReference<List<TimelineResponseDto>>() {});
+
+        System.out.println(madeTimeline);
+        System.out.println(newTimelineList);
+
+        assertThat(newTimelineList.size()).isEqualTo(1);
+        assertThat(newTimelineList.get(0).getTitle()).isEqualTo("testTitle");
+        assertThat(newTimelineList.get(0).getBody()).isEqualTo("testBody");
+        assertThat(newTimelineList.get(0).getRoomId()).isEqualTo(1L);
+        assertThat(newTimelineList.get(0).getUserId()).isEqualTo((long) 1);
     }
 
     // 타임라인 Update 로직 테스트

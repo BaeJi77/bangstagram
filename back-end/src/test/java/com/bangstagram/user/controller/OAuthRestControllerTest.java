@@ -38,8 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureRestDocs(uriScheme = "http", uriHost = "docs.api.com")
 class OAuthRestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -87,7 +87,7 @@ class OAuthRestControllerTest {
 
         // then
         result.andExpect(status().isOk())
-                .andDo(document("/oauth/naver",
+                .andDo(document("oauth/naver",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestParameters(
@@ -132,7 +132,7 @@ class OAuthRestControllerTest {
                 .param("code",exCode));
 
         result.andExpect(status().isOk())
-                .andDo(document("/oauth/kakao",
+                .andDo(document("oauth/kakao",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestParameters(
