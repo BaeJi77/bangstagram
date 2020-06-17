@@ -126,7 +126,7 @@ class TimelineControllerTest {
     // 타임라인 Get 로직 테스트
     @Test
     @WithMockUser(roles = {"USER"})
-    @DisplayName("타임라인 가져오기 (userId): userId에 해당하는 timeline array 획득")
+    @DisplayName("타임라인 가져오기 : 데이터 만들고 잘 찾아오는지 체크")
     public void isSuccessFindAllTimelineRelatedUserId() throws Exception {
         JSONObject jsonDummy = new JSONObject();
         jsonDummy.put("title", "testTitle");
@@ -149,6 +149,10 @@ class TimelineControllerTest {
         List<TimelineResponseDto> newTimelineList
                 = mapper.readValue(getResult.getResponse().getContentAsString(), new TypeReference<List<TimelineResponseDto>>() {});
 
+        System.out.println(madeTimeline);
+        System.out.println(newTimelineList);
+
+        assertThat(newTimelineList.size()).isEqualTo(1);
         assertThat(newTimelineList.get(0).getTitle()).isEqualTo("testTitle");
         assertThat(newTimelineList.get(0).getBody()).isEqualTo("testBody");
         assertThat(newTimelineList.get(0).getRoomId()).isEqualTo(1L);
