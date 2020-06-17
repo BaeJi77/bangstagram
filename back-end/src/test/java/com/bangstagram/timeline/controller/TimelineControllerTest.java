@@ -136,10 +136,13 @@ class TimelineControllerTest {
         MvcResult createdResult = mockMvc.perform(post("/timelines")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonDummy.toString()))
+                .andExpect(status().isOk())
                 .andReturn();
 
         TimelineResponseDto madeTimeline
                 = mapper.readValue(createdResult.getResponse().getContentAsString(), TimelineResponseDto.class);
+
+        assertThat(madeTimeline.getTitle()).isEqualTo(madeTimeline.getTitle());
 
         MvcResult getResult = mockMvc.perform(get("/timelines" + "/" + madeTimeline.getId())
                 .contentType(MediaType.APPLICATION_JSON))
