@@ -1,0 +1,27 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+= Banstagram Rest docs
+
+== 목차
+. <<유저>>
+.. <<회원가입>>
+.. <<로그인>>
+.. <<이메일 중복 체크>>
+. <<인증>>
+.. <<KAKAO 인증>>
+.. <<NAVER 인증>>
+. <<타임라인>>
+. <<타임라인 댓글>>
+. <<방탈출>>
+. <<테마>>
+. <<후기>>
+
+include::user.adoc[]
+include::oauth.adoc[]
+include::timeline.adoc[]
+include::timelineComment.adoc[]
+include::room.adoc[]
+include::theme.adoc[]
+include::review.adoc[]

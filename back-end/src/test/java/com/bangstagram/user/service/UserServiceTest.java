@@ -64,13 +64,13 @@ public class UserServiceTest {
     @Test
     @DisplayName("이메일_중복조회한다")
     void isExistedEmail() {
-        boolean isExist = userService.existsByEmail(email);
+        boolean isExist = userService.existsByEmail(email).isResult();
         assertThat(isExist, is(false));
 
         // 회원가입 -> 이메일 DB에 저장.
         userService.join(new JoinRequestDto(name, email, password));
 
-        isExist = userService.existsByEmail(email);
+        isExist = userService.existsByEmail(email).isResult();
         assertThat(isExist, is(true));
     }
 
