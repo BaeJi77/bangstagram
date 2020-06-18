@@ -1,5 +1,6 @@
 package com.bangstagram.user.service;
 
+import com.bangstagram.common.exception.AlreadyExistsException;
 import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.user.configure.security.JWT;
 import com.bangstagram.user.controller.dto.request.AuthRequestDto;
@@ -14,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Optional;
 
 /***
  * author: Hyo-Jin Kim
@@ -38,7 +39,11 @@ public class UserService {
 
     @Transactional
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
-        User user = save(joinRequestDto.newUser(passwordEncoder));
+        User user = findByEmail(joinRequestDto.getEmail()).orElse(null);
+        if( user != null )
+            throw new AlreadyExistsException("이미 생성된 계정이 있습니다. userEmail: " + user.getEmail());
+
+        user = save(joinRequestDto.newUser(passwordEncoder));
 
         return new JoinResponseDto(user);
     }
@@ -49,14 +54,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public CheckEmailResponseDto existsByEmail(String email) {
-        checkNotNull(email, "email must be provided.");
-
         return new CheckEmailResponseDto(userRepository.existsByEmail(email));
     }
 
     @Transactional(readOnly = true)
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new DoNotExistException("user not found."));
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Transactional
@@ -64,7 +67,7 @@ public class UserService {
         String email = authRequestDto.getPrincipal();
         String password = authRequestDto.getCredentials();
 
-        User user = findByEmail(email);
+        User user = findByEmail(email).orElseThrow(() -> new DoNotExistException("요청하신 사용자가 없습니다."));
         user.login(passwordEncoder, password);
         user.afterLoginSuccess();
 
@@ -75,9 +78,7 @@ public class UserService {
 
     @Transactional
     public AuthResponseDto authLogin(String email) {
-        checkNotNull(email, "email must be provided.");
-
-        User user = findByEmail(email);
+        User user = findByEmail(email).orElseThrow(() -> new DoNotExistException("요청하신 사용자가 없습니다."));
         user.afterLoginSuccess();
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"ROLE_USER"});
