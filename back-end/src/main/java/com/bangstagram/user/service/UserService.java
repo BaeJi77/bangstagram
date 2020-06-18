@@ -41,7 +41,7 @@ public class UserService {
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
         User user = findByEmail(joinRequestDto.getEmail()).orElse(null);
         if( user != null )
-            throw new AlreadyExistsException("이미 생성된 계정이 있습니다. userEmail: " + user.getEmail());
+            throw new AlreadyExistsException("이미 가입한 계정이 있습니다. userEmail: " + user.getEmail());
 
         user = save(joinRequestDto.newUser(passwordEncoder));
 
