@@ -7,7 +7,6 @@ import com.bangstagram.room.controller.dto.request.ThemeSaveRequestDto;
 import com.bangstagram.room.controller.dto.request.ThemeUpdateRequestDto;
 import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.domain.model.Room;
-import com.bangstagram.room.domain.model.Theme;
 import com.bangstagram.room.domain.repository.RoomRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class RoomService {
                         .link(room.getLink())
                         .phone(room.getPhone())
                         .description(room.getDescription())
-                        .themes(room.getThemes())
+                        //.themes(room.getThemes())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -48,7 +47,7 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
-                .themes(room.getThemes())
+                //.themes(room.getThemes())
                 .build();
     }
 
@@ -62,7 +61,7 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
-                .themes(room.getThemes())
+                //.themes(room.getThemes())
                 .build();
     }
 
@@ -79,7 +78,7 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
-                .themes(room.getThemes())
+                //.themes(room.getThemes())
                 .build();
     }
 
@@ -91,7 +90,7 @@ public class RoomService {
                         .link(room.getLink())
                         .phone(room.getPhone())
                         .description(room.getDescription())
-                        .themes(room.getThemes())
+                        //.themes(room.getThemes())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -103,6 +102,7 @@ public class RoomService {
     @Transactional
     public RoomResponseDto addThemes(Long id, List<ThemeSaveRequestDto> requestDtos) {
         Room room = findRoomById(id);
+        /*
         room.addThemes(requestDtos.stream().map(dto -> Theme.builder()
                 .title(dto.getTitle())
                 .imgSrc(dto.getImgSrc())
@@ -110,6 +110,7 @@ public class RoomService {
                 .genre(dto.getGenre())
                 .build())
                 .collect(Collectors.toList()));
+         */
 
         return RoomResponseDto.builder()
                 .id(room.getId())
@@ -118,13 +119,14 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
-                .themes(room.getThemes())
+                //.themes(room.getThemes())
                 .build();
     }
 
     @Transactional
     public RoomResponseDto updateThemes(Long id, List<ThemeUpdateRequestDto> requestDtos) {
         Room room = findRoomById(id);
+        /*
         room.updateThemes(requestDtos.stream().map(dto -> Theme.builder()
                 .title(dto.getTitle())
                 .imgSrc(dto.getImgSrc())
@@ -132,6 +134,7 @@ public class RoomService {
                 .genre(dto.getGenre())
                 .build())
                 .collect(Collectors.toList()));
+         */
 
         return RoomResponseDto.builder()
                 .id(room.getId())
@@ -140,7 +143,7 @@ public class RoomService {
                 .link(room.getLink())
                 .phone(room.getPhone())
                 .description(room.getDescription())
-                .themes(room.getThemes())
+                //.themes(room.getThemes())
                 .build();
     }
 

@@ -12,6 +12,9 @@ public class Theme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    private Room room;
+
     @Column(nullable = false)
     private String title;
     private String imgSrc;
@@ -26,6 +29,17 @@ public class Theme {
     @Builder
     public Theme(Long id, String title, String imgSrc, String description, String genre) {
         this.id = id;
+        this.title = title;
+        this.imgSrc = imgSrc;
+        this.description = description;
+        this.genre = genre;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public void update(String title, String imgSrc, String description, String genre) {
         this.title = title;
         this.imgSrc = imgSrc;
         this.description = description;

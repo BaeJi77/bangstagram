@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,8 +24,8 @@ public class Room {
 
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Theme> themes = new ArrayList<>();
+    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Theme> themes = new ArrayList<>();*/
 
     public Room() {
     }
@@ -49,7 +47,7 @@ public class Room {
         this.address = address;
         this.description = description;
     }
-
+/*
     public void addTheme(Theme theme) {
         themes.add(theme);
     }
@@ -61,5 +59,5 @@ public class Room {
     public void updateThemes(List<Theme> themes) {
         this.themes.clear();
         this.themes.addAll(themes);
-    }
+    }*/
 }

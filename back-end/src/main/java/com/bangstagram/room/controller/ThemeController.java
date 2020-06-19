@@ -7,6 +7,7 @@ import com.bangstagram.room.service.ThemeService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class ThemeController {
@@ -16,13 +17,23 @@ public class ThemeController {
         this.themeService = themeService;
     }
 
-    @GetMapping("/themes/{id}")
-    public ThemeResponseDto findThemeById(@PathVariable Long id) {
-        return themeService.findById(id);
+    @GetMapping("/rooms/{roomId}/themes/{themeId}")
+    public ThemeResponseDto findThemeById(@PathVariable Long roomId, @PathVariable Long themeId) {
+        return themeService.findById(themeId);
     }
 
-    @PostMapping("/themes")
-    public ThemeResponseDto createTheme(@RequestBody @Valid ThemeSaveRequestDto requestDto) {
-        return themeService.createTheme(requestDto);
+    @GetMapping("/rooms/{roomId}/themes")
+    public List<ThemeResponseDto> findThemesByRoomId(@PathVariable Long roomId) {
+        return themeService.findByRoomId(roomId);
+    }
+
+    @PostMapping("/rooms/{roomId}/themes")
+    public ThemeResponseDto createTheme(@PathVariable Long roomId, @RequestBody @Valid ThemeSaveRequestDto requestDto) {
+        return themeService.createTheme(roomId, requestDto);
+    }
+
+    @PutMapping("/rooms/{roomId}/themes/{themeId}")
+    public ThemeResponseDto updateTheme(@PathVariable Long roomId, @PathVariable Long themeId, @RequestBody @Valid ThemeUpdateRequestDto requestDto) {
+        return themeService.updateTheme(roomId, themeId, requestDto);
     }
 }
