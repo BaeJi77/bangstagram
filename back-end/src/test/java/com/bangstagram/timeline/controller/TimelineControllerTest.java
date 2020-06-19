@@ -60,7 +60,7 @@ class TimelineControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(goodJsonData))
                 .andExpect(status().isOk())
-                .andDo(document("timeline/create",
+                .andDo(document("timelines/create",
                         responseFields(
                                 fieldWithPath("id")
                                         .description("만들어진 timeline id"),
@@ -159,7 +159,7 @@ class TimelineControllerTest {
         MvcResult getResult = mockMvc.perform(get("/timelines" + "/" + madeTimeline.getUserId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("timeline/get",
+                .andDo(document("timelines/get",
                         responseFields(
                                 fieldWithPath("[].id")
                                         .description("업데이트된 timeline id"),
@@ -207,7 +207,7 @@ class TimelineControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updateJson))
                 .andExpect(status().isOk())
-                .andDo(document("timeline/update",
+                .andDo(document("timelines/update",
                         responseFields(
                                 fieldWithPath("id")
                                         .description("업데이트된 timeline id"),

@@ -1,2 +1,10 @@
 [#타임라인댓글]
 == 타임라인 댓글
+
+=== 타임라인 코멘트 만들기
+==== Request
+include::{snippets}/timelines/comments/create/http-request.adoc[]
+
+==== Response
+include::{snippets}/timelines/comments/create/http-response.adoc[]
+include::{snippets}/timelines/comments/create/response-fields.adoc[]

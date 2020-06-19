@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -17,6 +18,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TimelineCommentControllerTest {
     @Autowired
@@ -73,6 +78,18 @@ class TimelineCommentControllerTest {
                 .content(objectMapper.writeValueAsString(testDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
+                .andDo(document("timelines/comments/create",
+                        responseFields(
+                            fieldWithPath("id")
+                                .description("만들어진 타임라인 코멘트 ID"),
+                            fieldWithPath("comment")
+                                .description(""),
+                            fieldWithPath("userId")
+                                .description("만든 User ID"),
+                            fieldWithPath("timelineId")
+                                .description("연결되어있는 Timeline ID")
+                        )
+                ))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsByteArray();
 
