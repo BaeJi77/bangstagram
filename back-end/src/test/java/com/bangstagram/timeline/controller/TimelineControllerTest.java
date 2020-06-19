@@ -28,6 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/***
+ * author: Ji-Hoon, Bae
+ * date: 2020.04.29
+ */
+
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
