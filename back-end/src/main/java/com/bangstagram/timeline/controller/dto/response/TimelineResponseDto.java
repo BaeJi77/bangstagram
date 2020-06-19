@@ -33,7 +33,6 @@ public class TimelineResponseDto {
         this.createdAt = createdAt;
         this.userId = userId;
         this.roomId = roomId;
-        this.timelineComments = timelineComments;
     }
 
     @Override

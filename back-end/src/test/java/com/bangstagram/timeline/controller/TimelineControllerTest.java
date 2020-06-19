@@ -9,14 +9,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +46,6 @@ class TimelineControllerTest {
         timelineRepository.deleteAll();
     }
 
-    // 타임라인 create 로직 테스트
     @Test
     @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 만들기: 모든 데이터 잘 들어갔을 때")
@@ -57,12 +57,22 @@ class TimelineControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("timeline/create",
                         responseFields(
-                                fieldWithPath("id").description("timeline id"),
-                                fieldWithPath("title").description("title"),
-                                fieldWithPath("body").description("body"),
-                                fieldWithPath("userId").description("userId"),
-                                fieldWithPath("roomId").description("roomId"),
-                                fieldWithPath("createdAt").description("created time")
+                                fieldWithPath("id")
+                                        .description("만들어진 timeline id"),
+                                fieldWithPath("title")
+                                        .description("만들어진 제목"),
+                                fieldWithPath("body")
+                                        .description("만들어진 본문"),
+                                fieldWithPath("userId")
+                                        .description("해당 userId"),
+                                fieldWithPath("roomId")
+                                        .description("해당 roomId"),
+                                fieldWithPath("createdAt")
+                                        .description("만들어진 시간"),
+                                fieldWithPath("timelineComments")
+                                        .optional()
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("타임라인에 대한 댓글들")
                         )
                 ))
                 .andReturn();
@@ -123,7 +133,6 @@ class TimelineControllerTest {
                 .andDo(print());
     }
 
-    // 타임라인 Get 로직 테스트
     @Test
     @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 가져오기 : 데이터 만들고 잘 찾아오는지 체크")
@@ -142,27 +151,39 @@ class TimelineControllerTest {
         TimelineResponseDto madeTimeline
                 = mapper.readValue(createdResult.getResponse().getContentAsString(), TimelineResponseDto.class);
 
-        assertThat(madeTimeline.getTitle()).isEqualTo(madeTimeline.getTitle());
-
-        MvcResult getResult = mockMvc.perform(get("/timelines" + "/" + madeTimeline.getId())
+        MvcResult getResult = mockMvc.perform(get("/timelines" + "/" + madeTimeline.getUserId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andDo(document("timeline/get",
+                        responseFields(
+                                fieldWithPath("[].id")
+                                        .description("업데이트된 timeline id"),
+                                fieldWithPath("[].title")
+                                        .description("업데이트된 제목"),
+                                fieldWithPath("[].body")
+                                        .description("업데이트된 본문"),
+                                fieldWithPath("[].userId")
+                                        .description("해당 userId"),
+                                fieldWithPath("[].roomId")
+                                        .description("해당 roomId"),
+                                fieldWithPath("[].createdAt")
+                                        .description("만들어진 시간"),
+                                fieldWithPath("[].timelineComments")
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("타임라인에 대한 댓글들")
+                        )))
                 .andReturn();
 
         List<TimelineResponseDto> newTimelineList
-                = mapper.readValue(getResult.getResponse().getContentAsString(), new TypeReference<List<TimelineResponseDto>>() {});
+                = mapper.readValue(getResult.getResponse().getContentAsString(), new TypeReference<List<TimelineResponseDto>>() {
+        });
 
-        System.out.println(madeTimeline);
-        System.out.println(newTimelineList);
-
-        assertThat(newTimelineList.size()).isEqualTo(1);
         assertThat(newTimelineList.get(0).getTitle()).isEqualTo("testTitle");
         assertThat(newTimelineList.get(0).getBody()).isEqualTo("testBody");
         assertThat(newTimelineList.get(0).getRoomId()).isEqualTo(1L);
         assertThat(newTimelineList.get(0).getUserId()).isEqualTo((long) 1);
     }
 
-    // 타임라인 Update 로직 테스트
     @Test
     @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 업데이트: 해당 Id가 존재 + 모든 데이터 존재할 경우")
@@ -181,8 +202,29 @@ class TimelineControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updateJson))
                 .andExpect(status().isOk())
+                .andDo(document("timeline/update",
+                        responseFields(
+                                fieldWithPath("id")
+                                        .description("업데이트된 timeline id"),
+                                fieldWithPath("title")
+                                        .description("업데이트된 제목"),
+                                fieldWithPath("body")
+                                        .description("업데이트된 본문"),
+                                fieldWithPath("userId")
+                                        .description("해당 userId"),
+                                fieldWithPath("roomId")
+                                        .description("해당 roomId"),
+                                fieldWithPath("createdAt")
+                                        .description("만들어진 시간"),
+                                fieldWithPath("timelineComments")
+                                        .optional()
+                                        .type(JsonFieldType.ARRAY)
+                                        .description("타임라인에 대한 댓글들")
+                        )
+                ))
                 .andDo(print())
                 .andReturn();
+
         TimelineResponseDto newTimelineResponse
                 = mapper.readValue(updateResult.getResponse().getContentAsString(), TimelineResponseDto.class);
 
