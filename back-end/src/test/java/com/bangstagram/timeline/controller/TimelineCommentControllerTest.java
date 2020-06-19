@@ -50,9 +50,8 @@ class TimelineCommentControllerTest {
         timelineCommentRepository.deleteAll();
     }
 
-    // 성
     @Test
-    @WithMockUser
+    @WithMockUser(roles = {"USER"})
     @DisplayName("타임라인 코멘트 만들기: 모든 정보가 정상일 때")
     void createNewTimelineComment() throws Exception {
         //given
@@ -69,6 +68,7 @@ class TimelineCommentControllerTest {
 
         TimelineCommentRequestDto testDto = new TimelineCommentRequestDto("newComment", 1L, 1L);
 
+        // when
         byte[] contentAsByteArray = mockMvc.perform(post("/timelines/comments")
                 .content(objectMapper.writeValueAsString(testDto))
                 .contentType(MediaType.APPLICATION_JSON))
