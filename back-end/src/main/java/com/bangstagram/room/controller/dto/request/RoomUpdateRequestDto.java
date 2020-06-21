@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @Getter
 public class RoomUpdateRequestDto {
@@ -16,18 +15,16 @@ public class RoomUpdateRequestDto {
     private String link;
     private String phone;
     private String description;
-    private List<ThemeUpdateRequestDto> themes;
 
     public RoomUpdateRequestDto() {
     }
 
     @Builder
-    public RoomUpdateRequestDto(String title, String link, String phone, String address, String description, List<ThemeUpdateRequestDto> themes) {
+    public RoomUpdateRequestDto(String title, String link, String phone, String address, String description) {
         this.title = title;
         this.link = link;
         this.phone = phone;
         this.address = address;
         this.description = description;
-        this.themes = themes;
     }
 }

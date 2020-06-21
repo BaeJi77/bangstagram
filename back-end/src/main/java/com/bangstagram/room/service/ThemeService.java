@@ -64,7 +64,6 @@ public class ThemeService {
         Theme newTheme = requestDto.toEntity();
         newTheme.setRoom(room);
         Theme savedTheme = themeRepository.save(newTheme);
-        //room.addTheme(theme);
 
         return ThemeResponseDto.builder()
                 .id(savedTheme.getId())

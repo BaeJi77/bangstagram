@@ -24,9 +24,6 @@ public class Room {
 
     private String address;
 
-    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Theme> themes = new ArrayList<>();*/
-
     public Room() {
     }
 
@@ -47,17 +44,4 @@ public class Room {
         this.address = address;
         this.description = description;
     }
-/*
-    public void addTheme(Theme theme) {
-        themes.add(theme);
-    }
-
-    public void addThemes(List<Theme> themes) {
-        this.themes.addAll(themes);
-    }
-
-    public void updateThemes(List<Theme> themes) {
-        this.themes.clear();
-        this.themes.addAll(themes);
-    }*/
 }
