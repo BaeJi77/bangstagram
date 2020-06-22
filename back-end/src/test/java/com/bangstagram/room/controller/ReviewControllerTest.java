@@ -147,7 +147,7 @@ class ReviewControllerTest {
         byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(document("/rooms/review-find",
+                .andDo(document("/rooms/review-findByThemeId",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -155,7 +155,6 @@ class ReviewControllerTest {
                                 parameterWithName("themeId").description("테마 id")
                         ),
                         responseFields(
-                                fieldWithPath("[]").type(JsonFieldType.ARRAY).description("리뷰 list"),
                                 fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("리뷰 id"),
                                 fieldWithPath("[].userId").type(JsonFieldType.NUMBER).description("사용자 id"),
                                 fieldWithPath("[].themeId").type(JsonFieldType.NUMBER).description("테마 id"),

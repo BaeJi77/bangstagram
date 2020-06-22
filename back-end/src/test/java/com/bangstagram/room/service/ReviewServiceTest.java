@@ -41,10 +41,10 @@ class ReviewServiceTest {
     void findByThemeId() {
         // given
         Theme newTheme = Theme.builder()
-                .title("newTheme")
-                .description("hi")
-                .genre("fun")
-                .imgSrc("https:1111")
+                .title("theme title")
+                .description("theme desc")
+                .genre("theme genre")
+                .imgSrc("src")
                 .build();
         Theme savedTheme = themeRepository.save(newTheme);
 
@@ -71,7 +71,6 @@ class ReviewServiceTest {
         assertThat(responseDtos.get(0).getLevel()).isEqualTo(savedReview.getLevel());
         assertThat(responseDtos.get(0).getScore()).isEqualTo(savedReview.getScore());
         assertThat(responseDtos.get(0).isSuccess()).isEqualTo(savedReview.isSuccess());
-
     }
 
     @Test
