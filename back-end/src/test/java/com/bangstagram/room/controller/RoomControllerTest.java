@@ -74,7 +74,6 @@ public class RoomControllerTest {
                 getDocumentRequest(),
                 getDocumentResponse(),
                 responseFields(
-                        fieldWithPath("[]").description("방탈출 list"),
                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("방탈출 id"),
                         fieldWithPath("[].title").type(JsonFieldType.STRING).description("방탈출 제목"),
                         fieldWithPath("[].address").type(JsonFieldType.STRING).description("방탈출 주소"),
@@ -165,10 +164,9 @@ public class RoomControllerTest {
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestParameters(
-                        parameterWithName("region").description("방탈출 지역")
+                        parameterWithName("region").description("검색할 방탈출 지역")
                 ),
                 responseFields(
-                        fieldWithPath("[]").description("방탈출 list"),
                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("방탈출 id"),
                         fieldWithPath("[].title").type(JsonFieldType.STRING).description("방탈출 제목"),
                         fieldWithPath("[].address").type(JsonFieldType.STRING).description("방탈출 주소"),

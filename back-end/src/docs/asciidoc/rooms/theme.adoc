@@ -1,0 +1,51 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+=== 방탈출 테마 만들기
+
+==== Request
+
+include::{snippets}/rooms/theme-create/http-request.adoc[]
+include::{snippets}/rooms/theme-create/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/theme-create/http-response.adoc[]
+include::{snippets}/rooms/theme-create/response-fields.adoc[]
+
+=== 테마 업데이트
+
+==== Request
+
+include::{snippets}/rooms/theme-update/http-request.adoc[]
+include::{snippets}/rooms/theme-update/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/theme-update/http-response.adoc[]
+include::{snippets}/rooms/theme-update/response-fields.adoc[]
+
+=== 테마 ID로 검색
+
+==== Request
+
+include::{snippets}/rooms/theme-find/http-request.adoc[]
+include::{snippets}/rooms/theme-find/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/theme-find/http-response.adoc[]
+include::{snippets}/rooms/theme-find/response-fields.adoc[]
+
+=== 방탈출 ID에 해당하는 테마 검색
+
+==== Request
+
+include::{snippets}/rooms/theme-findByRoomId/http-request.adoc[]
+include::{snippets}/rooms/theme-findByRoomId/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/theme-findByRoomId/http-response.adoc[]
+include::{snippets}/rooms/theme-findByRoomId/response-fields.adoc[]

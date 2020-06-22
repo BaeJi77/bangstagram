@@ -119,7 +119,6 @@ class ThemeControllerTest {
                         parameterWithName("roomId").description("방탈출 id")
                 ),
                 responseFields(
-                        fieldWithPath("[]").description("테마 list"),
                         fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("테마 id"),
                         fieldWithPath("[].roomId").type(JsonFieldType.NUMBER).description("방탈출 id"),
                         fieldWithPath("[].title").type(JsonFieldType.STRING).description("테마 제목"),
