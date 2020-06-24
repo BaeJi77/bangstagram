@@ -1,5 +1,6 @@
 package com.bangstagram.timeline.controller.dto.response;
 
+import com.bangstagram.user.domain.model.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,19 +17,19 @@ public class TimelineResponseDto {
     private String title;
     private String body;
     private LocalDateTime createdAt;
-    private Long userId;
+    private User user;
     private Long roomId;
 
     public TimelineResponseDto() {
     }
 
     @Builder
-    public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, Long userId, Long roomId) {
+    public TimelineResponseDto(Long id, String title, String body, LocalDateTime createdAt, User user, Long roomId) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.createdAt = createdAt;
-        this.userId = userId;
+        this.user = user;
         this.roomId = roomId;
     }
 
@@ -39,7 +40,7 @@ public class TimelineResponseDto {
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", createdAt=" + createdAt +
-                ", userId=" + userId +
+                ", user=" + user +
                 ", roomId=" + roomId +
                 '}';
     }
