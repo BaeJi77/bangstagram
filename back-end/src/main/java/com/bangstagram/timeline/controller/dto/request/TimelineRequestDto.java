@@ -19,8 +19,7 @@ public class TimelineRequestDto {
     @NotBlank
     private String body;
 
-    @NotNull
-    private Long userId;
+    //@NotNull private Long userId;
 
     @NotNull
     private Long roomId;
@@ -28,10 +27,10 @@ public class TimelineRequestDto {
     public TimelineRequestDto() {
     }
 
-    public TimelineRequestDto(String title, String body, Long userId, Long roomId) {
+    public TimelineRequestDto(String title, String body, Long roomId) {
         this.title = title;
         this.body = body;
-        this.userId = userId;
+        //this.userId = userId;
         this.roomId = roomId;
     }
 
@@ -39,7 +38,7 @@ public class TimelineRequestDto {
         return Timeline.builder()
                 .title(this.title)
                 .body(this.body)
-                .userId(this.userId)
+                //.user(this.userId)
                 .roomId(this.roomId)
                 .build();
     }
@@ -49,7 +48,7 @@ public class TimelineRequestDto {
         return "TimelineRequestDto{" +
                 "title='" + title + '\'' +
                 ", body='" + body + '\'' +
-                ", userId=" + userId +
+                //", userId=" + userId +
                 ", roomId=" + roomId +
                 '}';
     }
