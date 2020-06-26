@@ -69,7 +69,8 @@ class TimelineCommentControllerTest {
                 .userId(1L)
                 .build();
 
-        timelineRepository.save(timeline);
+        Timeline timeline1 = timelineRepository.save(timeline);
+        assertThat(timeline1.getBody()).isEqualTo("new");
 
         TimelineCommentRequestDto testDto = new TimelineCommentRequestDto("newComment", 1L, 1L);
 
