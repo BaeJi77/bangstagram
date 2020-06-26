@@ -77,6 +77,7 @@ class TimelineCommentControllerTest {
         byte[] contentAsByteArray = mockMvc.perform(post("/timelines/comments")
                 .content(objectMapper.writeValueAsString(testDto))
                 .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("timelines/comments/create",
                         responseFields(
