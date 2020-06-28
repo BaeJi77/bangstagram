@@ -3,6 +3,7 @@ package com.bangstagram.room.controller;
 import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.service.RoomService;
 import com.bangstagram.user.configure.security.WebSecurityConfigure;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,6 +34,9 @@ public class RoomControllerTest {
 
     @MockBean
     private RoomService roomService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @WithMockUser(roles = "USER")
@@ -57,6 +62,7 @@ public class RoomControllerTest {
     @WithMockUser(roles = "USER")
     @DisplayName("방탈출 ID 조회 테스트")
     void findById() throws Exception {
+        //given
         RoomResponseDto room = RoomResponseDto.builder()
                 .id(1L)
                 .title("room_title")
@@ -67,11 +73,21 @@ public class RoomControllerTest {
                 .build();
         given(roomService.findById(room.getId())).willReturn(room);
 
-        mockMvc.perform(get("/rooms/1"))
+        //when
+        byte[] contentAsByteArray = mockMvc.perform(get("/rooms/{id}", room.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.title", is(equalTo("room_title"))))
-                .andDo(print());
+                .andDo(print())
+                .andReturn().getResponse().getContentAsByteArray();
+
+
+        //then
+        RoomResponseDto response = objectMapper.readValue(contentAsByteArray, RoomResponseDto.class);
+        assertThat(response.getId()).isEqualTo(room.getId());
+        assertThat(response.getTitle()).isEqualTo(room.getTitle());
+        assertThat(response.getAddress()).isEqualTo(room.getAddress());
+        assertThat(response.getLink()).isEqualTo(room.getLink());
+        assertThat(response.getPhone()).isEqualTo(room.getPhone());
     }
 
     @Test
