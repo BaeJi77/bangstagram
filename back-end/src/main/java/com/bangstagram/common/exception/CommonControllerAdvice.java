@@ -21,4 +21,11 @@ public class CommonControllerAdvice {
         log.error("{}", e.getMessage());
         return e.getMessage();
     }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Already exists")
+    public String requestAlreadyExists(AlreadyExistsException e) {
+        log.error("{}", e.getMessage());
+        return e.getMessage();
+    }
 }

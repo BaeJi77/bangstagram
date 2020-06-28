@@ -1,7 +1,7 @@
 package com.bangstagram.user.controller;
 
+import com.bangstagram.user.controller.dto.request.AuthRequestDto;
 import com.bangstagram.user.controller.dto.request.JoinRequestDto;
-import com.bangstagram.user.domain.model.user.User;
 import com.bangstagram.user.domain.repository.UserRepository;
 import com.bangstagram.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +17,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,10 +65,9 @@ class UserRestControllerTest {
         Map<String,String> request = new HashMap<>();
         request.put("email","sa01747@naver.com");
 
-        ObjectMapper mapper = new ObjectMapper();
         ResultActions result = mockMvc.perform(post("/users/exists")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(request)));
+                .content(objectMapper.writeValueAsString(request)));
 
         // then
         result.andExpect(status().isOk())
@@ -89,22 +87,8 @@ class UserRestControllerTest {
     @Test
     @DisplayName("회원가입_하기")
     void join() throws Exception {
-        // given
-        User user = User.builder()
-                .id(1L)
-                .name("테스터")
-                .email("sa01747@naver.com")
-                .password("test1234")
-                .loginCount(0)
-                .createAt(LocalDateTime.now())
-                .build();
-
         // when
-        Map<String,String> joinRequestDto = new HashMap();
-        joinRequestDto.put("name",user.getName());
-        joinRequestDto.put("email",user.getEmail());
-        joinRequestDto.put("password",user.getPassword());
-
+        JoinRequestDto joinRequestDto = new JoinRequestDto("테스터", "sa01747@naver.com", "test1234");
         ResultActions result = mockMvc.perform(post("/users/join")
                 .content(objectMapper.writeValueAsString(joinRequestDto))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,28 +119,33 @@ class UserRestControllerTest {
     }
 
     @Test
+    @DisplayName("회원가입_하기: 이미 사용자 이메일이 존재하는 경우")
+    public void isAlreadyExistUserCheck() throws Exception {
+        // given
+        JoinRequestDto joinRequestDto = new JoinRequestDto("테스터", "sa01747@naver.com", "test1234");
+        userService.join(joinRequestDto); //join
+
+        // when
+        mockMvc.perform(post("/users/join")
+                .content(objectMapper.writeValueAsString(joinRequestDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("로그인_하기")
     void login() throws Exception {
         // given
-        User user = User.builder()
-                .id(1L)
-                .name("테스터")
-                .email("sa01747@naver.com")
-                .password("test1234")
-                .loginCount(0)
-                .createAt(LocalDateTime.now())
-                .build();
+        JoinRequestDto joinRequestDto = new JoinRequestDto("테스터", "sa01747@naver.com", "test1234");
+        userService.join(joinRequestDto); // join
 
         // when
-        userService.join(new JoinRequestDto(user.getName(), user.getEmail(), user.getPassword())); // join
-
-        Map<String, String> requestBody = new HashMap();
-        requestBody.put("principal", user.getEmail());
-        requestBody.put("credentials", user.getPassword());
-
+        AuthRequestDto authRequestDto = new AuthRequestDto(joinRequestDto.getEmail(), joinRequestDto.getPassword());
         ResultActions result = mockMvc.perform(post("/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestBody)));
+                .content(objectMapper.writeValueAsString(authRequestDto)));
 
         // then
         result.andExpect(status().isOk())
