@@ -1,12 +1,11 @@
 package com.bangstagram.timeline.controller;
 
 import com.bangstagram.timeline.controller.dto.request.TimelineCommentRequestDto;
+import com.bangstagram.timeline.controller.dto.request.TimelineCommentUpdateRequestDto;
 import com.bangstagram.timeline.controller.dto.response.TimelineCommentResponseDto;
 import com.bangstagram.timeline.service.TimelineCommentService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,6 +27,12 @@ public class TimelineCommentController {
     public TimelineCommentResponseDto createNewTimelineComment(@RequestBody @Valid TimelineCommentRequestDto timelineCommentRequestDto) {
         log.info("[TimelineComment] {}", timelineCommentRequestDto);
         return timelineCommentService.makeTimelineComment(timelineCommentRequestDto);
+    }
+
+    @PatchMapping("timelines/comments/{id}")
+    public TimelineCommentResponseDto updateTimelineComment(@PathVariable long id, @RequestBody @Valid TimelineCommentUpdateRequestDto timelineCommentUpdateRequestDto) {
+        log.info("[TimelineComment] {}", timelineCommentUpdateRequestDto);
+        return timelineCommentService.updateComment(id, timelineCommentUpdateRequestDto);
     }
 }
 

@@ -2,6 +2,7 @@ package com.bangstagram.timeline.service;
 
 import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.timeline.controller.dto.request.TimelineCommentRequestDto;
+import com.bangstagram.timeline.controller.dto.request.TimelineCommentUpdateRequestDto;
 import com.bangstagram.timeline.controller.dto.response.TimelineCommentResponseDto;
 import com.bangstagram.timeline.domain.model.Timeline;
 import com.bangstagram.timeline.domain.model.TimelineComment;
@@ -38,6 +39,21 @@ public class TimelineCommentService {
                 .comment(newTimelineComment.getComment())
                 .userId(newTimelineComment.getUserId())
                 .timelineId(newTimelineComment.getTimelineId())
+                .build();
+    }
+
+    @Transactional
+    public TimelineCommentResponseDto updateComment(long timelineCommentId, TimelineCommentUpdateRequestDto timelineCommentUpdateRequestDto) {
+        TimelineComment timelineComment = timelineCommentRepository.findById(timelineCommentId)
+                .orElseThrow(() -> new DoNotExistException("해당 타임라인 커멘트 정보가 없습니다."));
+
+        timelineComment.update(timelineCommentUpdateRequestDto.getComment());
+
+        return TimelineCommentResponseDto.builder()
+                .id(timelineComment.getId())
+                .comment(timelineComment.getComment())
+                .timelineId(timelineComment.getUserId())
+                .userId(timelineComment.getUserId())
                 .build();
     }
 }
