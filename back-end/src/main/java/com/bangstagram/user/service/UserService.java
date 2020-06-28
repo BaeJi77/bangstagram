@@ -15,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 /***
  * author: Hyo-Jin Kim
  * Date: 2020.05.08
@@ -39,12 +37,10 @@ public class UserService {
 
     @Transactional
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
-        User user = findByEmail(joinRequestDto.getEmail()).orElse(null);
-        if( user != null )
-            throw new AlreadyExistsException("이미 가입한 계정이 있습니다. userEmail: " + user.getEmail());
+        if( existsByEmail(joinRequestDto.getEmail()).isResult() )
+            throw new AlreadyExistsException("이미 가입한 계정이 있습니다. userEmail: " + joinRequestDto.getEmail());
 
-        user = save(joinRequestDto.newUser(passwordEncoder));
-
+        User user = save(joinRequestDto.newUser(passwordEncoder));
         return new JoinResponseDto(user);
     }
 
@@ -57,17 +53,12 @@ public class UserService {
         return new CheckEmailResponseDto(userRepository.existsByEmail(email));
     }
 
-    @Transactional(readOnly = true)
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
     @Transactional
     public AuthResponseDto login(AuthRequestDto authRequestDto) {
         String email = authRequestDto.getPrincipal();
         String password = authRequestDto.getCredentials();
 
-        User user = findByEmail(email).orElseThrow(() -> new DoNotExistException("요청하신 사용자가 없습니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new DoNotExistException("요청하신 사용자가 없습니다."));
         user.login(passwordEncoder, password);
         user.afterLoginSuccess();
 
@@ -78,7 +69,7 @@ public class UserService {
 
     @Transactional
     public AuthResponseDto authLogin(String email) {
-        User user = findByEmail(email).orElseThrow(() -> new DoNotExistException("요청하신 사용자가 없습니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new DoNotExistException("요청하신 사용자가 없습니다."));
         user.afterLoginSuccess();
 
         String jwtToken = user.newJwtToken(jwt, new String[]{"ROLE_USER"});
