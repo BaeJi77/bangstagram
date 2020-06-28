@@ -4,6 +4,7 @@ import com.bangstagram.room.domain.model.Review;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -14,13 +15,11 @@ public class ReviewSaveRequestDto {
     @NotNull
     private Long themeId;
 
-    @NotNull
     private double score;
 
-    @NotNull
+    @NotBlank
     private String level;
 
-    @NotNull
     private boolean success;
 
     private String content;

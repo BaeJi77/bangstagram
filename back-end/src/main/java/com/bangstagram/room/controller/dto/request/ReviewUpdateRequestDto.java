@@ -3,17 +3,15 @@ package com.bangstagram.room.controller.dto.request;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class ReviewUpdateRequestDto {
-    @NotNull
     private double score;
 
-    @NotNull
+    @NotBlank
     private String level;
 
-    @NotNull
     private boolean success;
 
     private String content;
