@@ -33,8 +33,8 @@ class ReviewServiceTest {
 
     @BeforeEach
     void setUp() {
-        themeRepository.deleteAll();
         reviewRepository.deleteAll();
+        themeRepository.deleteAll();
     }
 
     @Test

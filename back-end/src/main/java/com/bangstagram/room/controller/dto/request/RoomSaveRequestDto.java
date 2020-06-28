@@ -1,14 +1,10 @@
 package com.bangstagram.room.controller.dto.request;
 
 import com.bangstagram.room.domain.model.Room;
-import com.bangstagram.room.domain.model.Theme;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class RoomSaveRequestDto {
@@ -20,29 +16,30 @@ public class RoomSaveRequestDto {
     private String link;
     private String phone;
     private String description;
-    private List<ThemeSaveRequestDto> themes;
+    //private List<ThemeSaveRequestDto> themes;
 
     public RoomSaveRequestDto() {
     }
 
     @Builder
-    public RoomSaveRequestDto(String title, String link, String phone, String address, String description, List<ThemeSaveRequestDto> themes) {
+    public RoomSaveRequestDto(String title, String link, String phone, String address, String description) {
         this.title = title;
         this.link = link;
         this.phone = phone;
         this.address = address;
         this.description = description;
-        this.themes = themes;
+        //this.themes = themes;
     }
 
     public Room toEntity() {
-        Room room = Room.builder()
+        return Room.builder()
                 .title(title)
                 .link(link)
                 .phone(phone)
                 .address(address)
                 .description(description)
                 .build();
+        /*
         if (themes == null) {
             themes = new ArrayList<>();
         }
@@ -54,5 +51,6 @@ public class RoomSaveRequestDto {
                 .build())
                 .collect(Collectors.toList()));
         return room;
+         */
     }
 }
