@@ -80,7 +80,7 @@ public class UserServiceTest {
         // 회원가입 -> 이메일 DB에 저장.
         userService.join(new JoinRequestDto(name, email, password));
 
-        User user = userService.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElse(null);
         assertThat(user, (notNullValue()));
         assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getName(), is(name));

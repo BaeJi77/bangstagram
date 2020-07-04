@@ -1,0 +1,39 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+
+=== 테마 리뷰 만들기
+
+==== Request
+
+include::{snippets}/rooms/review-create/http-request.adoc[]
+include::{snippets}/rooms/review-create/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/review-create/http-response.adoc[]
+include::{snippets}/rooms/review-create/response-fields.adoc[]
+
+=== 리뷰 업데이트
+
+==== Request
+
+include::{snippets}/rooms/review-update/http-request.adoc[]
+include::{snippets}/rooms/review-update/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/review-update/http-response.adoc[]
+include::{snippets}/rooms/review-update/response-fields.adoc[]
+
+=== 테마 ID에 해당하는 리뷰 검색
+
+==== Request
+
+include::{snippets}/rooms/review-findByThemeId/http-request.adoc[]
+include::{snippets}/rooms/review-findByThemeId/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/rooms/review-findByThemeId/http-response.adoc[]
+include::{snippets}/rooms/review-findByThemeId/response-fields.adoc[]

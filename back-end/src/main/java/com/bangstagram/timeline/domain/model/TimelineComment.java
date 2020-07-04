@@ -19,7 +19,7 @@ import javax.persistence.Id;
 public class TimelineComment extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     private String comment;
 

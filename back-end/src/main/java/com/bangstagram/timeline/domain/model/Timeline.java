@@ -28,7 +28,7 @@ public class Timeline extends CommonEntity {
 
     private Long roomId;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<TimelineComment> timelineComments = new ArrayList<>();
 
     public Timeline() {

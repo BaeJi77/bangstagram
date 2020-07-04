@@ -3,10 +3,8 @@ package com.bangstagram.room.service;
 import com.bangstagram.room.controller.dto.request.RoomSaveRequestDto;
 import com.bangstagram.room.controller.dto.request.RoomUpdateRequestDto;
 import com.bangstagram.room.controller.dto.request.ThemeSaveRequestDto;
-import com.bangstagram.room.controller.dto.request.ThemeUpdateRequestDto;
 import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.domain.model.Room;
-import com.bangstagram.room.domain.model.Theme;
 import com.bangstagram.room.domain.repository.RoomRepository;
 import com.bangstagram.room.domain.repository.ThemeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -153,75 +151,4 @@ public class RoomServiceTest {
         assertThat(themeRepository.findAll()).isEmpty();
     }
 
-    @Test
-    @DisplayName("방탈출 테마 정보 추가 테스트")
-    void addThemes() {
-        //given
-        Room room = Room.builder()
-                .title("room_title")
-                .address("address")
-                .phone("phone")
-                .description("desc")
-                .link("link")
-                .build();
-        Room savedRoom = roomRepository.save(room);
-        List<ThemeSaveRequestDto> requestDtos = new ArrayList<>();
-        IntStream.rangeClosed(1, 5).forEach(i -> requestDtos.add(ThemeSaveRequestDto.builder()
-                .title("title" + i)
-                .imgSrc("imgSrc" + i)
-                .description("desc" + i)
-                .genre("genre" + i)
-                .build()));
-
-        //when
-        RoomResponseDto roomResponseDto = roomService.addThemes(savedRoom.getId(), requestDtos);
-        List<Theme> themes = themeRepository.findAll();
-
-        //then
-        assertThat(themes.get(0).getTitle()).isEqualTo(requestDtos.get(0).getTitle());
-        assertThat(roomResponseDto.getThemes()).isNotEmpty();
-        assertThat(roomResponseDto.getThemes().get(0).getTitle()).isEqualTo(requestDtos.get(0).getTitle());
-        assertThat(roomResponseDto.getThemes().get(0).getImgSrc()).isEqualTo(requestDtos.get(0).getImgSrc());
-        assertThat(roomResponseDto.getThemes().get(0).getDescription()).isEqualTo(requestDtos.get(0).getDescription());
-        assertThat(roomResponseDto.getThemes().get(0).getGenre()).isEqualTo(requestDtos.get(0).getGenre());
-    }
-
-    @Test
-    @DisplayName("방탈출 테마 정보 수정 테스트")
-    void updateThemes() {
-        //given
-        Room room = Room.builder()
-                .title("room_title")
-                .address("address")
-                .phone("phone")
-                .description("desc")
-                .link("link")
-                .build();
-        Room savedRoom = roomRepository.save(room);
-        List<ThemeSaveRequestDto> requestDtos = new ArrayList<>();
-        requestDtos.add(ThemeSaveRequestDto.builder()
-                .title("title")
-                .imgSrc("imgSrc")
-                .description("desc")
-                .genre("genre")
-                .build());
-        roomService.addThemes(savedRoom.getId(), requestDtos);
-
-        List<ThemeUpdateRequestDto> updateRequestDtos = new ArrayList<>();
-        IntStream.rangeClosed(1, 5).forEach(i -> updateRequestDtos.add(ThemeUpdateRequestDto.builder()
-                .title("new_title" + i)
-                .imgSrc("new_imgSrc" + i)
-                .description("new_desc" + i)
-                .genre("new_genre" + i)
-                .build()));
-
-        //when
-        RoomResponseDto responseDto = roomService.updateThemes(savedRoom.getId(), updateRequestDtos);
-
-        //then
-        assertThat(responseDto.getThemes().get(0).getTitle()).isEqualTo(updateRequestDtos.get(0).getTitle());
-        assertThat(responseDto.getThemes().get(0).getImgSrc()).isEqualTo(updateRequestDtos.get(0).getImgSrc());
-        assertThat(responseDto.getThemes().get(0).getDescription()).isEqualTo(updateRequestDtos.get(0).getDescription());
-        assertThat(responseDto.getThemes().get(0).getGenre()).isEqualTo(updateRequestDtos.get(0).getGenre());
-    }
 }
