@@ -29,7 +29,6 @@ public class Timeline extends CommonEntity {
     private Long roomId;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
     private List<TimelineComment> timelineComments = new ArrayList<>();
 
     public Timeline() {

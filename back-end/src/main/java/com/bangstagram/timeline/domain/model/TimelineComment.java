@@ -36,4 +36,8 @@ public class TimelineComment extends CommonEntity {
         this.userId = userId;
         this.timelineId = timelineId;
     }
+
+    public void update(String comment) {
+        this.comment = comment;
+    }
 }
