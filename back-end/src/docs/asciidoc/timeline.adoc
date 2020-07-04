@@ -1,2 +1,26 @@
 [#타임라인]
 == 타임라인
+
+=== 타임라인 만들기
+==== Request
+include::{snippets}/timelines/create/http-request.adoc[]
+
+==== Response
+include::{snippets}/timelines/create/http-response.adoc[]
+include::{snippets}/timelines/create/response-fields.adoc[]
+
+=== 타임라인 업데이트
+==== Request
+include::{snippets}/timelines/update/http-request.adoc[]
+
+==== Response
+include::{snippets}/timelines/update/http-response.adoc[]
+include::{snippets}/timelines/update/response-fields.adoc[]
+
+=== 유저에 관한 타임라인 가져오기
+==== Request
+include::{snippets}/timelines/get/http-request.adoc[]
+
+==== Response
+include::{snippets}/timelines/get/http-response.adoc[]
+include::{snippets}/timelines/get/response-fields.adoc[]

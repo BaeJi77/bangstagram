@@ -4,6 +4,7 @@ package com.bangstagram.timeline.service;
 import com.bangstagram.common.exception.DoNotExistException;
 import com.bangstagram.timeline.controller.dto.request.TimelineRequestDto;
 import com.bangstagram.timeline.controller.dto.request.TimelineUpdateRequestDto;
+import com.bangstagram.timeline.controller.dto.response.TimelineCommentResponseDto;
 import com.bangstagram.timeline.controller.dto.response.TimelineResponseDto;
 import com.bangstagram.timeline.domain.model.Timeline;
 import com.bangstagram.timeline.domain.repository.TimelineRepository;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
@@ -71,6 +73,15 @@ public class TimelineService {
                         .createdAt(timeline.getCreatedAt())
                         .userId(timeline.getUserId())
                         .roomId(timeline.getRoomId())
+                        .timelineComments(
+                                timeline.getTimelineComments().stream()
+                                        .map(timelineComment -> TimelineCommentResponseDto.builder()
+                                                .id(timelineComment.getId())
+                                                .comment(timelineComment.getComment())
+                                                .timelineId(timelineComment.getTimelineId())
+                                                .userId(timelineComment.getUserId())
+                                                .build())
+                                        .collect(Collectors.toList()))
                         .build())
                 .collect(collectingAndThen(toList(), Collections::unmodifiableList)); // 불변성이 존재하는 리스트를 만든다
     }
