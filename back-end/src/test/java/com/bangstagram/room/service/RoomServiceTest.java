@@ -5,6 +5,7 @@ import com.bangstagram.room.controller.dto.request.RoomUpdateRequestDto;
 import com.bangstagram.room.controller.dto.request.ThemeSaveRequestDto;
 import com.bangstagram.room.controller.dto.response.RoomResponseDto;
 import com.bangstagram.room.domain.model.Room;
+import com.bangstagram.room.domain.repository.ReviewRepository;
 import com.bangstagram.room.domain.repository.RoomRepository;
 import com.bangstagram.room.domain.repository.ThemeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,10 +31,14 @@ public class RoomServiceTest {
     @Autowired
     private ThemeRepository themeRepository;
 
+    @Autowired
+    private ReviewRepository reviewRepository;
+
     @BeforeEach
     void setUp() {
-        roomRepository.deleteAll();
+        reviewRepository.deleteAll();
         themeRepository.deleteAll();
+        roomRepository.deleteAll();
     }
 
     @Test
