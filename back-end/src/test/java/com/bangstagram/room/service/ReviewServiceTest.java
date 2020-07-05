@@ -35,6 +35,7 @@ class ReviewServiceTest {
     void setUp() {
         reviewRepository.deleteAll();
         themeRepository.deleteAll();
+        roomRepository.deleteAll();
     }
 
     @Test
