@@ -113,7 +113,7 @@ public class RoomControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        byte[] contentAsByteArray = result.andDo(document("/rooms/rooms-findById",
+        byte[] contentAsByteArray = result.andDo(document("rooms/rooms-findById",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 pathParameters(
@@ -214,7 +214,7 @@ public class RoomControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        byte[] contentAsByteArray = result.andDo(document("/rooms/room-create",
+        byte[] contentAsByteArray = result.andDo(document("rooms/room-create",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestFields(
@@ -272,7 +272,7 @@ public class RoomControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        byte[] contentAsByteArray = result.andDo(document("/rooms/room-update",
+        byte[] contentAsByteArray = result.andDo(document("rooms/room-update",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 pathParameters(

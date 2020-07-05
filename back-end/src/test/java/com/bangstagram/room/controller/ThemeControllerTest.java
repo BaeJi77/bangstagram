@@ -67,7 +67,7 @@ class ThemeControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         byte[] contentAsByteArray = result.andDo(
-                document("/rooms/theme-find",
+                document("rooms/theme-find",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -112,7 +112,7 @@ class ThemeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        byte[] contentAsByteArray = result.andDo(document("/rooms/theme-findByRoomId",
+        byte[] contentAsByteArray = result.andDo(document("rooms/theme-findByRoomId",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 pathParameters(
@@ -165,7 +165,7 @@ class ThemeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        byte[] contentAsByteArray = result.andDo(document("/rooms/theme-create",
+        byte[] contentAsByteArray = result.andDo(document("rooms/theme-create",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 pathParameters(
@@ -225,7 +225,7 @@ class ThemeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        byte[] contentAsByteArray = result.andDo(document("/rooms/theme-update",
+        byte[] contentAsByteArray = result.andDo(document("rooms/theme-update",
                 getDocumentRequest(),
                 getDocumentResponse(),
                 pathParameters(

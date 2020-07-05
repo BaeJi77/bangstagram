@@ -79,7 +79,7 @@ class ReviewControllerTest {
         byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(document("/rooms/review-create",
+                .andDo(document("rooms/review-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -147,7 +147,7 @@ class ReviewControllerTest {
         byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(document("/rooms/review-findByThemeId",
+                .andDo(document("rooms/review-findByThemeId",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -214,7 +214,7 @@ class ReviewControllerTest {
         byte[] contentAsByteArray = result
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(document("/rooms/review-update",
+                .andDo(document("rooms/review-update",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -258,7 +258,7 @@ class ReviewControllerTest {
     void deleteReview() throws Exception {
         mockMvc.perform(delete("/rooms/{roomId}/themes/{themeId}/reviews/{reviewId}", 1L, 1L, 1L))
                 .andExpect(status().isOk())
-                .andDo(document("/rooms/review-delete",
+                .andDo(document("rooms/review-delete",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
